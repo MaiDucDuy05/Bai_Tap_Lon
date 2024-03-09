@@ -83,19 +83,23 @@
     <ClCompile Include="BulletObject.cpp" />
     <ClCompile Include="Common_Function.cpp" />
     <ClCompile Include="game_map.cpp" />
+    <ClCompile Include="Geometric.cpp" />
     <ClCompile Include="ImpTimer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainOject.cpp" />
     <ClCompile Include="Main_P2_Object.cpp" />
+    <ClCompile Include="TextObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="BulletObject.h" />
     <ClInclude Include="Common_Function.h" />
     <ClInclude Include="game_map.h" />
+    <ClInclude Include="Geometric.h" />
     <ClInclude Include="ImpTimer.h" />
     <ClInclude Include="MainObject.h" />
     <ClInclude Include="Main_P2_Object.h" />
+    <ClInclude Include="TextObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

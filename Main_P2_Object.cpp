@@ -16,7 +16,7 @@ Main_P2_Object::Main_P2_Object(){
 	input_type.bullet_Skill_U=0; input_type.bullet_Skill_J=0;
 	input_type.defend=0;input_type.bullet_Skill_I=0;
 	input_type.speed_up=0;input_type.hurt=0;
-	on_ground= false;
+	on_ground = false; blood_main = 500; ki_main = 1499;
 	map_x=0;map_y=0;
 }
 Main_P2_Object::~Main_P2_Object(){
@@ -154,7 +154,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			input_type.jump=1;
 			break;
 		case SDLK_DOWN:
-			if(on_ground){
+			if(on_ground&&ki_main>=100){
 			input_type.defend=1;
 			if(status==WALK_LEFT){
 			p_object_defend.LoadImag("img//SuppermenphongthuLeft.png",screen);
@@ -172,16 +172,18 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 				break;
 			}
 		case SDLK_KP_4:
-			
+			if (ki_main >= 200&& input_type.bullet_Skill_U == 0)
 				input_type.bullet_Skill_U=1;
 			break;
 		case SDLK_KP_6:
+			if(ki_main>=300&& input_type.bullet_Skill_I == 0)
 				input_type.bullet_Skill_I=1;
 			break;
 		case SDLK_KP_1:
 			input_type.bullet_Skill_J=1;
 			BulletObject *p_bullet = new BulletObject;
 			if(input_type.defend==0){
+				ki_main += 50;
 			if(status== WALK_LEFT){
 				p_bullet->LoadImag("img//KiemL.png",screen);
 				}
@@ -327,7 +329,7 @@ void Main_P2_Object:: Check_map(Map &map_data){
 
 	if(x1>=0&&x2<MAX_MAP_X&&y1>=0&&y2<=MAX_MAP_Y){
 		if(y_val>0){
-			if(map_data.tile[y2][x1]!=BLANK_TILE||map_data.tile[y2][x1]!=BLANK_TILE){
+			if(map_data.tile[y2][x1]!=BLANK_TILE||map_data.tile[y2][x2]!=BLANK_TILE){
 				y_pos = y2 * TILE_SIZE;
 				y_pos -= (height_frame+1);
 				y_val=0;

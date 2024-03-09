@@ -16,7 +16,7 @@ MainObject::MainObject(){
 	input_type.bullet_Skill_I=0; input_type.defend=0;
 	input_type.speed_up=0; input_type.bullet_Skill_U=0;
 	on_ground= false; Move_U=false;input_type.hurt=0;
-	map_x=0;map_y=0;
+	map_x = 0; map_y = 0; blood_main = 500; ki_main = 1499;
 }
 MainObject::~MainObject(){
 
@@ -160,25 +160,29 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			input_type.jump=1;
 			break;
 			case SDLK_i:
-			input_type.bullet_Skill_I=1;
-			if(status==WALK_LEFT){
-				Bullet_BigSize.LoadImag("img//DanbanLeft.png",screen);
-				Bullet_BigSize.SetRect(this->rect.x-Bullet_BigSize.GetRect().w, this->rect.y-50 );
-			}
-			else{
-				Bullet_BigSize.LoadImag("img//DanbanRight.png",screen);
-				Bullet_BigSize.SetRect(this->rect.x+width_frame_, this->rect.y-50);
-			}
+				if (ki_main >= 500&&input_type.bullet_Skill_I==0) {
+					input_type.bullet_Skill_I = 1;
+					if (status == WALK_LEFT) {
+						Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
+						Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
+					}
+					else {
+						Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
+						Bullet_BigSize.SetRect(this->rect.x + width_frame_, this->rect.y - 50);
+					}
+				}
 			break;
 		case SDLK_u:
-				if(Move_U==false){
-				input_type.bullet_Skill_U=1;Move_U=true;
+			if (ki_main >= 250&& input_type.bullet_Skill_U == 0) {
+				if (Move_U == false) {
+					input_type.bullet_Skill_U = 1; Move_U = true;
 				}
-				Bullet_Skill_U[0].LoadImag("img//Sunglon.png",screen);
-				Bullet_Skill_U[0].SetRect(this->rect.x-width_frame_,this->rect.y-Bullet_Skill_U[0].GetRect().h-20);
+				Bullet_Skill_U[0].LoadImag("img//Sunglon.png", screen);
+				Bullet_Skill_U[0].SetRect(this->rect.x - width_frame_, this->rect.y - Bullet_Skill_U[0].GetRect().h - 20);
+			}
 				break;
 		case SDLK_s:
-			if(on_ground){
+			if(on_ground&&ki_main>=100){
 			input_type.defend=1;
 			if(status==WALK_LEFT){
 			p_object_defend.LoadImag("img//SuppermenphongthuLeft.png",screen);
@@ -198,6 +202,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			break;
 		case SDLK_j:
 			if(input_type.defend==0){
+				ki_main += 50;
 			BulletObject *p_bullet = new BulletObject;
 			p_bullet->LoadImag("img//bullet_man.png",screen);
 
@@ -362,7 +367,6 @@ void MainObject::CenterEntityOnMap(Map& map_data){
 		map_data.start_y=map_data.max_y - SCREEN_HEIGHT;
 	}
 }
-
 void MainObject:: HandleBuller(SDL_Renderer * des){
 	for(int i=0;i<p_bullet_list.size();i++){
 		BulletObject * p_bullet = p_bullet_list.at(i);
@@ -400,7 +404,6 @@ void MainObject::Show_Bullet_Skill_U(SDL_Renderer* screen){
 		 Bullet_Skill_U[1].SetRect(-200,-200);
 	 }
 }
-
 void MainObject::Remove_Bullet(const int &idx){
 	int size_amo=p_bullet_list.size();
 	if(size_amo>0&&size_amo>idx){

@@ -7,6 +7,8 @@
 #include"Main_P2_Object.h"
 #include"ImpTimer.h"
 #include"BulletObject.h"
+#include"Geometric.h"
+#include"TextObject.h"
 BaseObject g_background;
 bool InitData(){
 	bool success= true;
@@ -45,11 +47,14 @@ bool InitData(){
 			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL) success=false;
 		}
 	}
+	if (TTF_Init() == -1) success = false;
+	g_font_text = TTF_OpenFont("fornchu.ttf", 30);
+	if (g_font_text == NULL) success = false;
 	return success;
 }
 
 bool LoadBackground(){
-	bool ret = g_background.LoadImag("img/background3.png",g_screen);
+	bool ret = g_background.LoadImag("img/background2.png",g_screen);
 	if(ret==false) return false;
 	return true;
 }
@@ -69,7 +74,7 @@ int main(int argc,char *argv[]){
 	if(LoadBackground()==false) return -1;
 
 	GameMap game_map;
-	game_map.LoadMap("map/map3.dat");
+	game_map.LoadMap("map/map2.dat");
 	game_map.LoadTiles(g_screen);
 	// Khoi tao nhan vat 1
 	MainObject p_player;
@@ -81,6 +86,10 @@ int main(int argc,char *argv[]){
 	P2_Player.LoadImag("img//SieunhanLeft.png",g_screen);
 	P2_Player.Set_clip();
 	int ret_P1_x=0;
+
+	TextObject time_game;
+	time_game.SetColor(TextObject::BLACK_TEXT);
+
 
 	bool is_quit=false;
 	while(!is_quit){
@@ -113,12 +122,16 @@ int main(int argc,char *argv[]){
 	}
 	if(p_player.Get_Input_type().bullet_Skill_I==1){
 		//Am thanh Sung I
+		p_player.Set_ki_main(p_player.Get_ki_main() - 50);
 		Mix_PlayChannel(-1,g_sound_main_P1[2],0);
 		p_player.Show_Bullet_Size(g_screen);
 		}
 	}
 	if(p_player.Get_Move_u()){
 		//Am thanh Sung U
+		if (p_player.Get_Input_type().bullet_Skill_U == 1) {
+			p_player.Set_ki_main(p_player.Get_ki_main() - 50);
+		}
 		Mix_PlayChannel(-1,g_sound_main_P1[1],0);
 		p_player.Show_Bullet_Skill_U(g_screen);
 		p_player.Buller_move_U(map_data,ret_P1_x);
@@ -137,11 +150,13 @@ int main(int argc,char *argv[]){
 
 		if(P2_Player.Get_Input_type().bullet_Skill_U==1){
 			// Am thanh  U
+			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 10);
 			Mix_PlayChannel(-1,g_sound_main_P2[1],0);
-			P2_Player.SetRect(p_player.GetRect().x,p_player.GetRect().y-50);
+			P2_Player.SetRect(p_player.GetRect().x,p_player.GetRect().y-5);
 		}
 		else if(P2_Player.Get_Input_type().bullet_Skill_I==1){
 			// Am thanh I
+			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 20);
 			Mix_PlayChannel(-1,g_sound_main_P2[2],0);
 		}
 
@@ -163,6 +178,7 @@ int main(int argc,char *argv[]){
 				bool ret_col=SDLCommonFunc::CheckCollision(p_amo->GetRect(),P2_Rect);
 				if(P2_Player.Get_Input_type().defend==1|| P2_Player.Get_Input_type().bullet_Skill_I==1) ret_col= false;
 				if(ret_col){
+						P2_Player.Set_blood_main(P2_Player.Get_blood_main()-5);
 						Mix_PlayChannel(-1,g_nhacnen[0],0);
 					P2_Player.Setinput_hurt(1);
 				 SDL_RenderPresent(g_screen) ;
@@ -181,6 +197,7 @@ int main(int argc,char *argv[]){
 					ret_col= false;P2_Player.Remove_Bullet(im);
 				}
 				if(ret_col){
+					p_player.Set_blood_main(p_player.Get_blood_main()-5);
 					Mix_PlayChannel(-1,g_nhacnen[0],0);
 					p_player.Setinput_hurt(1);
 				 SDL_RenderPresent(g_screen) ;
@@ -193,6 +210,7 @@ int main(int argc,char *argv[]){
 			ret_col=SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(1).GetRect(),P2_Rect);
 			if(P2_Player.Get_Input_type().defend==1) ret_col= false;
 			if(ret_col==true){
+				P2_Player.Set_blood_main(P2_Player.Get_blood_main()-50);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				p_player.Set_Move_U(false);
 				P2_Player.Setinput_hurt(1);
@@ -201,6 +219,7 @@ int main(int argc,char *argv[]){
 			ret_col=SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(0).GetRect(),P2_Rect);
 			if(p_player.Get_Input_type().bullet_Skill_U==0) ret_col=false;
 			if(ret_col==true){
+				P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 50);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				p_player.Set_Move_U(false);
 				P2_Player.Setinput_hurt(1);
@@ -211,6 +230,7 @@ int main(int argc,char *argv[]){
 			if(P2_Player.Get_Input_type().defend==1) ret_col= false;
 			if(p_player.Get_Input_type().bullet_Skill_I==0) ret_col=false;
 			if(ret_col==true){
+				P2_Player.Set_blood_main(P2_Player.Get_blood_main()-10);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				P2_Player.Setinput_hurt(1);
 			}
@@ -220,6 +240,7 @@ int main(int argc,char *argv[]){
 			if(P2_Player.Get_Input_type().bullet_Skill_U==1) ret_col=true;
 			if(p_player.Get_Input_type().defend==1) ret_col= false;
 			if(ret_col==true){
+				p_player.Set_blood_main(p_player.Get_blood_main()-2);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				p_player.Setinput_hurt(1);
 			}
@@ -229,13 +250,62 @@ int main(int argc,char *argv[]){
 			if(P2_Player.Get_Input_type().bullet_Skill_I==0) ret_col=false;
 			if(p_player.Get_Input_type().defend==1) ret_col= false;
 			if(ret_col==true){
+				p_player.Set_blood_main(p_player.Get_blood_main()-20);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				p_player.Setinput_hurt(1);
 
 			}
+	// Ve mau // ki cho nhan vat P1
+			// ve mau
+			GeometricFormat rectangle_size1(50,20,p_player.Get_blood_main(),20);
+			ColorData color_data1(255,0,0);
+			Geometric::RenderRecttangle(rectangle_size1,color_data1,g_screen);
+			
+			GeometricFormat outline_size1(50, 20, 501 ,22);
+			ColorData color1(255, 0, 0);
+			Geometric::RenderOutline(outline_size1, color1,g_screen);
+			// ve ki
+			if (p_player.Get_ki_main() <= 0) p_player.Set_ki_main(0) ;
+			if(p_player.Get_ki_main()>=1500)  p_player.Set_ki_main(1499);
+			int ki1 = p_player.Get_ki_main()%500; 
+			GeometricFormat rectangle_size_ki1(50, SCREEN_HEIGHT - 50, ki1, 20);
+			ColorData color_data_ki1(0, 162, 232);
+			Geometric::RenderRecttangle(rectangle_size_ki1, color_data_ki1, g_screen);
+
+			GeometricFormat outline_size_ki1(50, SCREEN_HEIGHT-50, 501, 22);
+			ColorData color_ki1(0, 162, 232);
+			Geometric::RenderOutline(outline_size_ki1, color_ki1, g_screen);
 
 
+	//Ve mau // ki cho nhan vat P2
+			// ve mau 
 
+			GeometricFormat rectangle_size2(SCREEN_WIDTH/2+100,20, P2_Player.Get_blood_main(),20);
+			ColorData color_data2(255,0,0);
+			Geometric::RenderRecttangle(rectangle_size2,color_data2,g_screen);
+
+			GeometricFormat outline_size2(SCREEN_WIDTH / 2 + 100, 20, 501, 22);
+			ColorData color2(255, 0, 0);
+			Geometric::RenderOutline(outline_size2, color2, g_screen);
+			// ve ki
+			if (P2_Player.Get_ki_main() <= 0) P2_Player.Set_ki_main(0);
+			if (P2_Player.Get_ki_main() >= 1500)  P2_Player.Set_ki_main(1499);
+			int ki2 = P2_Player.Get_ki_main()%500;
+			GeometricFormat rectangle_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50,ki2, 20);
+			ColorData color_data_ki2(0, 162, 232);
+			Geometric::RenderRecttangle(rectangle_size_ki2, color_data_ki2, g_screen);
+
+			GeometricFormat outline_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, 501, 22);
+			ColorData color_ki2(0, 162, 232);
+			Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
+
+			std::string str_time = "Time : ";
+			Uint32 time_val = SDL_GetTicks() / 1000;
+			std::string str_val = std::to_string(time_val);
+			str_time += str_val;
+			time_game.SetText(str_time);
+			time_game.SetRect(SCREEN_WIDTH/2, 100);
+			time_game.CreateGameText(g_font_text, g_screen);
 
 	SDL_RenderPresent(g_screen);
 

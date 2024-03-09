@@ -20,6 +20,7 @@ static Mix_Chunk * g_sound_main_P1[10];
 static Mix_Chunk * g_sound_main_P2[10];
 static Mix_Chunk * g_nhacnen[1];
 
+static TTF_Font* g_font_text = NULL;
 
 //screen
 const int FRAME_PER_SECOND = 25; // fbs

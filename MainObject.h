@@ -66,6 +66,21 @@ public:
 	void Setinput_hurt(const int & x){
 		input_type.hurt=x;
 	}
+
+	int Get_blood_main(){
+		return blood_main;
+	}
+
+	void Set_blood_main(int x){
+		blood_main=x;
+	}
+	int Get_ki_main() {
+		return ki_main;
+	}
+
+	void Set_ki_main(int x) {
+		ki_main = x;
+	}
 private:
 	//
 	float x_val;
@@ -94,6 +109,8 @@ private:
 	BaseObject Bullet_Skill_U[2];
 	bool Move_U; 
 
+	int blood_main;
+	int ki_main;
 };
 
 

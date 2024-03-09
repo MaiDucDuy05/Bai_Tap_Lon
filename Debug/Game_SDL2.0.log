@@ -1,45 +1,12 @@
-﻿Build started 3/8/2024 11:15:32 PM.
-     1>Project "C:\Users\admin\Documents\game\Game_SDL2.0\Game_SDL2.0\Game_SDL2.0.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt MainOject.cpp
-         MainOject.cpp
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(50): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(63): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(82): warning C4553: '==' : operator has no effect; did you intend '='?
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(101): warning C4553: '==' : operator has no effect; did you intend '='?
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(130): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(131): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(210): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(254): warning C4305: '+=' : truncation from 'double' to 'float'
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(290): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(291): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(293): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(294): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(299): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(306): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(313): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(314): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(316): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(317): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(322): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(331): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(343): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(353): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(359): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(367): warning C4018: '<' : signed/unsigned mismatch
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_mixer.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.lib" /MACHINE:X86 Debug\BaseObject.obj
-         Debug\BulletObject.obj
-         Debug\Common_Function.obj
-         Debug\game_map.obj
-         Debug\ImpTimer.obj
-         Debug\main.obj
-         Debug\MainOject.obj
-         Debug\Main_P2_Object.obj
-         Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe
-     1>Done Building Project "C:\Users\admin\Documents\game\Game_SDL2.0\Game_SDL2.0\Game_SDL2.0.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:04.38
+﻿  main.cpp
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(51): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(64): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warning C4005: 'GRAVITY_SPEED' : macro redefinition
+          c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(64): warning C4553: '==' : operator has no effect; did you intend '='?
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(192): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(62): warning C4715: 'MainObject::Get_Bullet_Skill_U' : not all control paths return a value
+  Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe
