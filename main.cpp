@@ -290,6 +290,7 @@ int main(int argc,char *argv[]){
 			if(P2_Player.Get_Input_type().bullet_Skill_U==1) ret_col=true;
 			if(p_player.Get_Input_type().defend==1) ret_col= false;
 			if(ret_col==true){
+				SDL_Delay(100);
 				p_player.Set_blood_main(p_player.Get_blood_main()-2);
 				Mix_PlayChannel(-1,g_nhacnen[0],0);
 				p_player.Setinput_hurt(1);
@@ -328,6 +329,32 @@ int main(int argc,char *argv[]){
 			Geometric::RenderOutline(outline_size_ki1, color_ki1, g_screen);
 
 
+			// Su ly game over-----------------------------------------------
+			if (p_player.Get_blood_main() <= 0) {
+				SDL_Color textColor = { 0, 0, 0 };
+
+				SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text,"P2 WIN", textColor);
+				SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+				SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 70, 100, textSurface->w, textSurface->h };
+				SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect); 
+				SDL_RenderPresent(g_screen);
+				SDL_Delay(3000);
+				close();
+				return 0;
+			}
+			else if (P2_Player.Get_blood_main() <= 0) {
+				SDL_Color textColor = { 0, 0, 0 };
+
+				SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, "P1 WIN", textColor);
+				SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+				SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 70, 100, textSurface->w, textSurface->h };
+				SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
+				SDL_RenderPresent(g_screen);
+				SDL_Delay(3000);
+				close();
+				return 0;
+			}
+
 	//Ve mau // ki cho nhan vat P2
 			// ve mau 
 
@@ -350,8 +377,8 @@ int main(int argc,char *argv[]){
 			ColorData color_ki2(0, 162, 232);
 			Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
 			//------------------------------------------------------------------------------------
-			// SU ly thoi gian
-			/*std::string str_time = "Time : ";
+			//SU ly thoi gian
+			std::string str_time = "Time : ";
 			Uint32 time_val = SDL_GetTicks() / 1000;
 			std::string str_val = std::to_string(time_val);
 			str_time += str_val;
@@ -361,7 +388,7 @@ int main(int argc,char *argv[]){
 			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, str_time.c_str(), textColor);
 			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
 			SDL_Rect dstRect = {SCREEN_WIDTH/2-70, 20, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);*/
+			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 			//-------------------------------------------------------------------------------------
 
 
