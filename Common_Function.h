@@ -21,6 +21,7 @@ static Mix_Chunk * g_sound_main_P2[10];
 static Mix_Chunk * g_nhacnen[1];
 
 static TTF_Font* g_font_text = NULL;
+static TTF_Font* g_font_text_1 = NULL;
 
 //screen
 const int FRAME_PER_SECOND = 25; // fbs
@@ -64,6 +65,7 @@ typedef struct Map
 };
 namespace SDLCommonFunc{
 	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2) ;
+	bool Checkvitri(const  int& x, const int& y, const  SDL_Rect&);
 }
 
 #endif

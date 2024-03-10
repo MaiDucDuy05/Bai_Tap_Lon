@@ -1,12 +1,12 @@
 ﻿  main.cpp
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(51): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(64): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(52): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(65): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warning C4005: 'GRAVITY_SPEED' : macro redefinition
           c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(64): warning C4553: '==' : operator has no effect; did you intend '='?
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(175): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(192): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(98): warning C4553: '==' : operator has no effect; did you intend '='?
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(225): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(242): warning C4018: '<' : signed/unsigned mismatch
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(62): warning C4715: 'MainObject::Get_Bullet_Skill_U' : not all control paths return a value
   Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe

@@ -85,3 +85,8 @@ bool SDLCommonFunc::CheckCollision(const SDL_Rect& object1, const SDL_Rect& obje
  
   return false;
 }
+bool SDLCommonFunc::Checkvitri(const int& x, const int& y, const SDL_Rect& Ret) {
+    if (x >= Ret.x && x <= Ret.x + Ret.w &&
+        y >= Ret.y && y <= Ret.y + Ret.h) return true;
+    return false;
+}

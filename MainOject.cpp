@@ -332,11 +332,11 @@ void MainObject:: Check_map(Map &map_data){
 		}
 		else if(y_val<0){
 			on_ground=false;
-			if(map_data.tile[y1][x1]!=BLANK_TILE||map_data.tile[y1][x2]!=BLANK_TILE){
+			/*if (map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2] != BLANK_TILE) {
 				y_pos = (y1+1)*TILE_SIZE;
 				y_val = 0;
 			
-			}
+			}*/
 		}
 	}
 	x_pos+=x_val;

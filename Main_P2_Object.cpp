@@ -336,13 +336,13 @@ void Main_P2_Object:: Check_map(Map &map_data){
 				on_ground=true;
 			}
 		}
-		else if(y_val<0){
+		else if (y_val<0) {
 			on_ground=false;
-			if(map_data.tile[y1][x1]!=BLANK_TILE||map_data.tile[y1][x2]!=BLANK_TILE){
+			/*if (map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2] != BLANK_TILE) {
 				y_pos = (y1+1)*TILE_SIZE;
 				y_val = 0;
 			
-			}
+			}*/
 		}
 	}
 	x_pos+=x_val;
@@ -354,9 +354,8 @@ void Main_P2_Object:: Check_map(Map &map_data){
 		x_pos= map_data.max_x-width_frame_-1;
 	}
 
-	// kiem tra roi xuong vuv tham 
+	// kiem tra roi xuong vuc tham 
 	if(y_pos >= map_data.max_y - TILE_SIZE/2){
-	SDL_Delay(2000);
 	y_pos=0;
 	x_pos-=256;
 	if(x_pos<0) x_pos =0;
@@ -375,13 +374,14 @@ void Main_P2_Object::CenterEntityOnMap(Map& map_data){
 		map_data.start_y=map_data.max_y - SCREEN_HEIGHT;
 	}
 }
-void Main_P2_Object::Remove_Bullet(const int &idx){
-	int size_amo=p_bullet_list.size();
-	if(size_amo>0&&size_amo>idx){
-		BulletObject *p_amo=p_bullet_list.at(idx);
-		p_bullet_list.erase(p_bullet_list.begin()+idx);
-		if(p_amo!=NULL){
-			delete p_amo;p_amo=NULL;
+void Main_P2_Object::Remove_Bullet(const int& idx) {
+	int size_amo = p_bullet_list.size();
+	if (size_amo > 0 && size_amo > idx) {
+		BulletObject* p_amo = p_bullet_list.at(idx);
+		p_bullet_list.erase(p_bullet_list.begin() + idx);
+		if (p_amo != NULL) {
+			delete p_amo; p_amo = NULL;
 		}
 	}
+
 }

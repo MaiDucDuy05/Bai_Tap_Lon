@@ -8,8 +8,9 @@
 #include"ImpTimer.h"
 #include"BulletObject.h"
 #include"Geometric.h"
-#include"TextObject.h"
+#include"MENU.h"
 BaseObject g_background;
+BaseObject menu_BK;
 bool InitData(){
 	bool success= true;
 	int ret = SDL_Init(SDL_INIT_VIDEO);
@@ -49,32 +50,85 @@ bool InitData(){
 	}
 	if (TTF_Init() == -1) success = false;
 	g_font_text = TTF_OpenFont("fornchu.ttf", 30);
-	if (g_font_text == NULL) success = false;
+	g_font_text_1 = TTF_OpenFont("fornchu.ttf", 60);
+	if (g_font_text == NULL|| g_font_text_1==NULL) success = false;
 	return success;
 }
-
-bool LoadBackground(){
-	bool ret = g_background.LoadImag("img/background2.png",g_screen);
+	
+int chosen_map() {
+	bool ret = menu_BK.LoadImag("img//Menu_bk.png", g_screen);
+	if (ret == false) return 0;
+	int x_m; int y_m;
+	SDL_Event m_even;
+	SDL_Rect RECT[4] = { {168,53,320,160},{691,62,320,160},{162,316,320,180},{695,316,320,180} };
+	while (true) {
+		menu_BK.Render(g_screen);
+		while (SDL_PollEvent(&m_even)) {
+			switch (m_even.type) {
+			case SDL_QUIT:
+				return 0;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				x_m = m_even.motion.x;
+				y_m = m_even.motion.y;
+				for (int i = 0; i < 4; i++) {
+					if (SDLCommonFunc::Checkvitri(x_m, y_m, RECT[i])) {
+						return i + 1;
+					}
+				}
+				break;
+			default:
+				break;
+			}
+			SDL_RenderPresent(g_screen);
+		}
+	}
+}
+bool LoadBackground(int i){
+	char c[30];
+	sprintf_s(c, "img/background%d.png", i);
+	bool ret = g_background.LoadImag(c,g_screen);
 	if(ret==false) return false;
 	return true;
 }
 void close(){
+	TTF_CloseFont(g_font_text);
 	g_background.Free();
 	SDL_DestroyRenderer(g_screen);
 	g_screen==NULL;
 	SDL_DestroyWindow(g_window);
 	g_window=NULL;
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
 int main(int argc,char *argv[]){
-	ImpTimer fps_time;
-
 	if(InitData()==false) return -1;
-	if(LoadBackground()==false) return -1;
-
+	BaseObject menu_screen;
+	menu_screen.LoadImag("img//Menu.png", g_screen);
+	MenuObject p_menu;
+	std::string p_chu[] = { "Play Game","Exit","Help" };
+	int x_menu[] = { 550,510,470 };
+	int y_menu[] = { 200,300,400 };
+	int kt = -1;
+	do {
+		menu_screen.Render(g_screen);
+		kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu);
+	} while (kt == -1);
+	if (kt == 1) {
+		close();
+		return 0;
+	}
+	menu_screen.Free();
+	kt = chosen_map();
+	
+	ImpTimer fps_time;
+	if(LoadBackground(kt)==false) return -1;
 	GameMap game_map;
-	game_map.LoadMap("map/map2.dat");
+	char c[30];
+	sprintf_s(c, "map/map%d.dat", kt);
+	game_map.LoadMap(c);
+	//game_map.LoadMap("map/map1.dat");
 	game_map.LoadTiles(g_screen);
 	// Khoi tao nhan vat 1
 	MainObject p_player;
@@ -86,13 +140,9 @@ int main(int argc,char *argv[]){
 	P2_Player.LoadImag("img//SieunhanLeft.png",g_screen);
 	P2_Player.Set_clip();
 	int ret_P1_x=0;
-
-	TextObject time_game;
-	time_game.SetColor(TextObject::BLACK_TEXT);
-
-
+	
 	bool is_quit=false;
-	while(!is_quit){
+	while (!is_quit) {
 		fps_time.start();
 	while(SDL_PollEvent(& g_event)!=0){
 		if(g_event.type==SDL_QUIT){
@@ -255,14 +305,15 @@ int main(int argc,char *argv[]){
 				p_player.Setinput_hurt(1);
 
 			}
+		//--------------------------------------------------------------------------------------
 	// Ve mau // ki cho nhan vat P1
 			// ve mau
 			GeometricFormat rectangle_size1(50,20,p_player.Get_blood_main(),20);
-			ColorData color_data1(255,0,0);
+			ColorData color_data1(37,121,28);
 			Geometric::RenderRecttangle(rectangle_size1,color_data1,g_screen);
 			
 			GeometricFormat outline_size1(50, 20, 501 ,22);
-			ColorData color1(255, 0, 0);
+			ColorData color1(37, 121, 28);
 			Geometric::RenderOutline(outline_size1, color1,g_screen);
 			// ve ki
 			if (p_player.Get_ki_main() <= 0) p_player.Set_ki_main(0) ;
@@ -281,11 +332,11 @@ int main(int argc,char *argv[]){
 			// ve mau 
 
 			GeometricFormat rectangle_size2(SCREEN_WIDTH/2+100,20, P2_Player.Get_blood_main(),20);
-			ColorData color_data2(255,0,0);
+			ColorData color_data2(37, 121, 28);
 			Geometric::RenderRecttangle(rectangle_size2,color_data2,g_screen);
 
 			GeometricFormat outline_size2(SCREEN_WIDTH / 2 + 100, 20, 501, 22);
-			ColorData color2(255, 0, 0);
+			ColorData color2(37, 121, 28);
 			Geometric::RenderOutline(outline_size2, color2, g_screen);
 			// ve ki
 			if (P2_Player.Get_ki_main() <= 0) P2_Player.Set_ki_main(0);
@@ -298,14 +349,21 @@ int main(int argc,char *argv[]){
 			GeometricFormat outline_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, 501, 22);
 			ColorData color_ki2(0, 162, 232);
 			Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
-
-			std::string str_time = "Time : ";
+			//------------------------------------------------------------------------------------
+			// SU ly thoi gian
+			/*std::string str_time = "Time : ";
 			Uint32 time_val = SDL_GetTicks() / 1000;
 			std::string str_val = std::to_string(time_val);
 			str_time += str_val;
-			time_game.SetText(str_time);
-			time_game.SetRect(SCREEN_WIDTH/2, 100);
-			time_game.CreateGameText(g_font_text, g_screen);
+			
+			SDL_Color textColor = { 0, 0, 0 }; 
+
+			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, str_time.c_str(), textColor);
+			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+			SDL_Rect dstRect = {SCREEN_WIDTH/2-70, 20, textSurface->w, textSurface->h };
+			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);*/
+			//-------------------------------------------------------------------------------------
+
 
 	SDL_RenderPresent(g_screen);
 
@@ -316,6 +374,8 @@ int main(int argc,char *argv[]){
 		if(delay_time>=0) SDL_Delay(delay_time);
 	}
 	}
+	
 	close();
 	return 0;
+
 }
