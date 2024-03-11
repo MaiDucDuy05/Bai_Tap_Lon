@@ -27,7 +27,6 @@ public:
 	void Doplayer(Map &map_data);
 	void Check_map(Map &map_data);
 	void SetMapXY(const int x,const int y) {map_x=x;map_y=y;}
-	void  CenterEntityOnMap(Map& map_data);
 
 	Input Get_Input_type(){
 		return input_type;

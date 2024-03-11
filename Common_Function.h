@@ -22,6 +22,7 @@ static Mix_Chunk * g_nhacnen[1];
 
 static TTF_Font* g_font_text = NULL;
 static TTF_Font* g_font_text_1 = NULL;
+static TTF_Font* g_font_text_2 = NULL;
 
 //screen
 const int FRAME_PER_SECOND = 25; // fbs
@@ -53,8 +54,7 @@ typedef struct Input{
 
 typedef struct Map
 {
-	int start_x;
-	int start_y;
+	
 	
 	int max_x;
 	int max_y;

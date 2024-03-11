@@ -28,9 +28,6 @@ public:
 	void Doplayer(Map &map_data);
 	void Check_map(Map &map_data);
 	void SetMapXY(const int x,const int y) {map_x=x;map_y=y;}
-
-	void  CenterEntityOnMap(Map& map_data);
-
 	void set_bullet_list(std::vector<BulletObject*> list){
 		p_bullet_list=list;
 	}

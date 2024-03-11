@@ -1,6 +1,8 @@
+
 #include"MENU.h"
 
-int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font, std::string DANH_SACH[], int So_luong,int x[],int y[]) {
+int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DANH_SACH[],const int So_luong,const int x[],const int y[]) {
+	SDL_Color Color[2] = { {255,137,29},{255,0,0} };
 	int x_m; int y_m;
 	int p_vitrix[10];
 	int p_vitriy[10];
@@ -8,17 +10,13 @@ int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font, std::string DANH_SAC
 		p_vitrix[i] = x[i];
 		p_vitriy[i] = y[i];
 	}
-	SDL_Color textColor[10];
-	SDL_Color Color[2] = { {0,0,0},{255,0,0} };
-	SDL_Surface* textSurface[10];
-	SDL_Texture* textTexture[10];
-	SDL_Rect dstRect[10];
 	for (int i = 0; i < So_luong; i++) {
 		textColor[i] = Color[0];
 
 		textSurface[i] = TTF_RenderText_Solid(font, DANH_SACH[i].c_str(), textColor[i]);
 		textTexture[i] = SDL_CreateTextureFromSurface(des, textSurface[i]);
-		dstRect[i].x = p_vitrix[i]; dstRect[i].y = p_vitriy[i]; dstRect[i].w = textSurface[i]->w; dstRect[i].h = textSurface[i]->h;
+		dstRect[i].x = p_vitrix[i]; dstRect[i].y = p_vitriy[i];
+		dstRect[i].w = textSurface[i]->w; dstRect[i].h = textSurface[i]->h;
 	}
 	SDL_Event m_even;
 	while (true) {
@@ -50,6 +48,12 @@ int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font, std::string DANH_SAC
 				y_m = m_even.motion.y;
 				for (int i = 0; i < So_luong; i++) {
 					if (SDLCommonFunc::Checkvitri(x_m, y_m, dstRect[i])) {
+						for (int j = 0; j < So_luong; j++) {
+							SDL_DestroyTexture(textTexture[j]);
+							textTexture[j] = NULL;
+							SDL_FreeSurface(textSurface[j]);
+							textSurface[j] = NULL;
+						}
 						return i;
 					}
 				}

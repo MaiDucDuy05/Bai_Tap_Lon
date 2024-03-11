@@ -22,9 +22,6 @@ void GameMap::LoadMap(char* name){
 	game_map.max_x=(game_map.max_x+1)*TILE_SIZE;
 	game_map.max_y=(game_map.max_y+1)*TILE_SIZE;
 
-	game_map.start_x=0;
-	game_map.start_y=0;
-
 	game_map.file_name=name;
 	fclose(fp);
 }
@@ -45,16 +42,14 @@ void GameMap::DrawMap(SDL_Renderer* screen){
 	int x1=0;int x2=0;int y1=0;int y2=0;
 	int map_x=0;int map_y=0;
 
-	map_x=game_map.start_x/TILE_SIZE;
-	x1=(game_map.start_x%TILE_SIZE)*-1;
+	x1 = 0;
 	x2=x1+ SCREEN_WIDTH +(x1==0 ? 0: TILE_SIZE);
 	
-	map_y=game_map.start_y/TILE_SIZE;
-	y1=(game_map.start_y%TILE_SIZE)*-1;
+	y1 = 0;
 	y2=y1+ SCREEN_HEIGHT+ (y1==0? 0: TILE_SIZE);
 
 	 for(int i=y1;i<y2;i+=TILE_SIZE){
-		map_x=game_map.start_x/TILE_SIZE;
+		map_x = 0;
 		 for(int j=x1;j<x2;j+=TILE_SIZE){
 			 int val=game_map.tile[map_y][map_x];
 			 if(val>0){

@@ -10,7 +10,7 @@ Main_P2_Object::Main_P2_Object(){
 	y_val=0;
 	width_frame_=0;
 	height_frame=0;
-	status=0;
+	status=1;
 	input_type.down=0;input_type.jump=0;
 	input_type.left=0;input_type.right=0;input_type.up=0;
 	input_type.bullet_Skill_U=0; input_type.bullet_Skill_J=0;
@@ -287,7 +287,6 @@ void Main_P2_Object:: Doplayer(Map &map_data){
 		input_type.jump=0;
 	}
 	Check_map(map_data);
-	//CenterEntityOnMap(map_data);
 }
 void Main_P2_Object:: Check_map(Map &map_data){
 	int x1=0;
@@ -354,24 +353,9 @@ void Main_P2_Object:: Check_map(Map &map_data){
 		x_pos= map_data.max_x-width_frame_-1;
 	}
 
-	// kiem tra roi xuong vuc tham 
-	if(y_pos >= map_data.max_y - TILE_SIZE/2){
-	y_pos=0;
-	x_pos-=256;
-	if(x_pos<0) x_pos =0;
-	}
-}
-void Main_P2_Object::CenterEntityOnMap(Map& map_data){
-	map_data.start_x = x_pos -(SCREEN_WIDTH/2);
-	if(map_data.start_x < 0) map_data.start_x=0;
-	else if(map_data.start_x + SCREEN_WIDTH>=map_data.max_x){
-		map_data.start_x=map_data.max_x - SCREEN_WIDTH;
-	}
-
-	map_data.start_y = y_pos -(SCREEN_HEIGHT/2);
-	if(map_data.start_y < 0) map_data.start_y=0;
-	else if(map_data.start_y + SCREEN_HEIGHT>=map_data.max_y){
-		map_data.start_y=map_data.max_y - SCREEN_HEIGHT;
+	if(y_pos >= map_data.max_y ){
+		y_pos = map_data.max_y;
+		on_ground = true;
 	}
 }
 void Main_P2_Object::Remove_Bullet(const int& idx) {
