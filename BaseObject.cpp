@@ -32,7 +32,7 @@ void BaseObject::Free(){
 	if(p_object!=NULL){
 		SDL_DestroyTexture(p_object);
 		p_object=NULL;
-		rect.w=0;
-		rect.h=0;
+		//rect.w=0;
+		//rect.h=0;
 	}
 }

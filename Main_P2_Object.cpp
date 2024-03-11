@@ -17,6 +17,7 @@ Main_P2_Object::Main_P2_Object(){
 	input_type.defend=0;input_type.bullet_Skill_I=0;
 	input_type.speed_up=0;input_type.hurt=0;
 	on_ground = false; blood_main = 500; ki_main = 1499;
+	input_type.empty = 1;
 	map_x=0;map_y=0;
 }
 Main_P2_Object::~Main_P2_Object(){
@@ -75,6 +76,7 @@ void Main_P2_Object::Set_clip(){
 }
 
 void Main_P2_Object::Show(SDL_Renderer *des){
+	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
 			LoadImag("img//Sieunhan(die)Right.png",des);
@@ -91,8 +93,11 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 		else if(input_type.bullet_Skill_I==1){
 			LoadImag("img//Sieunhan(I)Left.png",des);
 		}
-		else {
+		else if(input_type.left == 1 ) {
 		LoadImag("img//SieunhanLeft.png",des);
+		}
+		else {
+			input_type.empty = 1;
 		}
 	}
 	else if(status==WALK_RIGHT ){
@@ -111,8 +116,11 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 		else if(input_type.bullet_Skill_I==1){
 			LoadImag("img//Sieunhan(I)Right.png",des);
 		}
-		else{
-		LoadImag("img//SieunhanRight.png",des);
+		else if(input_type.right==1 ){
+			LoadImag("img//SieunhanRight.png",des);
+		}
+		else {
+			input_type.empty = 1;
 		}
 	}
 	if(input_type.left==1||input_type.right==1||input_type.speed_up==1||input_type.bullet_Skill_U==1||

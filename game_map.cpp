@@ -61,3 +61,8 @@ void GameMap::DrawMap(SDL_Renderer* screen){
 		 map_y++;
 	 }
 }
+void GameMap::clear_tile_map() {
+	for (int i = 0; i < MAX_TILE; i++) {
+		tile_mat[i].Free();
+	}
+}

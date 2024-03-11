@@ -109,6 +109,17 @@ void close(){
 	SDL_Quit();
 }
 int Play() {
+	bool ret_b;
+	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
+	ret_b= sieunhanr.LoadImag("img//Sieunhan(r).png",g_screen);
+	if (ret_b == false) return 1;
+	ret_b=sieunhanl.LoadImag("img//Sieunhan(l).png", g_screen);
+	if (ret_b == false) return 1;
+	ret_b = suppermenr.LoadImag("img//Suppermen(r).png", g_screen);
+	if (ret_b == false) return 1;
+	ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
+	if (ret_b == false) return 1;
+
 	// Show menu game------------------------------------------
 	menu_screen.LoadImag("img//Menu.png", g_screen);
 
@@ -150,6 +161,7 @@ int Play() {
 	bool is_quit = false;
 	while (!is_quit) {
 		fps_time.start();
+		//-----------------------------------------------------------------------------------
 		while (SDL_PollEvent(&g_event) != 0) {
 			if (g_event.type == SDL_QUIT) {
 				is_quit = true; break;
@@ -157,10 +169,27 @@ int Play() {
 			p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
 			P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
 		}
+
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
 		SDL_RenderClear(g_screen);
 		g_background.Render(g_screen, NULL);
-
+		// ve nhan vat-----------------------------------------------------
+		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
+			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			suppermenl.Render(g_screen);
+		}
+		else if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 1) {
+			suppermenr.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			suppermenr.Render(g_screen);
+		}
+		if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
+			sieunhanl.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			sieunhanl.Render(g_screen);
+		}
+		else if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 1) {
+			sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			sieunhanr.Render(g_screen);
+		}
 		Map map_data = game_map.getMap();
 		//--------------------------------------------------
 		// nhan vat 1
@@ -191,7 +220,6 @@ int Play() {
 			p_player.Buller_move_U(map_data, ret_P1_x);
 		}
 
-
 		//--------------------------------------------------
 		// nhan vat 2
 		P2_Player.Doplayer(map_data);
@@ -218,6 +246,7 @@ int Play() {
 		//--------------------------------------------------
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
+		
 		//--------------------------------------------------------------SU LY VA CHAM-------------------------------------------
 		SDL_Rect P1_Rect = p_player.GetRect();
 		P1_Rect.w /= 8;
@@ -309,7 +338,7 @@ int Play() {
 			p_player.Setinput_hurt(1);
 
 		}
-
+		
 		//--------------------------------------------------------------------------------------
 
 			// Su ly game over----------------------------------------------
@@ -345,6 +374,7 @@ int Play() {
 		//------------------------------------------------------------------
 // Ve mau // ki cho nhan vat P1
 		// ve mau
+		
 		GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main(), 20);
 		ColorData color_data1(37, 121, 28);
 		Geometric::RenderRecttangle(rectangle_size1, color_data1, g_screen);
@@ -367,7 +397,7 @@ int Play() {
 
 		//Ve mau // ki cho nhan vat P2
 				// ve mau 
-
+		
 		GeometricFormat rectangle_size2(SCREEN_WIDTH / 2 + 100, 20, P2_Player.Get_blood_main(), 20);
 		ColorData color_data2(37, 121, 28);
 		Geometric::RenderRecttangle(rectangle_size2, color_data2, g_screen);
@@ -387,23 +417,29 @@ int Play() {
 		ColorData color_ki2(0, 162, 232);
 		Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
 		//------------------------------------------------------------------------------------
+		
 		//SU ly thoi gian
-		/*std::string str_time = "Time : ";
+		std::string str_time = "Time : ";
 		Uint32 time_val = SDL_GetTicks() / 1000;
 		std::string str_val = std::to_string(time_val);
 		str_time += str_val;
 
-		SDL_Color textColor = { 0, 0, 0 };
+		SDL_Color textColor = { 217, 65, 38 };
 
 		SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, str_time.c_str(), textColor);
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
 		SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 70, 20, textSurface->w, textSurface->h };
 		SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-		*/
+		
 		//-------------------------------------------------------------------------------------
 
-
 		SDL_RenderPresent(g_screen);
+		SDL_RenderClear(g_screen);
+		// huy cac con tro tranh tran bo nho --------------------------
+		p_player.Free();
+		P2_Player.Free();
+		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(textTexture);
 
 		int real_imp_time = fps_time.get_ticks();
 		int time_one_frame = 1000 / FRAME_PER_SECOND;
@@ -411,6 +447,7 @@ int Play() {
 			int delay_time = time_one_frame - real_imp_time;
 			if (delay_time >= 0) SDL_Delay(delay_time);
 		}
+		
 	}
 	return 1;
 

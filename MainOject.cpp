@@ -73,6 +73,7 @@ void MainObject::Set_clip(){
 	}
 }
 void MainObject::Show(SDL_Renderer *des){
+	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
 			LoadImag("img//Suppermen(die)Right.png",des);
@@ -88,8 +89,11 @@ void MainObject::Show(SDL_Renderer *des){
 			LoadImag("img//Suppermen(U)Left.png",des);
 			
 		}
-		else {
+		else if(input_type.left == 1) {
 		LoadImag("img//Suppermenleft.png",des);
+		}
+		else {
+			input_type.empty = 1;
 		}
 	}
 	else if(status==WALK_RIGHT ){
@@ -107,8 +111,11 @@ void MainObject::Show(SDL_Renderer *des){
 			LoadImag("img//Suppermen(U)Right.png",des);
 			
 		}
-		else{
-		LoadImag("img//Suppermenright.png",des);
+		else if(input_type.right == 1){
+			LoadImag("img//Suppermenright.png",des);
+		}
+		else {
+			input_type.empty = 1;
 		}
 	}
 	if(Move_U){

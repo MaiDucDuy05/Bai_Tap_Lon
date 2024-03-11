@@ -63,6 +63,12 @@ int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DAN
 			}
 			SDL_RenderPresent(des);
 		}
+		for (int j = 0; j < So_luong; j++) {
+			SDL_DestroyTexture(textTexture[j]);
+			textTexture[j] = NULL;
+			SDL_FreeSurface(textSurface[j]);
+			textSurface[j] = NULL;
+		}
 	}
 	return 1;
 }

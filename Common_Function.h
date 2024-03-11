@@ -50,6 +50,7 @@ typedef struct Input{
 	int speed_up;
 	int bullet_Skill_U ;// SKILL U
 	int bullet_Skill_J; //SKILL j
+	int empty;
 };
 
 typedef struct Map

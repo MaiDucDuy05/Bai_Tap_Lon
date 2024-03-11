@@ -60,6 +60,9 @@ public:
 	void Set_ki_main(int x) {
 		ki_main = x;
 	}
+	int get_status() {
+		return status;
+	}
 
 private:
 	//

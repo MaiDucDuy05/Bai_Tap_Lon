@@ -21,6 +21,7 @@ public:
 
 	Map getMap() const { return game_map;}
 	void SetMap(Map &map_data){ game_map=map_data;}
+	void clear_tile_map();
 
 private:
 	Map game_map;
