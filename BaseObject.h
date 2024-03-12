@@ -14,6 +14,12 @@ public:
 	virtual bool LoadImag(std::string path,SDL_Renderer* screen);
 	void Render(SDL_Renderer * des, const SDL_Rect *clip=NULL);
 	void Free();
+	SDL_Texture* get_p_object() {
+		return p_object;
+	}
+	void set_p_object(SDL_Texture *p) {
+		p_object = p;
+	}
 protected:
 	SDL_Texture * p_object;
 	SDL_Rect rect;

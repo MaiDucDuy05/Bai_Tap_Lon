@@ -63,7 +63,7 @@ public:
 	int get_status() {
 		return status;
 	}
-
+	void ktImage(SDL_Renderer* des);
 private:
 	//
 	float x_val;
@@ -91,6 +91,7 @@ private:
 	
 	int blood_main;
 	int ki_main;
+	BaseObject P_Image[12];
 };
 
 #endif

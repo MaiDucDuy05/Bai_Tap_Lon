@@ -31,66 +31,57 @@ bool MainObject::LoadImag(std::string path,SDL_Renderer* screen){
 }
 void MainObject::Set_clip(){
 	if(width_frame_>0&&height_frame>0){
-		frame_clip[0].x=0;
-		frame_clip[0].y=0;
-		frame_clip[0].h=height_frame;
-		frame_clip[0].w=width_frame_;
-
-		frame_clip[1].x=1*width_frame_;
-		frame_clip[1].y=0;
-		frame_clip[1].h=height_frame;
-		frame_clip[1].w=width_frame_;
-
-		frame_clip[2].x=2*width_frame_;
-		frame_clip[2].y=0;
-		frame_clip[2].h=height_frame;
-		frame_clip[2].w=width_frame_;
-
-		frame_clip[3].x=3*width_frame_;
-		frame_clip[3].y=0;
-		frame_clip[3].h=height_frame;
-		frame_clip[3].w=width_frame_;
-
-		frame_clip[4].x=4*width_frame_;
-		frame_clip[4].y=0;
-		frame_clip[4].h=height_frame;
-		frame_clip[4].w=width_frame_;
-
-		frame_clip[5].x=5*width_frame_;
-		frame_clip[5].y=0;
-		frame_clip[5].h=height_frame;
-		frame_clip[5].w=width_frame_;
-
-		frame_clip[6].x=6*width_frame_;
-		frame_clip[6].y=0;
-		frame_clip[6].h=height_frame;
-		frame_clip[6].w=width_frame_;
-
-		frame_clip[7].x=7*width_frame_;
-		frame_clip[7].y=0;
-		frame_clip[7].h=height_frame;
-		frame_clip[7].w=width_frame_;
+		for (int i = 0; i <= 7; i++) {
+			frame_clip[i].x = i * width_frame_;
+			frame_clip[i].y = 0;
+			frame_clip[i].h = height_frame;
+			frame_clip[i].w = width_frame_;
+		}
 	}
 }
+void MainObject::ktImage(SDL_Renderer* des) {
+	P_Image[0].LoadImag("img//Suppermen(die)Right.png", des);
+	P_Image[1].LoadImag("img//Suppermen(I)left.png", des);
+	P_Image[2].LoadImag("img//SuppermenTocbienLeft.png", des);
+	P_Image[3].LoadImag("img//Suppermen(U)Left.png", des);
+	P_Image[4].LoadImag("img//Suppermenleft.png", des);
+
+	P_Image[5].LoadImag("img//Suppermen(die)Left.png", des);
+	P_Image[6].LoadImag("img//Suppermen(I)right.png", des);
+	P_Image[7].LoadImag("img//SuppermenTocbienRight.png", des);
+	P_Image[8].LoadImag("img//Suppermen(U)Right.png", des);
+	P_Image[9].LoadImag("img//Suppermenright.png", des);
+
+	Bullet_Skill_U[0].LoadImag("img//Sunglon.png", des);
+	Bullet_Skill_U[1].LoadImag("img//Danroi.png", des);
+	Bullet_BigSize.LoadImag("img//DanbanLeft.png", des);
+	Bullet_BigSize.LoadImag("img//DanbanRight.png", des);
+
+
+}
 void MainObject::Show(SDL_Renderer *des){
+	int i = -1;
 	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
-			LoadImag("img//Suppermen(die)Right.png",des);
+			//LoadImag("img//Suppermen(die)Right.png",des);
+			i = 0;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			LoadImag("img//Suppermen(I)left.png",des);
-			input_type.bullet_Skill_I==0;
+			//LoadImag("img//Suppermen(I)left.png",des);
+			i = 1;
 		}
 		else if(input_type.speed_up==1){
-			LoadImag("img//SuppermenTocbienLeft.png",des);
+			//LoadImag("img//SuppermenTocbienLeft.png",des);
+			i = 2;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			LoadImag("img//Suppermen(U)Left.png",des);
-			
+			//LoadImag("img//Suppermen(U)Left.png",des);
+			i = 3;
 		}
 		else if(input_type.left == 1) {
-		LoadImag("img//Suppermenleft.png",des);
+			//LoadImag("img//Suppermenleft.png",des);
+			i = 4;
 		}
 		else {
 			input_type.empty = 1;
@@ -98,30 +89,33 @@ void MainObject::Show(SDL_Renderer *des){
 	}
 	else if(status==WALK_RIGHT ){
 		if(input_type.hurt==1){
-			LoadImag("img//Suppermen(die)Left.png",des);
+			//LoadImag("img//Suppermen(die)Left.png",des);
+			i = 5;
+
 		}
 		else if(input_type.bullet_Skill_I==1){
-			LoadImag("img//Suppermen(I)right.png",des);
-			input_type.bullet_Skill_I==0;
+			//LoadImag("img//Suppermen(I)right.png",des);
+			i = 6;
+			
 		}
 		else if(input_type.speed_up==1){
-			LoadImag("img//SuppermenTocbienRight.png",des);
+			//LoadImag("img//SuppermenTocbienRight.png",des);
+			i = 7;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			LoadImag("img//Suppermen(U)Right.png",des);
+			//LoadImag("img//Suppermen(U)Right.png",des);
+			i = 8;
 			
 		}
 		else if(input_type.right == 1){
-			LoadImag("img//Suppermenright.png",des);
+			//LoadImag("img//Suppermenright.png",des);
+			i = 9;
 		}
 		else {
 			input_type.empty = 1;
 		}
 	}
-	if(Move_U){
-		Bullet_Skill_U[1].LoadImag("img//Danroi.png",des);
-	}
-	else{
+	if(!Move_U){
 		Bullet_Skill_U[1].SetRect(-200,-200);
 	}
 	if(input_type.left==1||input_type.right==1||input_type.bullet_Skill_I==1
@@ -136,18 +130,20 @@ void MainObject::Show(SDL_Renderer *des){
 	
 	rect.x=x_pos-map_x;
 	rect.y=y_pos-map_y;
-	
-	if(input_type.bullet_Skill_U==0){
-	SDL_Rect* current_clip = &frame_clip[frame];
+	if (i >= 0) {
+		if (input_type.bullet_Skill_U == 0) {
+			SDL_Rect* current_clip = &frame_clip[frame];
 
-	SDL_Rect renderQuad ={rect.x,rect.y,width_frame_,height_frame};
+			SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
 
-	SDL_RenderCopy(des,p_object,current_clip,&renderQuad);
+			SDL_RenderCopy(des,/*p_object*/P_Image[i].get_p_object(), current_clip, &renderQuad);
+		}
+		else {
+			SDL_Rect renderQuad = { rect.x,rect.y,60,95 };
+			SDL_RenderCopy(des,/*p_object*/P_Image[i].get_p_object(), NULL, &renderQuad);
+		}
 	}
-	else{
-		SDL_Rect renderQuad ={rect.x,rect.y,60,95};
-		SDL_RenderCopy(des,p_object,NULL,&renderQuad);
-	}
+	SDL_DestroyTexture(get_p_object());
 }
 void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chunk*g_sound){
 	if(events.type==SDL_KEYDOWN){
@@ -170,11 +166,11 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 				if (ki_main >= 500&&input_type.bullet_Skill_I==0) {
 					input_type.bullet_Skill_I = 1;
 					if (status == WALK_LEFT) {
-						Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
+						//Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
 						Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
 					}
 					else {
-						Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
+						//Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
 						Bullet_BigSize.SetRect(this->rect.x + width_frame_, this->rect.y - 50);
 					}
 				}
@@ -184,7 +180,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 				if (Move_U == false) {
 					input_type.bullet_Skill_U = 1; Move_U = true;
 				}
-				Bullet_Skill_U[0].LoadImag("img//Sunglon.png", screen);
+				//Bullet_Skill_U[0].LoadImag("img//Sunglon.png", screen);
 				Bullet_Skill_U[0].SetRect(this->rect.x - width_frame_, this->rect.y - Bullet_Skill_U[0].GetRect().h - 20);
 			}
 				break;

@@ -4,8 +4,8 @@
 
 Main_P2_Object::Main_P2_Object(){
 	frame =0 ;
-	x_pos=SCREEN_WIDTH-100;
-	y_pos=0;
+	x_pos = SCREEN_WIDTH - 100; rect.x = SCREEN_WIDTH - 100;
+	y_pos = 0; rect.y = 0;
 	x_val=0;
 	y_val=0;
 	width_frame_=0;
@@ -32,92 +32,93 @@ bool Main_P2_Object::LoadImag(std::string path,SDL_Renderer* screen){
 	return ret;
 }
 void Main_P2_Object::Set_clip(){
-	if(width_frame_>0&&height_frame>0){
-		frame_clip[0].x=0;
-		frame_clip[0].y=0;
-		frame_clip[0].h=height_frame;
-		frame_clip[0].w=width_frame_;
-
-		frame_clip[1].x=1*width_frame_;
-		frame_clip[1].y=0;
-		frame_clip[1].h=height_frame;
-		frame_clip[1].w=width_frame_;
-
-		frame_clip[2].x=2*width_frame_;
-		frame_clip[2].y=0;
-		frame_clip[2].h=height_frame;
-		frame_clip[2].w=width_frame_;
-
-		frame_clip[3].x=3*width_frame_;
-		frame_clip[3].y=0;
-		frame_clip[3].h=height_frame;
-		frame_clip[3].w=width_frame_;
-
-		frame_clip[4].x=4*width_frame_;
-		frame_clip[4].y=0;
-		frame_clip[4].h=height_frame;
-		frame_clip[4].w=width_frame_;
-
-		frame_clip[5].x=5*width_frame_;
-		frame_clip[5].y=0;
-		frame_clip[5].h=height_frame;
-		frame_clip[5].w=width_frame_;
-
-		frame_clip[6].x=6*width_frame_;
-		frame_clip[6].y=0;
-		frame_clip[6].h=height_frame;
-		frame_clip[6].w=width_frame_;
-
-		frame_clip[7].x=7*width_frame_;
-		frame_clip[7].y=0;
-		frame_clip[7].h=height_frame;
-		frame_clip[7].w=width_frame_;
+	if (width_frame_ > 0 && height_frame > 0) {
+		for (int i = 0; i <= 7; i++) {
+			frame_clip[i].x = i * width_frame_;
+			frame_clip[i].y = 0;
+			frame_clip[i].h = height_frame;
+			frame_clip[i].w = width_frame_;
+		}
 	}
+}
+void Main_P2_Object::ktImage(SDL_Renderer* des) {
+	LoadImag("img//SieunhanLeft.png", des);
+	SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
+	SDL_RenderCopy(des, p_object, &frame_clip[0], &renderQuad);
+
+	P_Image[0].LoadImag("img//Sieunhan(die)Right.png", des);
+	P_Image[1].LoadImag("img//SieunhantocbienLeft.png", des);
+	P_Image[2].LoadImag("img//Sieunhan(U)Left.png", des);
+	P_Image[3].LoadImag("img//Sieunhan(J)Left.png", des);
+	P_Image[4].LoadImag("img//Sieunhan(I)Left.png", des);
+	P_Image[5].LoadImag("img//SieunhanLeft.png", des);
+
+
+	P_Image[6].LoadImag("img//Sieunhan(die)Left.png", des);
+	P_Image[7].LoadImag("img//SieunhantocbienRight.png", des);
+	P_Image[8].LoadImag("img//Sieunhan(U)Right.png", des);
+	P_Image[9].LoadImag("img//Sieunhan(J)Right.png", des);
+	P_Image[10].LoadImag("img//Sieunhan(I)Right.png", des);
+	P_Image[11].LoadImag("img//SieunhanRight.png", des);
+
 }
 
 void Main_P2_Object::Show(SDL_Renderer *des){
+	int i = -1;
 	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
-			LoadImag("img//Sieunhan(die)Right.png",des);
+			//LoadImag("img//Sieunhan(die)Right.png",des);
+			i = 0;
 		}
 		else if(input_type.speed_up==1){
-			LoadImag("img//SieunhantocbienLeft.png",des);
+			//LoadImag("img//SieunhantocbienLeft.png",des);
+			i = 1;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			LoadImag("img//Sieunhan(U)Left.png",des);
+			//LoadImag("img//Sieunhan(U)Left.png",des);
+			i = 2;
 		}
 		else if(input_type.bullet_Skill_J==1){
-			LoadImag("img//Sieunhan(J)Left.png",des);
+			//LoadImag("img//Sieunhan(J)Left.png",des);
+			i = 3;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			LoadImag("img//Sieunhan(I)Left.png",des);
+			//LoadImag("img//Sieunhan(I)Left.png",des);
+			i = 4;
 		}
 		else if(input_type.left == 1 ) {
-		LoadImag("img//SieunhanLeft.png",des);
+			//LoadImag("img//SieunhanLeft.png",des);
+			i = 5;
 		}
-		else {
+		else{
 			input_type.empty = 1;
 		}
 	}
 	else if(status==WALK_RIGHT ){
 		if(input_type.hurt==1){
-			LoadImag("img//Sieunhan(die)Left.png",des);
+			//LoadImag("img//Sieunhan(die)Left.png",des);
+			i = 6;
 		}
 		else if(input_type.speed_up==1){
-			LoadImag("img//SieunhantocbienRight.png",des);
+			//LoadImag("img//SieunhantocbienRight.png",des);
+			i = 7;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			LoadImag("img//Sieunhan(U)Right.png",des);
+			//LoadImag("img//Sieunhan(U)Right.png",des);
+			i = 8;
 		}
 		else if(input_type.bullet_Skill_J==1){
-			LoadImag("img//Sieunhan(J)Right.png",des);
+			//LoadImag("img//Sieunhan(J)Right.png",des);
+			i = 9;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			LoadImag("img//Sieunhan(I)Right.png",des);
+			//LoadImag("img//Sieunhan(I)Right.png",des);
+			i = 10;
 		}
 		else if(input_type.right==1 ){
-			LoadImag("img//SieunhanRight.png",des);
+			//LoadImag("img//SieunhanRight.png",des);
+			i = 11;
 		}
 		else {
 			input_type.empty = 1;
@@ -132,16 +133,20 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 	}
 	else frame=0;
 	if(frame>=8) frame=0;
-	
-	if(input_type.bullet_Skill_U==0){
-	rect.x=x_pos-map_x;
-	rect.y=y_pos-map_y;
+	if (i >= 0) {
+		if (input_type.bullet_Skill_U == 0) {
+			rect.x = x_pos - map_x;
+			rect.y = y_pos - map_y;
+		}
+		SDL_Rect* current_clip = &frame_clip[frame];
+
+		SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
+		SDL_RenderCopy(des, /*p_object*/P_Image[i].get_p_object(), current_clip, &renderQuad);
 	}
-	SDL_Rect* current_clip = &frame_clip[frame];
-
-		SDL_Rect renderQuad ={rect.x,rect.y,width_frame_,height_frame};
-		SDL_RenderCopy(des,p_object,current_clip,&renderQuad);
-
+	else {
+		rect.x = x_pos - map_x;
+		rect.y = y_pos - map_y;
+	}
 }
 
 void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chunk*g_sound){

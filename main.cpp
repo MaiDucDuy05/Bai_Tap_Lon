@@ -151,12 +151,14 @@ int Play() {
 	MainObject p_player;
 	p_player.LoadImag("img//Suppermenright.png", g_screen);
 	p_player.Set_clip();
+	p_player.ktImage(g_screen);
 
 							//Khoi tao nhan vat 2
 	Main_P2_Object P2_Player;
 	P2_Player.LoadImag("img//SieunhanLeft.png", g_screen);
 	P2_Player.Set_clip();
 	int ret_P1_x = 0;
+	P2_Player.ktImage(g_screen);
 								// vong lap while
 	bool is_quit = false;
 	while (!is_quit) {
@@ -184,12 +186,15 @@ int Play() {
 		}
 		if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
 			sieunhanl.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			if (P2_Player.Get_Input_type().defend == 0)
 			sieunhanl.Render(g_screen);
 		}
 		else if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 1) {
 			sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			if (P2_Player.Get_Input_type().defend == 0)
 			sieunhanr.Render(g_screen);
 		}
+		
 		Map map_data = game_map.getMap();
 		//--------------------------------------------------
 		// nhan vat 1
