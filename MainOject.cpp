@@ -64,23 +64,18 @@ void MainObject::Show(SDL_Renderer *des){
 	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
-			//LoadImag("img//Suppermen(die)Right.png",des);
 			i = 0;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			//LoadImag("img//Suppermen(I)left.png",des);
 			i = 1;
 		}
 		else if(input_type.speed_up==1){
-			//LoadImag("img//SuppermenTocbienLeft.png",des);
 			i = 2;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			//LoadImag("img//Suppermen(U)Left.png",des);
 			i = 3;
 		}
 		else if(input_type.left == 1) {
-			//LoadImag("img//Suppermenleft.png",des);
 			i = 4;
 		}
 		else {
@@ -89,26 +84,20 @@ void MainObject::Show(SDL_Renderer *des){
 	}
 	else if(status==WALK_RIGHT ){
 		if(input_type.hurt==1){
-			//LoadImag("img//Suppermen(die)Left.png",des);
 			i = 5;
 
 		}
 		else if(input_type.bullet_Skill_I==1){
-			//LoadImag("img//Suppermen(I)right.png",des);
 			i = 6;
 			
 		}
 		else if(input_type.speed_up==1){
-			//LoadImag("img//SuppermenTocbienRight.png",des);
 			i = 7;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			//LoadImag("img//Suppermen(U)Right.png",des);
-			i = 8;
-			
+			i = 8;	
 		}
 		else if(input_type.right == 1){
-			//LoadImag("img//Suppermenright.png",des);
 			i = 9;
 		}
 		else {
@@ -136,11 +125,11 @@ void MainObject::Show(SDL_Renderer *des){
 
 			SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
 
-			SDL_RenderCopy(des,/*p_object*/P_Image[i].get_p_object(), current_clip, &renderQuad);
+			SDL_RenderCopy(des,P_Image[i].get_p_object(), current_clip, &renderQuad);
 		}
 		else {
 			SDL_Rect renderQuad = { rect.x,rect.y,60,95 };
-			SDL_RenderCopy(des,/*p_object*/P_Image[i].get_p_object(), NULL, &renderQuad);
+			SDL_RenderCopy(des,P_Image[i].get_p_object(), NULL, &renderQuad);
 		}
 	}
 	SDL_DestroyTexture(get_p_object());
