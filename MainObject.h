@@ -115,7 +115,7 @@ private:
 	int blood_main;
 	int ki_main;
 
-	BaseObject P_Image[10];
+	BaseObject P_Image[12];
 };
 
 

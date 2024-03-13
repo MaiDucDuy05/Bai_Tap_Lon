@@ -68,27 +68,21 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
-			//LoadImag("img//Sieunhan(die)Right.png",des);
 			i = 0;
 		}
 		else if(input_type.speed_up==1){
-			//LoadImag("img//SieunhantocbienLeft.png",des);
 			i = 1;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			//LoadImag("img//Sieunhan(U)Left.png",des);
 			i = 2;
 		}
 		else if(input_type.bullet_Skill_J==1){
-			//LoadImag("img//Sieunhan(J)Left.png",des);
 			i = 3;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			//LoadImag("img//Sieunhan(I)Left.png",des);
 			i = 4;
 		}
 		else if(input_type.left == 1 ) {
-			//LoadImag("img//SieunhanLeft.png",des);
 			i = 5;
 		}
 		else{
@@ -97,27 +91,21 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 	}
 	else if(status==WALK_RIGHT ){
 		if(input_type.hurt==1){
-			//LoadImag("img//Sieunhan(die)Left.png",des);
 			i = 6;
 		}
 		else if(input_type.speed_up==1){
-			//LoadImag("img//SieunhantocbienRight.png",des);
 			i = 7;
 		}
 		else if(input_type.bullet_Skill_U==1){
-			//LoadImag("img//Sieunhan(U)Right.png",des);
 			i = 8;
 		}
 		else if(input_type.bullet_Skill_J==1){
-			//LoadImag("img//Sieunhan(J)Right.png",des);
 			i = 9;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			//LoadImag("img//Sieunhan(I)Right.png",des);
 			i = 10;
 		}
 		else if(input_type.right==1 ){
-			//LoadImag("img//SieunhanRight.png",des);
 			i = 11;
 		}
 		else {
@@ -141,7 +129,7 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 		SDL_Rect* current_clip = &frame_clip[frame];
 
 		SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
-		SDL_RenderCopy(des, /*p_object*/P_Image[i].get_p_object(), current_clip, &renderQuad);
+		SDL_RenderCopy(des,P_Image[i].get_p_object(), current_clip, &renderQuad);
 	}
 	else {
 		rect.x = x_pos - map_x;
@@ -169,14 +157,14 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 		case SDLK_DOWN:
 			if(on_ground&&ki_main>=100){
 			input_type.defend=1;
-			if(status==WALK_LEFT){
-			p_object_defend.LoadImag("img//SuppermenphongthuLeft.png",screen);
+			/*if (status == WALK_LEFT) {
+			p_object_defend.LoadImag("img//SuppermenphongthuLeft.png", screen);
 			p_object_defend.SetRect(this->rect.x, this->rect.y );
 			}
 			else{
 			p_object_defend.LoadImag("img//SuppermenphongthuRight.png",screen);
 			p_object_defend.SetRect(this->rect.x, this->rect.y );
-			}
+			}*/
 			}
 			break;
 		case SDLK_KP_2:

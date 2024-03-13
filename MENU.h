@@ -15,6 +15,6 @@ private:
 	SDL_Texture* textTexture[10];
 	SDL_Rect dstRect[10];
 public:
-	int ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DANH_SACH[],const int So_luong,const int x[],const int y[]);
+	int ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DANH_SACH[],const int So_luong,const int x[],const int y[],Mix_Chunk*);
 };
 #endif

@@ -15,6 +15,7 @@ BaseObject menu_screen;
 MenuObject p_menu;
 ImpTimer fps_time;
 GameMap game_map;
+Uint32 time_val_start;
 
 bool InitData(){
 	bool success= true;
@@ -48,6 +49,7 @@ bool InitData(){
 		g_sound_main_P2[1]=Mix_LoadWAV("music//Kiem(U).wav");
 		g_sound_main_P2[2]=Mix_LoadWAV("music//Kiem(I).wav");
 		g_nhacnen[0]=Mix_LoadWAV("music//Tiengtho.wav");
+		g_nhacnen[1] = Mix_LoadWAV("music//nhacdao.wav");
 		if(g_nhacnen[0]==NULL) success = false;
 		for(int i=0;i<3;i++){
 			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL) success=false;
@@ -129,7 +131,7 @@ int Play() {
 	int kt = -1;
 	do {
 		menu_screen.Render(g_screen);
-		kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu);
+		kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu,g_nhacnen[1]);
 	} while (kt == -1);
 	if (kt == 1) {
 		return 1;
@@ -160,8 +162,9 @@ int Play() {
 	int ret_P1_x = 0;
 	P2_Player.ktImage(g_screen);
 								// vong lap while
+	time_val_start = SDL_GetTicks() / 1000;
 	bool is_quit = false;
-	while (!is_quit) {
+	while (!is_quit) {  
 		fps_time.start();
 		//-----------------------------------------------------------------------------------
 		while (SDL_PollEvent(&g_event) != 0) {
@@ -202,6 +205,7 @@ int Play() {
 		p_player.HandleBuller(g_screen);
 		if (p_player.Get_Input_type().defend == 1) {
 			p_player.Show_Defend(g_screen);
+			p_player.Set_ki_main(p_player.Get_ki_main() - 5);
 		}
 		else {
 			p_player.Show(g_screen);
@@ -230,6 +234,7 @@ int Play() {
 		P2_Player.Doplayer(map_data);
 		P2_Player.HandleBuller(g_screen);
 		if (P2_Player.Get_Input_type().defend == 1) {
+			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 5);
 		}
 		else {
 			P2_Player.Show(g_screen);
@@ -238,7 +243,8 @@ int Play() {
 				// Am thanh  U
 				P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 10);
 				Mix_PlayChannel(-1, g_sound_main_P2[1], 0);
-				P2_Player.SetRect(p_player.GetRect().x, p_player.GetRect().y - 5);
+				SDL_Delay(200);
+				P2_Player.SetRect(p_player.GetRect().x, p_player.GetRect().y - 50);
 			}
 			else if (P2_Player.Get_Input_type().bullet_Skill_I == 1) {
 				// Am thanh I
@@ -425,7 +431,7 @@ int Play() {
 		
 		//SU ly thoi gian
 		std::string str_time = "Time : ";
-		Uint32 time_val = SDL_GetTicks() / 1000;
+		Uint32 time_val = (SDL_GetTicks() / 1000) - time_val_start;
 		std::string str_val = std::to_string(time_val);
 		str_time += str_val;
 
@@ -469,7 +475,7 @@ int main(int argc,char *argv[]){
 	do {
 		if (Play() == 1) break;
 		g_over.Render(g_screen);
-		is_continue = gover_menu.ShowMenu(g_screen, g_font_text_1, DS, 2, x_over, y_over);
+		is_continue = gover_menu.ShowMenu(g_screen, g_font_text_1, DS, 2, x_over, y_over,g_nhacnen[1]);
 		SDL_RenderPresent(g_screen);
 	} while (is_continue==0);
 	close();

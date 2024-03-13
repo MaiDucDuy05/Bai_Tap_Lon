@@ -52,6 +52,9 @@ void MainObject::ktImage(SDL_Renderer* des) {
 	P_Image[8].LoadImag("img//Suppermen(U)Right.png", des);
 	P_Image[9].LoadImag("img//Suppermenright.png", des);
 
+	P_Image[10].LoadImag("img//SuppermenphongthuLeft.png",des);
+	P_Image[11].LoadImag("img//SuppermenphongthuRight.png", des);
+
 	Bullet_Skill_U[0].LoadImag("img//Sunglon.png", des);
 	Bullet_Skill_U[1].LoadImag("img//Danroi.png", des);
 	Bullet_BigSize.LoadImag("img//DanbanLeft.png", des);
@@ -128,6 +131,7 @@ void MainObject::Show(SDL_Renderer *des){
 			SDL_RenderCopy(des,P_Image[i].get_p_object(), current_clip, &renderQuad);
 		}
 		else {
+			rect.y -= 50;
 			SDL_Rect renderQuad = { rect.x,rect.y,60,95 };
 			SDL_RenderCopy(des,P_Image[i].get_p_object(), NULL, &renderQuad);
 		}
@@ -155,11 +159,9 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 				if (ki_main >= 500&&input_type.bullet_Skill_I==0) {
 					input_type.bullet_Skill_I = 1;
 					if (status == WALK_LEFT) {
-						//Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
 						Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
 					}
 					else {
-						//Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
 						Bullet_BigSize.SetRect(this->rect.x + width_frame_, this->rect.y - 50);
 					}
 				}
@@ -169,7 +171,6 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 				if (Move_U == false) {
 					input_type.bullet_Skill_U = 1; Move_U = true;
 				}
-				//Bullet_Skill_U[0].LoadImag("img//Sunglon.png", screen);
 				Bullet_Skill_U[0].SetRect(this->rect.x - width_frame_, this->rect.y - Bullet_Skill_U[0].GetRect().h - 20);
 			}
 				break;
@@ -177,11 +178,11 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			if(on_ground&&ki_main>=100){
 			input_type.defend=1;
 			if(status==WALK_LEFT){
-			p_object_defend.LoadImag("img//SuppermenphongthuLeft.png",screen);
+			//p_object_defend.LoadImag("img//SuppermenphongthuLeft.png",screen);
 			p_object_defend.SetRect(this->rect.x, this->rect.y );
 			}
 			else{
-			p_object_defend.LoadImag("img//SuppermenphongthuRight.png",screen);
+			//p_object_defend.LoadImag("img//SuppermenphongthuRight.png",screen);
 			p_object_defend.SetRect(this->rect.x, this->rect.y );
 			}
 			}
@@ -366,7 +367,15 @@ void MainObject::Show_Bullet_Size(SDL_Renderer * screen){
 	Bullet_BigSize.Render(screen);
 }
 void MainObject::Show_Defend(SDL_Renderer* screen){
-	p_object_defend.Render(screen);
+	if (status == WALK_LEFT) {
+		P_Image[10].SetRect(this->rect.x, this->rect.y);
+		P_Image[10].Render(screen);
+	}
+	else {
+		P_Image[11].SetRect(this->rect.x, this->rect.y);
+		P_Image[11].Render(screen);
+	}
+	//p_object_defend.Render(screen);
 }
 void MainObject::Show_Bullet_Skill_U(SDL_Renderer* screen){
 	if(input_type.bullet_Skill_U==1) Bullet_Skill_U[0].Render(screen);

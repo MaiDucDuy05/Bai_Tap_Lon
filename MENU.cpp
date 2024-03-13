@@ -1,7 +1,8 @@
 
 #include"MENU.h"
 
-int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DANH_SACH[],const int So_luong,const int x[],const int y[]) {
+int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DANH_SACH[],const int So_luong,const int x[],const int y[], Mix_Chunk* nhac) {
+	 int chanel= Mix_PlayChannel(-1, nhac, 0);
 	SDL_Color Color[2] = { {255,137,29},{255,0,0} };
 	int x_m; int y_m;
 	int p_vitrix[10];
@@ -54,6 +55,7 @@ int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DAN
 							SDL_FreeSurface(textSurface[j]);
 							textSurface[j] = NULL;
 						}
+						Mix_HaltChannel(chanel);
 						return i;
 					}
 				}
