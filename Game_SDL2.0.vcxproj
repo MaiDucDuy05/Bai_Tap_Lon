@@ -89,6 +89,7 @@
     <ClCompile Include="MainOject.cpp" />
     <ClCompile Include="Main_P2_Object.cpp" />
     <ClCompile Include="MENU.cpp" />
+    <ClCompile Include="ThreatObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="MainObject.h" />
     <ClInclude Include="Main_P2_Object.h" />
     <ClInclude Include="MENU.h" />
+    <ClInclude Include="ThreatObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

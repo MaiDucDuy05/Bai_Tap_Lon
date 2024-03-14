@@ -152,6 +152,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			input_type.right=0;
 			break;
 		case SDLK_UP:
+			if(on_ground&&input_type.speed_up==0)
 			input_type.jump=1;
 			break;
 		case SDLK_DOWN:
@@ -168,7 +169,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			}
 			break;
 		case SDLK_KP_2:
-			if(on_ground){
+			if(on_ground&&input_type.jump==0){
 				input_type.speed_up=1;
 				break;
 			}
@@ -218,12 +219,14 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			break;
 		case SDLK_UP:
 			input_type.jump=0;
+			input_type.bullet_Skill_U = 0;
 			break;
 		case SDLK_DOWN:
 			input_type.defend=0;
 			break;
 		case SDLK_KP_2:
 			input_type.speed_up=0;
+			input_type.bullet_Skill_U = 0;
 			break;
 		case SDLK_KP_4:
 			input_type.bullet_Skill_U=0;

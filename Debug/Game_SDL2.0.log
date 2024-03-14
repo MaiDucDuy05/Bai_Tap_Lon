@@ -1,37 +1,4 @@
-﻿  MainOject.cpp
+﻿  ThreatObject.cpp
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(54): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(66): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(123): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(124): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(204): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(208): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(252): warning C4305: '+=' : truncation from 'double' to 'float'
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(287): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(288): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(290): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(291): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(296): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(303): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(310): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(311): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(313): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(314): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(319): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(340): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(343): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainoject.cpp(349): warning C4018: '<' : signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  main.cpp
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(54): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(66): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warning C4005: 'GRAVITY_SPEED' : macro redefinition
-          c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(106): warning C4553: '==' : operator has no effect; did you intend '='?
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(268): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(285): warning C4018: '<' : signed/unsigned mismatch
-  Generating Code...
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(59): warning C4715: 'MainObject::Get_Bullet_Skill_U' : not all control paths return a value
   Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe
