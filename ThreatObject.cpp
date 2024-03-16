@@ -112,12 +112,12 @@ void Threat_Object::Remove_Bullet(const int& idx) {
 }
 void Threat_Object::Init_Bullet(SDL_Renderer* des) {
     BulletObject* p_bullet = new BulletObject;
-    p_bullet->LoadImag("img//bullet_man.png", des);
+    p_bullet->LoadImag("img//bullet_threat.png", des);
     p_bullet->set_is_move(true);
-    p_bullet->SetRect(this->rect.x, this->rect.y);
+    p_bullet->SetRect(this->rect.x+5, this->rect.y+20);
     if (status == 0) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
     else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-    p_bullet->set_x_val(20);
+    p_bullet->set_x_val(15);
     p_bullet_list.push_back(p_bullet);
 }
 void Threat_Object::Draw_blood(SDL_Renderer  * des) {

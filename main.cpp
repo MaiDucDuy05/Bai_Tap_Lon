@@ -136,23 +136,10 @@ int Play() {
 	ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
 	if (ret_b == false) return 1;
 
-	// Show menu game------------------------------------------
-	menu_screen.LoadImag("img//Menu.png", g_screen);
-
-	std::string p_chu[] = { "Play Game","Exit","Help" };
-	int x_menu[] = { 550,510,470 };
-	int y_menu[] = { 200,300,400 };
-	int kt = -1;
-	do {
-		menu_screen.Render(g_screen);
-		kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu,g_nhacnen[1]);
-	} while (kt == -1);
-	if (kt == 1) {
-		return 1;
-	}
-	menu_screen.Free();
+	
 	//-----------------------------------------------------------------
-						// chon map---------------------------------
+		
+	int kt;// chon map---------------------------------
 	kt = chosen_map();
 	//---------------------------------------------
 						// Load Map----------------------------------------------
@@ -257,7 +244,6 @@ int Play() {
 				// Am thanh  U
 				P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 10);
 				Mix_PlayChannel(-1, g_sound_main_P2[1], 0);
-				SDL_Delay(200);
 				P2_Player.SetRect(p_player.GetRect().x, p_player.GetRect().y - 50);
 			}
 			else if (P2_Player.Get_Input_type().bullet_Skill_I == 1) {
@@ -478,8 +464,8 @@ int Play() {
 
 }
 int AutoPlay() {
-	static int Mark_P1 = 0;
-	static int Mark_P2 = 0;
+	 int Mark_P1 = 0;
+	 int Mark_P2 = 0;
 	bool ret_b;
 	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
 	ret_b = sieunhanr.LoadImag("img//Sieunhan(r).png", g_screen);
@@ -491,21 +477,7 @@ int AutoPlay() {
 	ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
 	if (ret_b == false) return 1;
 
-	// Show menu game------------------------------------------
-	menu_screen.LoadImag("img//Menu.png", g_screen);
-
-	std::string p_chu[] = { "Play Game","Exit","Help" };
-	int x_menu[] = { 550,510,470 };
-	int y_menu[] = { 200,300,400 };
-	int kt = -1;
-	do {
-		menu_screen.Render(g_screen);
-		kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu, g_nhacnen[1]);
-	} while (kt == -1);
-	if (kt == 1) {
-		return 1;
-	}
-	menu_screen.Free();
+	int kt;
 	//-----------------------------------------------------------------
 						// chon map---------------------------------
 	kt = chosen_map();
@@ -524,13 +496,13 @@ int AutoPlay() {
 	p_player.Set_clip();
 	p_player.ktImage(g_screen);
 
-	//Khoi tao nhan vat 2
+	                   //Khoi tao nhan vat 2
 	Main_P2_Object P2_Player;
 	P2_Player.LoadImag("img//SieunhanLeft.png", g_screen);
 	P2_Player.Set_clip();
 	int ret_P1_x = 0;
 	P2_Player.ktImage(g_screen);
-	// khot tao threat
+	                    // khot tao threat
 	BaseObject p_threatr[Num_Threat], p_threatl[Num_Threat];
 	for (int i = 0; i < Num_Threat; i++) {
 		Begin_Threat(i);
@@ -606,8 +578,9 @@ int AutoPlay() {
 			}
 			Mix_PlayChannel(-1, g_sound_main_P1[1], 0);
 			p_player.Show_Bullet_Skill_U(g_screen);
-			p_player.Buller_move_U(map_data, ret_P1_x);
-		}*/
+			//p_player.Buller_move_U(map_data, ret_P1_x);
+		}
+		*/
 		
 
 		//--------------------------------------------------
@@ -640,7 +613,7 @@ int AutoPlay() {
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
 		for (int i = 0; i < Num_Threat; i++) {
-			if (i < Num_Threat / 2) {
+			if (i > Num_Threat / 2) {
 				p_threat[i].Set_goal_x(p_player.GetRect().x / TILE_SIZE);
 				p_threat[i].Set_goal_y((p_player.GetRect().y) / TILE_SIZE);
 			}
@@ -669,7 +642,7 @@ int AutoPlay() {
 		for (int im = 0; im < bullet_list2.size(); im++) {
 			BulletObject* p_amo = bullet_list2.at(im);
 			if (p_amo != NULL) {
-				for (int k = 0; k < Num_Threat;k++) {
+				for (int k = 0; k < Num_Threat; k++) {
 					bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p_threat[k].GetRect());
 					if (ret_col) {
 						p_threat[k].Set_blood(p_threat[k].Get_blood() - 10);
@@ -716,13 +689,18 @@ int AutoPlay() {
 				}
 			}
 		}
-
 			// Su ly va cham giua dan cua Threat va Main 2 va Main 1
+		SDL_Rect p1_rect = p_player.GetRect();
+		p1_rect.w /= 8;
+		SDL_Rect p2_rect = P2_Player.GetRect();
+		p2_rect.w /= 8;
 		for (int im = 0; im < Num_Threat; im++) {
 			std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
+			BulletObject* p_amo;
 			for (int k = 0; k < bullet_list.size(); k++) {
-				BulletObject* p_amo = bullet_list.at(k);
-				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(),P2_Player.GetRect());
+				p_amo = bullet_list.at(k);
+			//---------------------------------------------------
+				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(),p2_rect);
 				if (P2_Player.Get_Input_type().defend == 1 || P2_Player.Get_Input_type().bullet_Skill_I == 1) ret_col = false;
 				if (ret_col) {
 					P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 5);
@@ -732,9 +710,13 @@ int AutoPlay() {
 					p_threat[k].Remove_Bullet(im);
 					p_threat[k].Init_Bullet(g_screen);
 				}
-				
-				ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p_player.GetRect());
-				if (p_player.Get_Input_type().defend == 1) ret_col = false;
+			//----------------------------------------------------	
+				ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p1_rect);
+				if (p_player.Get_Input_type().defend == 1&&ret_col) {
+					ret_col = false;
+					p_threat[k].Remove_Bullet(im);
+					p_threat[k].Init_Bullet(g_screen);
+				}
 				if (ret_col) {
 					p_player.Set_blood_main(p_player.Get_blood_main() - 5);
 					Mix_PlayChannel(-1, g_nhacnen[0], 0);
@@ -746,6 +728,47 @@ int AutoPlay() {
 
 			}
 		}
+		// Su ly va cham giua Skill I p1 vs Threat
+		for (int tt = 0; tt < Num_Threat; tt++) {
+			bool ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_BigSize().GetRect(), p_threat[tt].GetRect());
+			if (p_player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
+			if (ret_col == true) {
+				p_threat[tt].Set_blood(p_threat[tt].Get_blood() - 30);
+				if (p_threat[tt].Get_blood() <= 0) {
+					for (int j = 0; j < p_threat[tt].get_bullet_list().size(); j++) {
+						p_threat[tt].Remove_Bullet(j);
+					}
+					p_vuno[tt].SetRect(p_threat[tt].GetRect().x, p_threat[tt].GetRect().y);
+					p_vuno[tt].Render(g_screen);
+					Mark_P1++;
+					SDL_RenderPresent(g_screen);
+					SDL_Delay(400);
+					Begin_Threat(tt);
+				}
+			}
+		}
+		// Su ly va cham Giua SKill I p2 vs Main 1
+		for (int tt = 0; tt < Num_Threat; tt++) {
+			bool ret_col = SDLCommonFunc::CheckCollision(p2_rect,p_threat[tt].GetRect());
+			if (P2_Player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
+			if (ret_col == true) {
+				p_threat[tt].Set_blood(p_threat[tt].Get_blood() - 40);
+				if (p_threat[tt].Get_blood() <= 0) {
+					for (int j = 0; j < p_threat[tt].get_bullet_list().size(); j++) {
+						p_threat[tt].Remove_Bullet(j);
+					}
+					p_vuno[tt].SetRect(p_threat[tt].GetRect().x, p_threat[tt].GetRect().y);
+					p_vuno[tt].Render(g_screen);
+					Mark_P1++;
+					SDL_RenderPresent(g_screen);
+					SDL_Delay(400);
+					Begin_Threat(tt);
+				}
+
+			}
+		}
+
+
 		//--------------------------------------------------------------------------------------
 
 			// Su ly game over----------------------------------------------
@@ -762,6 +785,13 @@ int AutoPlay() {
 			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 			SDL_RenderPresent(g_screen);
 			SDL_Delay(3000);
+			for (int im = 0; im < Num_Threat; im++) {
+				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
+					for (int k = 0; k < bullet_list.size(); k++) {
+						p_threat[k].Remove_Bullet(im);
+						p_threat[k].Free();
+					}
+			}
 			return 0;
 		}
 		else if (P2_Player.Get_blood_main() <= 0) {
@@ -776,6 +806,13 @@ int AutoPlay() {
 			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 			SDL_RenderPresent(g_screen);
 			SDL_Delay(3000);
+			for (int im = 0; im < Num_Threat; im++) {
+				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
+				for (int k = 0; k < bullet_list.size(); k++) {
+					p_threat[k].Remove_Bullet(im);
+					p_threat[k].Free();
+				}
+			}
 			return 0;
 		}
 		//------------------------------------------------------------------
@@ -893,8 +930,35 @@ int main(int argc,char *argv[]){
 	std::string DS[2]={ "CONTINUE","EXIT" };
 	int x_over[] = { SCREEN_WIDTH / 2 - 50,SCREEN_WIDTH / 2 - 50 };
 	int y_over[] = { 50,SCREEN_HEIGHT-100 };
+	menu_screen.LoadImag("img//Menu.png", g_screen);
 	do {
-		if (AutoPlay() == 1) break;
+		// Show menu game------------------------------------------
+		std::string p_chu[] = { "Play Game","Exit","Help" };
+		int x_menu[] = { 550,510,470 };
+		int y_menu[] = { 200,300,400 };
+		int kt = -1;
+		do {
+			menu_screen.Render(g_screen);
+			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu, g_nhacnen[1]);
+		} while (kt == -1);
+		if (kt == 1) {
+			return 0;
+		}
+		//menu_screen.Free();
+		// Show Lua Chon Phan choi ------------------------------------------
+		kt = -1;
+		std::string p_luachon[] = { "P1 vs P2","Play Monster" };
+		int  x_ch[] = { 550,510};
+		int y_ch[] = {200,300 };
+		do {
+			menu_screen.Render(g_screen);
+			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_luachon, 2, x_ch, y_ch, g_nhacnen[1]);
+		} while (kt < 0);
+		p_menu.Free();
+		if (kt == 0) {
+			if (Play() == 1) break;
+		}
+		else if (AutoPlay() == 1) break;
 		g_over.Render(g_screen);
 		is_continue = gover_menu.ShowMenu(g_screen, g_font_text_1, DS, 2, x_over, y_over,g_nhacnen[1]);
 		SDL_RenderPresent(g_screen);
