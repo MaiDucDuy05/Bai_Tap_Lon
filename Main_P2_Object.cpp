@@ -142,14 +142,18 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 		switch (events.key.keysym.sym)
 		{
 		case SDLK_RIGHT:
-			status = WALK_RIGHT;
-			input_type.right=1;
-			input_type.left=0;
+			if (input_type.hurt == 0) {
+				status = WALK_RIGHT;
+				input_type.right = 1;
+				input_type.left = 0;
+			}
 			break;
 		case SDLK_LEFT:
-			status = WALK_LEFT;
-			input_type.left=1;
-			input_type.right=0;
+			if (input_type.hurt == 0) {
+				status = WALK_LEFT;
+				input_type.left = 1;
+				input_type.right = 0;
+			}
 			break;
 		case SDLK_UP:
 			if(on_ground&&input_type.speed_up==0)

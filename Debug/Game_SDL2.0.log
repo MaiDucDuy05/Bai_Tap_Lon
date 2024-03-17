@@ -5,17 +5,19 @@ c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warni
           c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(120): warning C4553: '==' : operator has no effect; did you intend '='?
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(268): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(285): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(642): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(652): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(668): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(678): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(700): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(738): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(757): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(790): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(811): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(121): warning C4553: '==' : operator has no effect; did you intend '='?
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(269): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(288): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(646): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(656): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(672): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(682): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(706): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(751): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(770): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(789): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(812): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(844): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(865): warning C4018: '<' : signed/unsigned mismatch
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(59): warning C4715: 'MainObject::Get_Bullet_Skill_U' : not all control paths return a value
   Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe

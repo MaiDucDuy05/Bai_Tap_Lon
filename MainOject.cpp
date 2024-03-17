@@ -143,14 +143,18 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 		switch (events.key.keysym.sym)
 		{
 		case SDLK_d:
-			status = WALK_RIGHT;
-			input_type.right=1;
-			input_type.left=0;
+			if (input_type.hurt == 0) {
+				status = WALK_RIGHT;
+				input_type.right = 1;
+				input_type.left = 0;
+			}
 			break;
 		case SDLK_a:
-			status = WALK_LEFT;
-			input_type.left=1;
-			input_type.right=0;
+			if (input_type.hurt == 0) {
+				status = WALK_LEFT;
+				input_type.left = 1;
+				input_type.right = 0;
+			}
 			break;
 		case SDLK_w:
 			input_type.jump=1;
@@ -244,6 +248,11 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 		default:
 			break;
 		}
+	}
+	if (ki_main <= 0) {
+		input_type.bullet_Skill_I = 0;
+		input_type.defend = 0;
+		input_type.bullet_Skill_U = 0;
 	}
 }
 

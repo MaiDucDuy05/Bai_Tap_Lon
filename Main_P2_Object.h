@@ -63,6 +63,9 @@ public:
 	int get_status() {
 		return status;
 	}
+	void set_status(int x) {
+		status = x;
+	}
 	void ktImage(SDL_Renderer* des);
 private:
 	//
