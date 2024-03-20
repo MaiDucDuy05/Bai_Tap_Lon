@@ -39,7 +39,7 @@ const int COLOR_KEY_B= 180;
 #define MAX_MAP_Y 10
 #define BLANK_TILE 0
 
-#define Num_Threat 2
+#define Num_Threat 4
 typedef struct Input{
 	int left;
 	int right;

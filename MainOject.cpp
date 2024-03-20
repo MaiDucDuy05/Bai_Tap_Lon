@@ -57,8 +57,6 @@ void MainObject::ktImage(SDL_Renderer* des) {
 
 	Bullet_Skill_U[0].LoadImag("img//Sunglon.png", des);
 	Bullet_Skill_U[1].LoadImag("img//Danroi.png", des);
-	Bullet_BigSize.LoadImag("img//DanbanLeft.png", des);
-	Bullet_BigSize.LoadImag("img//DanbanRight.png", des);
 
 
 }
@@ -160,7 +158,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			input_type.jump=1;
 			break;
 			case SDLK_i:
-				if (ki_main >= 500&&input_type.bullet_Skill_I==0) {
+				if (ki_main >= 500&&input_type.bullet_Skill_I==0&&input_type.defend == 0) {
 					input_type.bullet_Skill_I = 1;
 					if (status == WALK_LEFT) {
 						Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
@@ -171,7 +169,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 				}
 			break;
 		case SDLK_u:
-			if (ki_main >= 250&& input_type.bullet_Skill_U == 0) {
+			if (ki_main >= 250&& input_type.bullet_Skill_U == 0&&input_type.defend==0) {
 				if (Move_U == false) {
 					input_type.bullet_Skill_U = 1; Move_U = true;
 				}
@@ -373,7 +371,10 @@ void MainObject:: HandleBuller(SDL_Renderer * des){
 	}
 }
 void MainObject::Show_Bullet_Size(SDL_Renderer * screen){
+	if(status==1) Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
+	else Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
 	Bullet_BigSize.Render(screen);
+	Bullet_BigSize.Free();
 }
 void MainObject::Show_Defend(SDL_Renderer* screen){
 	if (status == WALK_LEFT) {

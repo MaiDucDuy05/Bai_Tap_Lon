@@ -19,6 +19,10 @@ Main_P2_Object::Main_P2_Object(){
 	on_ground = false; blood_main = 500; ki_main = 1499;
 	input_type.empty = 1;
 	map_x=0;map_y=0;
+	for (int i = 0; i < 10; i++) {
+		start_time[i] = 0; end_time[i] = 70;
+	}
+	end_time[1] = 100;
 }
 Main_P2_Object::~Main_P2_Object(){
 
@@ -376,4 +380,122 @@ void Main_P2_Object::Remove_Bullet(const int& idx) {
 		}
 	}
 
+}
+void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mix_Chunk* g_sound) {
+	Uint32 TIME = SDL_GetTicks() / 100;
+	start_time[0] = TIME;
+	if (input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 1) {
+		if (on_ground && ki_main >= 100) {
+			input_type.defend = 1;
+		}
+	}
+	else input_type.defend = 0;
+	if (input_type.defend == 0) {
+
+
+		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x && Vitri.y + 100 > rect.y && Vitri.y - 200 < rect.y) {
+			if (Vitri.x > rect.x) {
+				status = 0;
+			}
+			else {
+				status = 1;
+			}
+			if (Vitri.y < rect.y) input_type.jump = 1;
+			else input_type.jump = 0;
+			input_type.bullet_Skill_I = 1;
+			if (ki_main < 300) input_type.bullet_Skill_I = 0;
+		}
+		else {
+			input_type.bullet_Skill_I = 0;
+		}
+
+
+
+
+		if (Vitri.y + 50 > rect.y && Vitri.y - 50 < rect.y && input_type.bullet_Skill_I == 0) {
+			if (Vitri.x > rect.x) {
+				status = 0;
+			}
+			else {
+				status = 1;
+			}
+			if (start_time[0] >= end_time[0]) {
+				input_type.bullet_Skill_J = 1;
+				BulletObject* p_bullet = new BulletObject;
+				ki_main += 50;
+				if (status == WALK_LEFT) {
+					p_bullet->LoadImag("img//KiemL.png", screen);
+				}
+				else {
+					p_bullet->LoadImag("img//KiemR.png", screen);
+				}
+				if (status == WALK_LEFT) {
+					p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+					p_bullet->SetRect(this->rect.x - 20, this->rect.y + height_frame * 0.3);
+				}
+				else {
+					p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+					p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y + height_frame * 0.3);
+				}
+				Mix_PlayChannel(-1, g_sound, 0);
+				p_bullet->set_x_val(20);
+				p_bullet->set_is_move(true);
+				p_bullet_list.push_back(p_bullet);
+				end_time[0] = start_time[0] + 8;
+			}
+		}
+		else input_type.bullet_Skill_J = 0;
+
+
+
+
+
+		start_time[1] = TIME;
+		if (input_type.hurt == 1) input_type.bullet_Skill_U = 0;
+		if (input.defend == 0) {
+			if (start_time[1] >= end_time[1]) {
+				if (ki_main >= 200 && input_type.bullet_Skill_U == 0)
+					input_type.bullet_Skill_U = 1;
+				end_time[1] = start_time[1] + 200;
+			}
+		}
+		else {
+			input_type.bullet_Skill_U = 0;
+		}
+		if (input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 0) {
+			input_type.defend = 1;
+		}
+		else input_type.defend = 0;
+
+
+		start_time[2] = TIME;
+		start_time[3] = TIME;
+		if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
+			&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
+			if (Vitri.y < rect.y - 50) {
+				if (Vitri.x > rect.x) {
+					status = 0;
+				}
+				else {
+					status = 1;
+				}
+				if (start_time[3] >= end_time[3]) {
+					input_type.jump = 1;
+					end_time[3] = start_time[3] + 10;
+				}
+			}
+			else {
+				input_type.jump = 0;
+				if (rect.x < 20) status = 0;
+				else if (rect.x > SCREEN_WIDTH - 100) status = 1;
+			}
+			if (start_time[2] >= end_time[2]) {
+				input_type.speed_up = 1;
+				end_time[2] = start_time[2] + 50;
+			}
+		}
+		else {
+			input_type.speed_up = 0;
+		}
+	}
 }

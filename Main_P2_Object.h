@@ -67,6 +67,7 @@ public:
 		status = x;
 	}
 	void ktImage(SDL_Renderer* des);
+	void Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mix_Chunk* g_sound);
 private:
 	//
 	float x_val;
@@ -95,6 +96,8 @@ private:
 	int blood_main;
 	int ki_main;
 	BaseObject P_Image[12];
+	int start_time[10];
+	int end_time[10];
 };
 
 #endif

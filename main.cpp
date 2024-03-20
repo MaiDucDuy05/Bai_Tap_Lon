@@ -20,7 +20,6 @@ Uint32 time_val_start;
 Threat_Object p_threat[Num_Threat];
 BaseObject p_threatr[Num_Threat], p_threatl[Num_Threat];
 BaseObject p_vuno[Num_Threat];
-
 bool InitData(){
 	bool success= true;
 	int ret = SDL_Init(SDL_INIT_VIDEO);
@@ -44,7 +43,7 @@ bool InitData(){
 		}
 		}
 	if(Mix_OpenAudio(22050,MIX_DEFAULT_FORMAT,2,4096)==-1) success=false;
-	else{
+	/*else {
 		g_sound_main_P1[0]=Mix_LoadWAV("music//Sung(J).wav");
 		g_sound_main_P1[1]=Mix_LoadWAV("music//Sung(U).wav");
 		g_sound_main_P1[2]=Mix_LoadWAV("music//Sung(I).wav");
@@ -58,7 +57,7 @@ bool InitData(){
 		for(int i=0;i<3;i++){
 			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL) success=false;
 		}
-	}
+	}*/
 	if (TTF_Init() == -1) success = false;
 	g_font_text = TTF_OpenFont("fornchu.ttf", 30);
 	g_font_text_1 = TTF_OpenFont("fornchu.ttf", 60);
@@ -66,7 +65,6 @@ bool InitData(){
 	if (g_font_text == NULL|| g_font_text_1==NULL) success = false;
 	return success;
 }
-	
 int chosen_map() {
 	bool ret = menu_BK.LoadImag("img//Menu_bk.png", g_screen);
 	if (ret == false) return 0;
@@ -125,7 +123,7 @@ void close(){
 	IMG_Quit();
 	SDL_Quit();
 }
-int Play() {
+int Play(int luachon) {
 	bool ret_b;
 	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
 	ret_b= sieunhanr.LoadImag("img//Sieunhan(r).png",g_screen);
@@ -163,7 +161,7 @@ int Play() {
 	P2_Player.Set_clip();
 	int ret_P1_x = 0;
 	P2_Player.ktImage(g_screen);
-								// vong lap while
+								// vong lap while---------------------------------------------------------------
 	time_val_start = SDL_GetTicks() / 1000;
 	bool is_quit = false;
 	while (!is_quit) {  
@@ -174,8 +172,11 @@ int Play() {
 				is_quit = true; break;
 			}
 			p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
-			P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
+			if(luachon==0) P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
 		}
+		if(luachon==2)P2_Player.Auto_(p_player.GetRect(),p_player.Get_Input_type(), g_screen, g_sound_main_P2[0]);
+
+
 
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
 		SDL_RenderClear(g_screen);
@@ -209,8 +210,7 @@ int Play() {
 			p_player.Show_Defend(g_screen);
 			p_player.Set_ki_main(p_player.Get_ki_main() - 5);
 		}
-		else {
-			p_player.Show(g_screen);
+		p_player.Show(g_screen);
 			if (!p_player.Get_Move_u()) {
 				ret_P1_x = P2_Player.GetRect().x - 20;
 			}
@@ -220,7 +220,6 @@ int Play() {
 				Mix_PlayChannel(-1, g_sound_main_P1[2], 0);
 				p_player.Show_Bullet_Size(g_screen);
 			}
-		}
 		if (p_player.Get_Move_u()) {
 			//Am thanh Sung U
 			if (p_player.Get_Input_type().bullet_Skill_U == 1) {
@@ -311,7 +310,7 @@ int Play() {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
 
-			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 50);
+			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Set_Move_U(false);
 			P2_Player.Setinput_hurt(1);
@@ -322,7 +321,7 @@ int Play() {
 		if (ret_col == true) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
-			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 50);
+			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Set_Move_U(false);
 			P2_Player.Setinput_hurt(1);
@@ -359,7 +358,7 @@ int Play() {
 		if (ret_col == true) {
 			if (p_player.GetRect().x < P2_Player.GetRect().x) p_player.set_status(0);
 			else p_player.set_status(1);
-			p_player.Set_blood_main(p_player.Get_blood_main() - 20);
+			p_player.Set_blood_main(p_player.Get_blood_main() - 3);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 
@@ -479,7 +478,6 @@ int Play() {
 	return 1;
 
 }
-
 int AutoPlay() {
 	 int Mark_P1 = 0;
 	 int Mark_P2 = 0;
@@ -619,7 +617,7 @@ int AutoPlay() {
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
 		for (int i = 0; i < Num_Threat; i++) {
-			if (i > Num_Threat / 2) {
+			if (i < Num_Threat / 2) {
 				p_threat[i].Set_goal_x(p_player.GetRect().x / TILE_SIZE);
 				p_threat[i].Set_goal_y((p_player.GetRect().y) / TILE_SIZE);
 			}
@@ -974,8 +972,6 @@ int AutoPlay() {
 	}
 	return 1;
 }
-
-
 int main(int argc,char *argv[]){
 	if (InitData() == false) return -1;
 	MenuObject gover_menu;
@@ -1002,16 +998,16 @@ int main(int argc,char *argv[]){
 		//menu_screen.Free();
 		// Show Lua Chon Phan choi ------------------------------------------
 		kt = -1;
-		std::string p_luachon[] = { "P1 vs P2","Play Monster" };
-		int  x_ch[] = { 550,510};
-		int y_ch[] = {200,300 };
+		std::string p_luachon[] = { "P1 vs P2","Play Monster","AuTo Play"};
+		int  x_ch[] = { 550,510,490};
+		int y_ch[] = {200,300,400};
 		do {
 			menu_screen.Render(g_screen);
-			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_luachon, 2, x_ch, y_ch, g_nhacnen[1]);
+			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_luachon, 3, x_ch, y_ch, g_nhacnen[1]);
 		} while (kt < 0);
 		p_menu.Free();
-		if (kt == 0) {
-			if (Play() == 1) break;
+		if (kt == 0||kt==2) {
+			if (Play(kt) == 1) break;
 		}
 		else if (AutoPlay() == 1) break;
 		g_over.Render(g_screen);
