@@ -989,9 +989,25 @@ int main(int argc,char *argv[]){
 		int y_menu[] = { 200,300,400 };
 		int kt = -1;
 		do {
+			if (kt == 2) {
+				int k = -1;
+				BaseObject huong_dan[2];
+				huong_dan[0].LoadImag("img/Bk_huongdan.png",g_screen);
+				huong_dan[1].LoadImag("img/huongdan.png",g_screen);
+				MenuObject p_huongdan;
+				std::string p_Chu[] = {"EXIT"};
+				int x_m[] = { 1000 };
+				int y_m[] = { 30 };
+				huong_dan[0].Render(g_screen);
+				huong_dan[1].Render(g_screen);
+				SDL_RenderPresent(g_screen);
+				p_huongdan.ShowMenu(g_screen, g_font_text_1, p_Chu, 1, x_m, y_m, g_nhacnen[1]);
+				huong_dan[0].Free();
+				huong_dan[1].Free();
+			}
 			menu_screen.Render(g_screen);
 			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu, g_nhacnen[1]);
-		} while (kt == -1);
+		} while (kt == -1||kt==2);
 		if (kt == 1) {
 			return 0;
 		}

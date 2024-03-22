@@ -249,6 +249,11 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			break;
 		}
 	}
+	if (ki_main <= 0) {
+		input_type.bullet_Skill_I = 0;
+		input_type.defend = 0;
+		input_type.bullet_Skill_U = 0;
+	}
 }
 
 void Main_P2_Object:: HandleBuller(SDL_Renderer * des){
