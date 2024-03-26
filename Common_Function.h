@@ -14,6 +14,7 @@
 static  SDL_Window * g_window =NULL;
 static SDL_Renderer * g_screen =NULL;
 static  SDL_Event g_event;
+static SDL_Event g_event_1;
 
 
 static Mix_Chunk * g_sound_main_P1[10];

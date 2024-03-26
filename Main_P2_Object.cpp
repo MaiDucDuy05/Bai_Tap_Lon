@@ -190,30 +190,32 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 				input_type.bullet_Skill_I=1;
 			break;
 		case SDLK_KP_1:
-			input_type.bullet_Skill_J=1;
-			BulletObject *p_bullet = new BulletObject;
-			if(input_type.defend==0){
-				ki_main += 50;
-			if(status== WALK_LEFT){
-				p_bullet->LoadImag("img//KiemL.png",screen);
+			start_time[0] = SDL_GetTicks()/100;
+			if ( input_type.defend == 0){//&& start_time[0] >= end_time[0]) {
+				input_type.bullet_Skill_J = 1;
+				BulletObject* p_bullet = new BulletObject;
+					ki_main += 50;
+					if (status == WALK_LEFT) {
+						p_bullet->LoadImag("img//KiemL.png", screen);
+					}
+					else {
+						p_bullet->LoadImag("img//KiemR.png", screen);
+					}
+					if (status == WALK_LEFT) {
+						p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+						p_bullet->SetRect(this->rect.x - 20, this->rect.y + height_frame * 0.3);
+					}
+					else {
+						p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+						p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y + height_frame * 0.3);
+					}
+					Mix_PlayChannel(-1, g_sound, 0);
+					p_bullet->set_x_val(20);
+					p_bullet->set_is_move(true);
+					p_bullet_list.push_back(p_bullet);
+					end_time[0] = start_time[0] + 3;
 				}
-			else{
-				p_bullet->LoadImag("img//KiemR.png",screen);
-			}
-			if(status==WALK_LEFT){
-				p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-				p_bullet->SetRect(this->rect.x-20, this->rect.y + height_frame*0.3);
-			}
-			else{
-				p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-				p_bullet->SetRect(this->rect.x+width_frame_-20, this->rect.y + height_frame*0.3);
-			}
-			Mix_PlayChannel(-1,g_sound,0);
-			p_bullet->set_x_val(20);
-			p_bullet->set_is_move(true);
-			p_bullet_list.push_back(p_bullet);
-			}
-			break;
+				break;
 		}
 	}
 	else if(events.type==SDL_KEYUP){
@@ -369,8 +371,10 @@ void Main_P2_Object:: Check_map(Map &map_data){
 	else if(x_pos+width_frame_>map_data.max_x){
 		x_pos= map_data.max_x-width_frame_-1;
 	}
-
-	if(y_pos >= map_data.max_y ){
+	if (y_pos < 0) {
+		y_pos = 0; y_val = 0;
+	}
+	else if(y_pos >= map_data.max_y ){
 		y_pos = map_data.max_y;
 		on_ground = true;
 	}
@@ -389,16 +393,21 @@ void Main_P2_Object::Remove_Bullet(const int& idx) {
 void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mix_Chunk* g_sound) {
 	Uint32 TIME = SDL_GetTicks() / 100;
 	start_time[0] = TIME;
-	if (input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 1) {
+	if ((input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 1||input_type.defend==1) && input.hurt == 0) {
 		if (on_ground && ki_main >= 100) {
+			start_time[5] = TIME;
 			input_type.defend = 1;
+			if (end_time[5] <= start_time[5]) {
+				input_type.defend = 0;
+				end_time[5] = start_time[5] + 20;
+			}
 		}
 	}
-	else input_type.defend = 0;
+
 	if (input_type.defend == 0) {
 
-
-		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x && Vitri.y + 100 > rect.y && Vitri.y - 200 < rect.y) {
+		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x
+			&& Vitri.y + 100 > rect.y && Vitri.y - 200 < rect.y) {
 			if (Vitri.x > rect.x) {
 				status = 0;
 			}
@@ -417,7 +426,8 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 
 
 
-		if (Vitri.y + 50 > rect.y && Vitri.y - 50 < rect.y && input_type.bullet_Skill_I == 0) {
+		if ((Vitri.y + 50 > rect.y && Vitri.y - 50 < rect.y
+			&& input_type.bullet_Skill_I == 0) || ki_main < 200) {
 			if (Vitri.x > rect.x) {
 				status = 0;
 			}
@@ -459,48 +469,50 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 		if (input_type.hurt == 1) input_type.bullet_Skill_U = 0;
 		if (input.defend == 0) {
 			if (start_time[1] >= end_time[1]) {
-				if (ki_main >= 200 && input_type.bullet_Skill_U == 0)
+				if (ki_main >= 200 && input_type.bullet_Skill_U == 0) {
 					input_type.bullet_Skill_U = 1;
-				end_time[1] = start_time[1] + 200;
+					end_time[1] = start_time[1] + 200;
+				}
 			}
 		}
 		else {
 			input_type.bullet_Skill_U = 0;
 		}
-		if (input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 0) {
-			input_type.defend = 1;
-		}
-		else input_type.defend = 0;
 
 
 		start_time[2] = TIME;
 		start_time[3] = TIME;
-		if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
-			&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
-			if (Vitri.y < rect.y - 50) {
-				if (Vitri.x > rect.x) {
-					status = 0;
+		if (start_time[2] >= end_time[2] || input_type.speed_up == 1 || input_type.jump == 1) {
+			input_type.speed_up = 0;
+			if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
+				&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
+				if (Vitri.y < rect.y - 50) {
+					if (Vitri.x > rect.x) {
+						status = 0;
+					}
+					else {
+						status = 1;
+					}
+					if (start_time[3] >= end_time[3]) {
+						input_type.jump = 1;
+						end_time[3] = start_time[3] + 10;
+					}
 				}
 				else {
-					status = 1;
+					input_type.jump = 0;
+					if (rect.x < 20) status = 0;
+					else if (rect.x > SCREEN_WIDTH - 100) status = 1;
 				}
-				if (start_time[3] >= end_time[3]) {
-					input_type.jump = 1;
-					end_time[3] = start_time[3] + 10;
+				if (!(Vitri.x - 100 < rect.x && Vitri.x + 100 > rect.x) && input_type.bullet_Skill_I == 0) {
+					input_type.speed_up = 1;
 				}
 			}
-			else {
-				input_type.jump = 0;
-				if (rect.x < 20) status = 0;
-				else if (rect.x > SCREEN_WIDTH - 100) status = 1;
-			}
-			if (start_time[2] >= end_time[2]) {
-				input_type.speed_up = 1;
-				end_time[2] = start_time[2] + 50;
-			}
+			end_time[2] = start_time[2] + 8;
 		}
-		else {
-			input_type.speed_up = 0;
-		}
+	}
+	if (ki_main <= 0) {
+		input_type.bullet_Skill_I = 0;
+		input_type.defend = 0;
+		input_type.bullet_Skill_U = 0;
 	}
 }

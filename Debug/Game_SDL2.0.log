@@ -1,6 +1,6 @@
 ﻿  main.cpp
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(56): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(68): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(57): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(69): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warning C4005: 'GRAVITY_SPEED' : macro redefinition
           c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared

@@ -17,6 +17,7 @@ MainObject::MainObject(){
 	input_type.speed_up=0; input_type.bullet_Skill_U=0;
 	on_ground= false; Move_U=false;input_type.hurt=0;
 	map_x = 0; map_y = 0; blood_main = 500; ki_main = 1499;
+	input_type.bullet_Skill_J = 0;
 }
 MainObject::~MainObject(){
 
@@ -198,6 +199,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 		case SDLK_j:
 			if(input_type.defend==0){
 				ki_main += 50;
+				input_type.bullet_Skill_J = 1;
 			BulletObject *p_bullet = new BulletObject;
 			p_bullet->LoadImag("img//bullet_man.png",screen);
 
@@ -242,6 +244,9 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			break;
 		case SDLK_u:
 			input_type.bullet_Skill_U=0;
+			break;
+		case SDLK_j:
+			input_type.bullet_Skill_J = 0;
 			break;
 		default:
 			break;
@@ -345,8 +350,10 @@ void MainObject:: Check_map(Map &map_data){
 	}
 	else if(x_pos+width_frame_>map_data.max_x){
 		x_pos= map_data.max_x-width_frame_-1;
+	}if (y_pos < 0) {
+		y_pos = 0; y_val = 0;
 	}
-	if(y_pos >= map_data.max_y ){
+	else if(y_pos >= map_data.max_y ){
 		y_pos = map_data.max_y;
 		on_ground = true;
 	}

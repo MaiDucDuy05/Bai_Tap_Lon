@@ -43,7 +43,7 @@ bool InitData(){
 		}
 		}
 	if(Mix_OpenAudio(22050,MIX_DEFAULT_FORMAT,2,4096)==-1) success=false;
-	/*else {
+	else {
 		g_sound_main_P1[0]=Mix_LoadWAV("music//Sung(J).wav");
 		g_sound_main_P1[1]=Mix_LoadWAV("music//Sung(U).wav");
 		g_sound_main_P1[2]=Mix_LoadWAV("music//Sung(I).wav");
@@ -57,7 +57,7 @@ bool InitData(){
 		for(int i=0;i<3;i++){
 			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL) success=false;
 		}
-	}*/
+	}
 	if (TTF_Init() == -1) success = false;
 	g_font_text = TTF_OpenFont("fornchu.ttf", 30);
 	g_font_text_1 = TTF_OpenFont("fornchu.ttf", 60);
@@ -167,15 +167,15 @@ int Play(int luachon) {
 	while (!is_quit) {  
 		fps_time.start();
 		//-----------------------------------------------------------------------------------
-		while (SDL_PollEvent(&g_event) != 0) {
+		while ( SDL_PollEvent(&g_event)!=0 ) {
 			if (g_event.type == SDL_QUIT) {
 				is_quit = true; break;
 			}
 			p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
 			if(luachon==0) P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
 		}
-		if(luachon==2)P2_Player.Auto_(p_player.GetRect(),p_player.Get_Input_type(), g_screen, g_sound_main_P2[0]);
 
+		if(luachon==2)P2_Player.Auto_(p_player.GetRect(),p_player.Get_Input_type(), g_screen, g_sound_main_P2[0]);
 
 
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
