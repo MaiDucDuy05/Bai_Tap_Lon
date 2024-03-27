@@ -146,7 +146,7 @@ int Play(int luachon) {
 	char c[30];
 	sprintf_s(c, "map/map%d.dat", kt);
 	game_map.LoadMap(c);
-						//game_map.LoadMap("map/map1.dat");
+				
 	game_map.LoadTiles(g_screen);
 	//-----------------------------------------------------------------------------------
 						// Khoi tao nhan vat 1
@@ -211,7 +211,7 @@ int Play(int luachon) {
 			p_player.Set_ki_main(p_player.Get_ki_main() - 5);
 		}
 		p_player.Show(g_screen);
-			if (!p_player.Get_Move_u()) {
+		if (!p_player.Get_Move_u()) {
 				ret_P1_x = P2_Player.GetRect().x - 20;
 			}
 			if (p_player.Get_Input_type().bullet_Skill_I == 1) {
@@ -229,7 +229,7 @@ int Play(int luachon) {
 			p_player.Show_Bullet_Skill_U(g_screen);
 			p_player.Buller_move_U(map_data, ret_P1_x);
 		}
-
+		
 		//--------------------------------------------------
 		// nhan vat 2
 		P2_Player.Doplayer(map_data);
@@ -257,7 +257,7 @@ int Play(int luachon) {
 		//--------------------------------------------------
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
-	
+		
 		//--------------------------------------------------------------SU LY VA CHAM-------------------------------------------
 		SDL_Rect P1_Rect = p_player.GetRect();
 		P1_Rect.w /= 8;
@@ -305,7 +305,7 @@ int Play(int luachon) {
 		//Su ly va cham giua Skill U p1 vs Main 2
 		bool ret_col;
 		ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(1).GetRect(), P2_Rect);
-		if (P2_Player.Get_Input_type().defend == 1) ret_col = false;
+		if (P2_Player.Get_Input_type().defend == 1||p_player.Get_Move_u() == false) ret_col = false;
 		if (ret_col == true) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
@@ -401,7 +401,7 @@ int Play(int luachon) {
 // Ve mau // ki cho nhan vat P1
 		// ve mau
 		
-		GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main(), 20);
+		GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main()/3, 20);
 		ColorData color_data1(37, 121, 28);
 		Geometric::RenderRecttangle(rectangle_size1, color_data1, g_screen);
 
@@ -424,7 +424,7 @@ int Play(int luachon) {
 		//Ve mau // ki cho nhan vat P2
 				// ve mau 
 		
-		GeometricFormat rectangle_size2(SCREEN_WIDTH / 2 + 100, 20, P2_Player.Get_blood_main(), 20);
+		GeometricFormat rectangle_size2(SCREEN_WIDTH / 2 + 100, 20, P2_Player.Get_blood_main()/3, 20);
 		ColorData color_data2(37, 121, 28);
 		Geometric::RenderRecttangle(rectangle_size2, color_data2, g_screen);
 
@@ -443,7 +443,7 @@ int Play(int luachon) {
 		ColorData color_ki2(0, 162, 232);
 		Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
 		//------------------------------------------------------------------------------------
-		
+	
 		//SU ly thoi gian
 		std::string str_time = "Time : ";
 		Uint32 time_val = (SDL_GetTicks() / 1000) - time_val_start;
@@ -458,7 +458,7 @@ int Play(int luachon) {
 		SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 		
 		//-------------------------------------------------------------------------------------
-
+		
 		SDL_RenderPresent(g_screen);
 		SDL_RenderClear(g_screen);
 		// huy cac con tro tranh tran bo nho --------------------------
@@ -473,8 +473,9 @@ int Play(int luachon) {
 			int delay_time = time_one_frame - real_imp_time;
 			if (delay_time >= 0) SDL_Delay(delay_time);
 		}
-		
+	
 	}
+
 	return 1;
 
 }

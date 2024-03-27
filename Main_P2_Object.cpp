@@ -16,7 +16,7 @@ Main_P2_Object::Main_P2_Object(){
 	input_type.bullet_Skill_U=0; input_type.bullet_Skill_J=0;
 	input_type.defend=0;input_type.bullet_Skill_I=0;
 	input_type.speed_up=0;input_type.hurt=0;
-	on_ground = false; blood_main = 500; ki_main = 1499;
+	on_ground = false; blood_main = 1500; ki_main = 1499;
 	input_type.empty = 1;
 	map_x=0;map_y=0;
 	for (int i = 0; i < 10; i++) {
@@ -72,7 +72,7 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 	input_type.empty = 0;
 	if(status==WALK_LEFT){
 		if(input_type.hurt==1){
-			i = 0;
+			i = 0; input_type.bullet_Skill_U = 0;
 		}
 		else if(input_type.speed_up==1){
 			i = 1;
@@ -95,7 +95,7 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 	}
 	else if(status==WALK_RIGHT ){
 		if(input_type.hurt==1){
-			i = 6;
+			i = 6; input_type.bullet_Skill_U = 0;
 		}
 		else if(input_type.speed_up==1){
 			i = 7;
@@ -182,7 +182,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 				break;
 			}
 		case SDLK_KP_4:
-			if (ki_main >= 200&& input_type.bullet_Skill_U == 0)
+			if (ki_main >= 200&& input_type.bullet_Skill_U == 0&&input_type.hurt==0)
 				input_type.bullet_Skill_U=1;
 			break;
 		case SDLK_KP_6:
@@ -417,7 +417,6 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 			if (Vitri.y < rect.y) input_type.jump = 1;
 			else input_type.jump = 0;
 			input_type.bullet_Skill_I = 1;
-			if (ki_main < 300) input_type.bullet_Skill_I = 0;
 		}
 		else {
 			input_type.bullet_Skill_I = 0;
@@ -427,7 +426,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 
 
 		if ((Vitri.y + 50 > rect.y && Vitri.y - 50 < rect.y
-			&& input_type.bullet_Skill_I == 0) || ki_main < 200) {
+			&& input_type.bullet_Skill_I == 0) || ki_main < 500) {
 			if (Vitri.x > rect.x) {
 				status = 0;
 			}

@@ -1,5 +1,4 @@
 #include"MainObject.h"
-
 #define PLAYER_JUMP 25
 
 MainObject::MainObject(){
@@ -16,8 +15,8 @@ MainObject::MainObject(){
 	input_type.bullet_Skill_I=0; input_type.defend=0;
 	input_type.speed_up=0; input_type.bullet_Skill_U=0;
 	on_ground= false; Move_U=false;input_type.hurt=0;
-	map_x = 0; map_y = 0; blood_main = 500; ki_main = 1499;
-	input_type.bullet_Skill_J = 0;
+	map_x = 0; map_y = 0; blood_main = 1500; ki_main = 1499;
+	input_type.bullet_Skill_J = 0; input_type.empty = 1;
 }
 MainObject::~MainObject(){
 
@@ -109,11 +108,11 @@ void MainObject::Show(SDL_Renderer *des){
 	if(!Move_U){
 		Bullet_Skill_U[1].SetRect(-200,-200);
 	}
-	if(input_type.left==1||input_type.right==1||input_type.bullet_Skill_I==1
+	if (input_type.left == 1 || input_type.right == 1 || input_type.bullet_Skill_I == 1
 		||input_type.speed_up==1||input_type.hurt==1){
 		frame++;
 		if(frame==8&&input_type.hurt==1){
-			input_type.hurt=0;SDL_Delay(300);
+			input_type.hurt = 0; SDL_Delay(300); 
 		}
 	}
 	else frame=0;
@@ -122,17 +121,19 @@ void MainObject::Show(SDL_Renderer *des){
 	rect.x=x_pos-map_x;
 	rect.y=y_pos-map_y;
 	if (i >= 0) {
-		if (input_type.bullet_Skill_U == 0) {
+		if (input_type.bullet_Skill_U == 1) {
+			rect.y -= 50;
+			SDL_Rect renderQuad = { rect.x,rect.y,60,95 };
+			if (status == 1) i = 3;
+			else i = 8;
+			SDL_RenderCopy(des, P_Image[i].get_p_object(), &P_Image[i].GetRect(), &renderQuad);
+		}
+		else {
 			SDL_Rect* current_clip = &frame_clip[frame];
 
 			SDL_Rect renderQuad = { rect.x,rect.y,width_frame_,height_frame };
 
-			SDL_RenderCopy(des,P_Image[i].get_p_object(), current_clip, &renderQuad);
-		}
-		else {
-			rect.y -= 50;
-			SDL_Rect renderQuad = { rect.x,rect.y,60,95 };
-			SDL_RenderCopy(des,P_Image[i].get_p_object(), NULL, &renderQuad);
+			SDL_RenderCopy(des, P_Image[i].get_p_object(), current_clip, &renderQuad);
 		}
 	}
 	SDL_DestroyTexture(get_p_object());
@@ -285,6 +286,7 @@ void MainObject:: Doplayer(Map &map_data){
 		input_type.jump=0;
 	}
 	Check_map(map_data);
+	//if (y_pos > 300) y_pos = 300;
 }
 
 void MainObject:: Check_map(Map &map_data){
@@ -326,10 +328,10 @@ void MainObject:: Check_map(Map &map_data){
 	y2=(y_pos+y_val+ height_frame-1)/TILE_SIZE;
 
 	if(x1>=0&&x2<MAX_MAP_X&&y1>=0&&y2<=MAX_MAP_Y){
-		if(y_val>0){
-			if(map_data.tile[y2][x1]!=BLANK_TILE||map_data.tile[y2][x2]!=BLANK_TILE){
+		if (y_val>0) {
+			if (map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE) {
 				y_pos = y2 * TILE_SIZE;
-				y_pos -= (height_frame+1);
+				y_pos -= (height_frame);
 				y_val=0;
 				on_ground=true;
 			}
@@ -383,7 +385,7 @@ void MainObject::Show_Bullet_Size(SDL_Renderer * screen){
 	Bullet_BigSize.Render(screen);
 	Bullet_BigSize.Free();
 }
-void MainObject::Show_Defend(SDL_Renderer* screen){
+void MainObject::Show_Defend(SDL_Renderer* screen) {
 	if (status == WALK_LEFT) {
 		P_Image[10].SetRect(this->rect.x, this->rect.y);
 		P_Image[10].Render(screen);
