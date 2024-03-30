@@ -1,26 +1,7 @@
-﻿  Main_P2_Object.cpp
+﻿  ThreatObject.cpp
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(57): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(69): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(130): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(131): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(139): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(140): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(210): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(262): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(319): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(320): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(322): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(323): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(328): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(335): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(342): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(343): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(345): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(346): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(351): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(372): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(378): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(448): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(452): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\threatobject.cpp(86): warning C4018: '<' : signed/unsigned mismatch
   Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe

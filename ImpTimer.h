@@ -8,8 +8,6 @@ public:
 
 	void start();
 	void stop();
-	void paused();
-	void unpaused();
 
 	int get_ticks();
 	bool Is_Started();
@@ -18,9 +16,7 @@ public:
 	private:
 
 	int start_tick;
-	int paused_tick;
 	bool is_started;
-	bool is_paused;
 
 };
 

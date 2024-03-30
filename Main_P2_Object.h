@@ -4,7 +4,7 @@
 #include"BaseObject.h"
 #include"Common_Function.h"
 #include"BulletObject.h"
-
+#include"ImpTimer.h"
 #define  GRAVITY_SPEED 2
 #define MAX_FALL_SPEED 10 
 #define PLAYER_SPEED 8
@@ -96,8 +96,11 @@ private:
 	int blood_main;
 	int ki_main;
 	BaseObject P_Image[12];
-	int start_time[10];
-	int end_time[10];
+	
+
+	ImpTimer Time_Delay[10];
+	bool SKILL_U;
+
 };
 
 #endif

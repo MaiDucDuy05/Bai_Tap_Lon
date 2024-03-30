@@ -198,7 +198,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			}
 			break;
 		case SDLK_j:
-			if(input_type.defend==0){
+			if(input_type.defend==0&&Time_Delay.get_ticks()>150){
 				ki_main += 50;
 				input_type.bullet_Skill_J = 1;
 			BulletObject *p_bullet = new BulletObject;
@@ -216,6 +216,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			p_bullet->set_x_val(20);
 			p_bullet->set_is_move(true);
 			p_bullet_list.push_back(p_bullet);
+			Time_Delay.start();
 			break;
 			}
 		/*default:

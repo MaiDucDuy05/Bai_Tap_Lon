@@ -14,7 +14,7 @@
 static  SDL_Window * g_window =NULL;
 static SDL_Renderer * g_screen =NULL;
 static  SDL_Event g_event;
-static SDL_Event g_event_1;
+
 
 
 static Mix_Chunk * g_sound_main_P1[10];
@@ -40,7 +40,7 @@ const int COLOR_KEY_B= 180;
 #define MAX_MAP_Y 10
 #define BLANK_TILE 0
 
-#define Num_Threat 4
+#define Num_Threat 1
 typedef struct Input{
 	int left;
 	int right;

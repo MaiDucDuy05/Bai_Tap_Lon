@@ -18,11 +18,8 @@ Main_P2_Object::Main_P2_Object(){
 	input_type.speed_up=0;input_type.hurt=0;
 	on_ground = false; blood_main = 1500; ki_main = 1499;
 	input_type.empty = 1;
-	map_x=0;map_y=0;
-	for (int i = 0; i < 10; i++) {
-		start_time[i] = 0; end_time[i] = 70;
-	}
-	end_time[1] = 100;
+	map_x = 0; map_y = 0; SKILL_U = false;
+	
 }
 Main_P2_Object::~Main_P2_Object(){
 
@@ -139,6 +136,10 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 		rect.x = x_pos - map_x;
 		rect.y = y_pos - map_y;
 	}
+	if (Time_Delay[1].get_ticks() > 200 && SKILL_U) {
+		input_type.bullet_Skill_U = 0;
+		SKILL_U = false;
+	}
 }
 
 void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chunk*g_sound){
@@ -182,16 +183,18 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 				break;
 			}
 		case SDLK_KP_4:
-			if (ki_main >= 200&& input_type.bullet_Skill_U == 0&&input_type.hurt==0)
-				input_type.bullet_Skill_U=1;
+			if (ki_main >= 200  && input_type.hurt == 0 ) {
+				input_type.bullet_Skill_U = 1;
+		
+			}
 			break;
 		case SDLK_KP_6:
 			if(ki_main>=300&& input_type.bullet_Skill_I == 0)
 				input_type.bullet_Skill_I=1;
 			break;
 		case SDLK_KP_1:
-			start_time[0] = SDL_GetTicks()/100;
-			if ( input_type.defend == 0){//&& start_time[0] >= end_time[0]) {
+			
+			if ( input_type.defend == 0&&Time_Delay[0].get_ticks()>200) {
 				input_type.bullet_Skill_J = 1;
 				BulletObject* p_bullet = new BulletObject;
 					ki_main += 50;
@@ -213,7 +216,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 					p_bullet->set_x_val(20);
 					p_bullet->set_is_move(true);
 					p_bullet_list.push_back(p_bullet);
-					end_time[0] = start_time[0] + 3;
+					Time_Delay[0].start();
 				}
 				break;
 		}
@@ -239,7 +242,8 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 			input_type.bullet_Skill_U = 0;
 			break;
 		case SDLK_KP_4:
-			input_type.bullet_Skill_U=0;
+			Time_Delay[1].start();
+			SKILL_U = true;
 			break;
 		case SDLK_KP_6:
 			input_type.bullet_Skill_I=0;
@@ -256,6 +260,7 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 		input_type.defend = 0;
 		input_type.bullet_Skill_U = 0;
 	}
+
 }
 
 void Main_P2_Object:: HandleBuller(SDL_Renderer * des){
@@ -392,14 +397,13 @@ void Main_P2_Object::Remove_Bullet(const int& idx) {
 }
 void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mix_Chunk* g_sound) {
 	Uint32 TIME = SDL_GetTicks() / 100;
-	start_time[0] = TIME;
+	
 	if ((input.bullet_Skill_I == 1 || input.bullet_Skill_U == 1 || input.bullet_Skill_J == 1||input_type.defend==1) && input.hurt == 0) {
 		if (on_ground && ki_main >= 100) {
-			start_time[5] = TIME;
 			input_type.defend = 1;
-			if (end_time[5] <= start_time[5]) {
+			if (Time_Delay[5].get_ticks()>2000) {
 				input_type.defend = 0;
-				end_time[5] = start_time[5] + 20;
+				Time_Delay[5].start();
 			}
 		}
 	}
@@ -407,7 +411,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 	if (input_type.defend == 0) {
 
 		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x
-			&& Vitri.y + 100 > rect.y && Vitri.y - 200 < rect.y) {
+			&& Vitri.y + 100 > rect.y && Vitri.y - 200 < rect.y&&input_type.bullet_Skill_J==0) {
 			if (Vitri.x > rect.x) {
 				status = 0;
 			}
@@ -433,7 +437,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 			else {
 				status = 1;
 			}
-			if (start_time[0] >= end_time[0]) {
+			if(Time_Delay[0].get_ticks()>800) {
 				input_type.bullet_Skill_J = 1;
 				BulletObject* p_bullet = new BulletObject;
 				ki_main += 50;
@@ -455,7 +459,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 				p_bullet->set_x_val(20);
 				p_bullet->set_is_move(true);
 				p_bullet_list.push_back(p_bullet);
-				end_time[0] = start_time[0] + 8;
+				Time_Delay[0].start();
 			}
 		}
 		else input_type.bullet_Skill_J = 0;
@@ -464,13 +468,12 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 
 
 
-		start_time[1] = TIME;
 		if (input_type.hurt == 1) input_type.bullet_Skill_U = 0;
 		if (input.defend == 0) {
-			if (start_time[1] >= end_time[1]) {
+			if (Time_Delay[1].get_ticks() > 20000) {
 				if (ki_main >= 200 && input_type.bullet_Skill_U == 0) {
 					input_type.bullet_Skill_U = 1;
-					end_time[1] = start_time[1] + 200;
+					Time_Delay[1].start();
 				}
 			}
 		}
@@ -479,9 +482,8 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 		}
 
 
-		start_time[2] = TIME;
-		start_time[3] = TIME;
-		if (start_time[2] >= end_time[2] || input_type.speed_up == 1 || input_type.jump == 1) {
+		
+		if (Time_Delay[2].get_ticks()>800 || input_type.speed_up == 1 || input_type.jump == 1) {
 			input_type.speed_up = 0;
 			if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
 				&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
@@ -492,9 +494,9 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 					else {
 						status = 1;
 					}
-					if (start_time[3] >= end_time[3]) {
+					if (Time_Delay[3].get_ticks()>100) {
 						input_type.jump = 1;
-						end_time[3] = start_time[3] + 10;
+						Time_Delay[3].start();
 					}
 				}
 				else {
@@ -506,7 +508,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 					input_type.speed_up = 1;
 				}
 			}
-			end_time[2] = start_time[2] + 8;
+			Time_Delay[2].start();
 		}
 	}
 	if (ki_main <= 0) {

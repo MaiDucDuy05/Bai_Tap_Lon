@@ -19,9 +19,10 @@ Threat_Object::Threat_Object() {
         dy[3] = 0; dy[2] = 0; dy[1] = -1; dy[0] = 1;
     }
     rect.x = 0; rect.y = 0; status = 0;
-    start_time = 0; end_time = 30;
+ 
     threat_blood = 50;
-    rect.w = 60; rect.h = 30;
+    rect.w = 85; rect.h = 85;
+    Hoi_sinh = false; is_Threat = false;
 }
 Threat_Object::~Threat_Object() {
 
@@ -62,17 +63,17 @@ void Threat_Object::Search(int i, int j, const Map& map) {
     }
 }
 void Threat_Object::Move() {
-    Uint32 TIME = SDL_GetTicks()/100;
+
     std::pair<int, int>my_pair = std::make_pair(rect.x / TILE_SIZE, rect.y / TILE_SIZE);
     std::pair<int, int>path = std::make_pair(goal_x, goal_y);
-    start_time = TIME;
+
     while (1) {
         if (parent[path] == my_pair) {
-            if (start_time >= end_time) {
+            if (Time_Delay.get_ticks()>500) {
                 if (path.first >= parent[path].first) status = 1;
                 else if(path.first < parent[path].first) status = 0;
                 rect.x = path.first * TILE_SIZE; rect.y = path.second * TILE_SIZE;
-                 end_time = start_time +5; 
+                Time_Delay.start();
             }
             break;
         }path = parent[path];
@@ -112,9 +113,16 @@ void Threat_Object::Remove_Bullet(const int& idx) {
 }
 void Threat_Object::Init_Bullet(SDL_Renderer* des) {
     BulletObject* p_bullet = new BulletObject;
-    p_bullet->LoadImag("img//bullet_threat.png", des);
+    if (status == 1) {
+        p_bullet->LoadImag("img//bullet_threatr.png", des);
+        p_bullet->SetRect(this->rect.x + 30, this->rect.y + 50);
+    }
+    else {
+        p_bullet->LoadImag("img//bullet_threatl.png", des);
+        p_bullet->SetRect(this->rect.x , this->rect.y + 50);
+    }
     p_bullet->set_is_move(true);
-    p_bullet->SetRect(this->rect.x+5, this->rect.y+20);
+ 
     if (status == 0) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
     else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
     p_bullet->set_x_val(15);
@@ -124,4 +132,29 @@ void Threat_Object::Draw_blood(SDL_Renderer  * des) {
     GeometricFormat rectangle_size1(rect.x,rect.y-10,threat_blood, 5);
     ColorData color_data1(255,0, 0);
     Geometric::RenderRecttangle(rectangle_size1, color_data1, des);
+}
+void Threat_Object::HOI_SINH() {
+    if (Time_hoisinh.get_ticks() > 2000) Hoi_sinh = true;
+}
+void Threat_Object::Load_Threat(SDL_Renderer *screen) {
+    for (int i = 0; i <4; i++) {
+        char c1[30]; char c2[30];
+        sprintf_s(c1, "img//Rong//Rongr%d.png", i+1);
+        sprintf_s(c2, "img//Rong//Rongl%d.png", i+1);
+        Iamge_Threatl[i].LoadImag(c2, screen);
+        Iamge_Threatr[i].LoadImag(c1, screen);
+    }
+}
+void Threat_Object::Render_Threat(SDL_Renderer* screen, int STT) {
+    if (status == 0) {
+        Iamge_Threatl[STT].Render(screen);
+        for(int i=0;i<4;i++)
+        Iamge_Threatl[i].SetRect(rect.x, rect.y);
+    }
+    else {
+        Iamge_Threatr[STT].Render(screen);
+        for(int i=0;i<4;i++)
+        Iamge_Threatr[i].SetRect(rect.x, rect.y);
+    }
+
 }

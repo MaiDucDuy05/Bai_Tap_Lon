@@ -4,7 +4,7 @@
 #include"BaseObject.h"
 #include"Common_Function.h"
 #include"BulletObject.h"
-
+#include"ImpTimer.h"
 
 #define  GRAVITY_SPEED 1.5
 #define MAX_FALL_SPEED 10 
@@ -119,6 +119,7 @@ private:
 	int ki_main;
 
 	BaseObject P_Image[12];
+	ImpTimer Time_Delay;
 };
 
 
