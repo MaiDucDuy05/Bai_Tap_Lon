@@ -850,55 +850,7 @@ int AutoPlay() {
 		}
 		
 
-		//--------------------------------------------------------------------------------------
-	
-
-			// Su ly game over----------------------------------------------
-
-		if (p_player.Get_blood_main() <= 0) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
-			ColorData color(40, 0, 0);
-			Geometric::RenderRecttangle(rectangle, color, g_screen);
-
-			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P2 WIN", textColor);
-			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(3000);
-			for (int im = 0; im < Num_Threat; im++) {
-				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
-					for (int k = 0; k < bullet_list.size(); k++) {
-						p_threat[k].Remove_Bullet(im);
-						p_threat[k].Free();
-					}
-			}
-			return 0;
-		}
-		else if (P2_Player.Get_blood_main() <= 0) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
-			ColorData color(40, 0, 0);
-			Geometric::RenderRecttangle(rectangle, color, g_screen);
-
-			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P1 WIN", textColor);
-			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(3000);
-			for (int im = 0; im < Num_Threat; im++) {
-				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
-				for (int k = 0; k < bullet_list.size(); k++) {
-					p_threat[k].Remove_Bullet(im);
-					p_threat[k].Free();
-				}
-			}
-			return 0;
-		}
-		//------------------------------------------------------------------
-		
+		//--------------------------------------------------------------------------------------		
 		
 // Ve mau // ki cho nhan vat P1
 		// ve mau
@@ -949,7 +901,7 @@ int AutoPlay() {
 		
 		std::string str_time = "Time : ";
 		Uint32 time_val = (SDL_GetTicks() / 1000) - time_val_start;
-		std::string str_val = std::to_string(time_val);
+		std::string str_val = std::to_string(200-time_val);
 		str_time += str_val;
 
 		SDL_Color textColor = { 217, 65, 38 };
@@ -960,6 +912,52 @@ int AutoPlay() {
 		SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 		
 		//-------------------------------------------------------------------------------------
+		// Su ly game over----------------------------------------------
+
+		if (p_player.Get_blood_main() <= 0||(Mark_P1<Mark_P2&&time_val == 200)) {
+			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
+			ColorData color(40, 0, 0);
+			Geometric::RenderRecttangle(rectangle, color, g_screen);
+
+			SDL_Color textColor = { 255, 128, 0 };
+			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P2 WIN", textColor);
+			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
+			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(3000);
+			for (int im = 0; im < Num_Threat; im++) {
+				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
+				for (int k = 0; k < bullet_list.size(); k++) {
+					p_threat[k].Remove_Bullet(im);
+					p_threat[k].Free();
+				}
+			}
+			return 0;
+		}
+		else if (P2_Player.Get_blood_main() <= 0&&(Mark_P1 > Mark_P2 && time_val == 200) ){
+			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
+			ColorData color(40, 0, 0);
+			Geometric::RenderRecttangle(rectangle, color, g_screen);
+
+			SDL_Color textColor = { 255, 128, 0 };
+			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P1 WIN", textColor);
+			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
+			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(3000);
+			for (int im = 0; im < Num_Threat; im++) {
+				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
+				for (int k = 0; k < bullet_list.size(); k++) {
+					p_threat[k].Remove_Bullet(im);
+					p_threat[k].Free();
+				}
+			}
+			return 0;
+		}
+		//------------------------------------------------------------------
+
 		
 		//------------------Su ly diem----------------
 		std::string str_mark_p1 = "Mark 1 : ";
