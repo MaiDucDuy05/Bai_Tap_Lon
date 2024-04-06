@@ -430,7 +430,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 
 
 		if ((Vitri.y + 50 > rect.y && Vitri.y - 50 < rect.y
-			&& input_type.bullet_Skill_I == 0) || ki_main < 500) {
+			&& input_type.bullet_Skill_I == 0) || ki_main < 250) {
 			if (Vitri.x > rect.x) {
 				status = 0;
 			}

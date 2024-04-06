@@ -480,7 +480,7 @@ int Play(int luachon) {
 	return 1;
 
 }
-int AutoPlay() {
+int Play_Threat() {
 	int dem = 1;
 	 int Mark_P1 = 0;
 	 int Mark_P2 = 0;
@@ -544,6 +544,8 @@ int AutoPlay() {
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
 		SDL_RenderClear(g_screen);
 		g_background.Render(g_screen, NULL);
+		Map map_data = game_map.getMap();
+		game_map.DrawMap(g_screen);
 		// ve nhan vat-----------------------------------------------------
 		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
 			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
@@ -564,9 +566,7 @@ int AutoPlay() {
 				sieunhanr.Render(g_screen);
 		}
 	
-		Map map_data = game_map.getMap();
 		//--------------------------------------------------
-		// 
 		
 		// nhan vat 1
 		
@@ -619,7 +619,6 @@ int AutoPlay() {
 		//--------------------------------------------------
 		//-------------------Su ly Threat-------------------------------
 		game_map.SetMap(map_data);
-		game_map.DrawMap(g_screen);
 		
 		for (int i = 0; i < Num_Threat; i++) {
 			p_threat[i].HOI_SINH();
@@ -671,7 +670,7 @@ int AutoPlay() {
 							p_vuno[k].Render(g_screen);
 							Mark_P2++;
 							SDL_RenderPresent(g_screen);
-							SDL_Delay(400);
+						
 							p_threat[k].Free();
 							p_threat[k].Set_is_threat(false);
 							p_threat[k].set_hoisinh(false);
@@ -700,7 +699,7 @@ int AutoPlay() {
 							p_vuno[k].Render(g_screen);
 							Mark_P1++;
 							SDL_RenderPresent(g_screen);
-							SDL_Delay(400);
+	
 							p_threat[k].Free();
 							p_threat[k].Set_is_threat(false);
 							p_threat[k].set_hoisinh(false);
@@ -761,7 +760,7 @@ int AutoPlay() {
 		for (int tt = 0; tt < Num_Threat; tt++) {
 			bool ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_BigSize().GetRect(), p_threat[tt].GetRect());
 			if (p_player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
-			//if (p_threat[tt].Get_is_threat()) ret_col = false;
+			if (!p_threat[tt].Get_is_threat()) ret_col = false;
 			if (ret_col == true) {
 				p_threat[tt].Set_blood(p_threat[tt].Get_blood() - 30);
 				if (p_threat[tt].Get_blood() <= 0) {
@@ -772,7 +771,6 @@ int AutoPlay() {
 					p_vuno[tt].Render(g_screen);
 					Mark_P1++;
 					SDL_RenderPresent(g_screen);
-					SDL_Delay(400);
 					p_threat[tt].Free();
 					p_threat[tt].Set_is_threat(false);
 					p_threat[tt].set_hoisinh(false);
@@ -794,7 +792,6 @@ int AutoPlay() {
 					p_vuno[tt].Render(g_screen);
 					Mark_P1++;
 					SDL_RenderPresent(g_screen);
-					SDL_Delay(400);
 					p_threat[tt].Free();
 					p_threat[tt].Set_is_threat(false);
 					p_threat[tt].set_hoisinh(false);
@@ -816,7 +813,6 @@ int AutoPlay() {
 					p_vuno[tt].Render(g_screen);
 					Mark_P2++;
 					SDL_RenderPresent(g_screen);
-					SDL_Delay(400);
 					p_threat[tt].Free();
 					p_threat[tt].Set_is_threat(false);
 					p_threat[tt].set_hoisinh(false);
@@ -842,7 +838,6 @@ int AutoPlay() {
 				p_vuno[tt].Render(g_screen);
 				Mark_P2++;
 				SDL_RenderPresent(g_screen);
-				SDL_Delay(400);
 				p_threat[tt].Free();
 				p_threat[tt].Set_is_threat(false);
 				p_threat[tt].set_hoisinh(false);
@@ -914,7 +909,7 @@ int AutoPlay() {
 		//-------------------------------------------------------------------------------------
 		// Su ly game over----------------------------------------------
 
-		if (p_player.Get_blood_main() <= 0||(Mark_P1<Mark_P2&&time_val == 200)) {
+		if (p_player.Get_blood_main() <= 0||(Mark_P1<Mark_P2&&time_val >= 200)) {
 			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
 			ColorData color(40, 0, 0);
 			Geometric::RenderRecttangle(rectangle, color, g_screen);
@@ -935,7 +930,7 @@ int AutoPlay() {
 			}
 			return 0;
 		}
-		else if (P2_Player.Get_blood_main() <= 0&&(Mark_P1 > Mark_P2 && time_val == 200) ){
+		else if (P2_Player.Get_blood_main() <= 0||(Mark_P1 > Mark_P2 && time_val >= 200) ){
 			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
 			ColorData color(40, 0, 0);
 			Geometric::RenderRecttangle(rectangle, color, g_screen);
@@ -980,11 +975,8 @@ int AutoPlay() {
 
 		//----------------------------------------------------------------------------------------
 		
-
 		SDL_RenderPresent(g_screen);
 		SDL_RenderClear(g_screen);
-		
-
 		// huy cac con tro tranh tran bo nho --------------------------
 		p_player.Free();
 		P2_Player.Free();
@@ -1060,7 +1052,7 @@ int main(int argc,char *argv[]){
 		if (kt == 0||kt==2) {
 			if (Play(kt) == 1) break;
 		}
-		else if (AutoPlay() == 1) break;
+		else if (Play_Threat() == 1) break;
 		g_over.Render(g_screen);
 		is_continue = gover_menu.ShowMenu(g_screen, g_font_text_1, DS, 2, x_over, y_over,g_nhacnen[1]);
 		SDL_RenderPresent(g_screen);
