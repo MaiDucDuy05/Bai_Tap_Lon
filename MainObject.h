@@ -119,7 +119,7 @@ private:
 	int ki_main;
 
 	BaseObject P_Image[12];
-	ImpTimer Time_Delay;
+	ImpTimer Time_Delay[2];
 };
 
 

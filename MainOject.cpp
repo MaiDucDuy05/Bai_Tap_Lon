@@ -111,8 +111,10 @@ void MainObject::Show(SDL_Renderer *des){
 	if (input_type.left == 1 || input_type.right == 1 || input_type.bullet_Skill_I == 1
 		||input_type.speed_up==1||input_type.hurt==1){
 		frame++;
-		if(frame==8&&input_type.hurt==1){
-			input_type.hurt = 0; SDL_Delay(300); 
+		if (frame == 8 && input_type.hurt == 1) {
+			if (Time_Delay[1].get_ticks() > 500) {
+				input_type.hurt = 0; Time_Delay[1].start();
+			}
 		}
 	}
 	else frame=0;
@@ -192,14 +194,14 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			}
 			break;
 		case SDLK_l:
-			if(on_ground){
+			if(on_ground&&input_type.hurt==0){
 				input_type.speed_up=1;
 				break;
 			}
 			break;
 		case SDLK_j:
-			if(input_type.defend==0&&Time_Delay.get_ticks()>150){
-				ki_main += 50;
+			if(input_type.defend==0&&Time_Delay[0].get_ticks()>150 && ki_main >= 20) {
+				ki_main -= 50;
 				input_type.bullet_Skill_J = 1;
 			BulletObject *p_bullet = new BulletObject;
 			p_bullet->LoadImag("img//bullet_man.png",screen);
@@ -216,7 +218,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			p_bullet->set_x_val(20);
 			p_bullet->set_is_move(true);
 			p_bullet_list.push_back(p_bullet);
-			Time_Delay.start();
+			Time_Delay[0].start();
 			break;
 			}
 		/*default:
@@ -254,10 +256,11 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			break;
 		}
 	}
-	if (ki_main <= 0) {
+	if (ki_main <= 20) {
 		input_type.bullet_Skill_I = 0;
 		input_type.defend = 0;
 		input_type.bullet_Skill_U = 0;
+		input_type.bullet_Skill_J = 0;
 	}
 }
 

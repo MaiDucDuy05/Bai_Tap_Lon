@@ -1,27 +1,26 @@
-﻿  main.cpp
+﻿  Main_P2_Object.cpp
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(57): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
 c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(69): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.h(8): warning C4005: 'GRAVITY_SPEED' : macro redefinition
-          c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(9) : see previous definition of 'GRAVITY_SPEED'
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(13): warning C4091: 'typedef ' : ignored on left of 'GeometricFormat' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\geometric.h(25): warning C4091: 'typedef ' : ignored on left of 'ColorData' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(120): warning C4553: '==' : operator has no effect; did you intend '='?
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(269): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(288): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(655): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(666): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(684): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(695): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(721): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(767): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(788): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(809): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(834): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(926): warning C4018: '<' : signed/unsigned mismatch
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main.cpp(947): warning C4018: '<' : signed/unsigned mismatch
-  game_map.cpp
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(57): warning C4091: 'typedef ' : ignored on left of 'Input' when no variable is declared
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\common_function.h(69): warning C4091: 'typedef ' : ignored on left of 'Map' when no variable is declared
-  Generating Code...
-c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\mainobject.h(59): warning C4715: 'MainObject::Get_Bullet_Skill_U' : not all control paths return a value
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(130): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(131): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(139): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(140): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(212): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(216): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(271): warning C4018: '<' : signed/unsigned mismatch
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(328): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(329): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(331): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(332): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(337): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(344): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(351): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(352): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(354): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(355): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(360): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(381): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(387): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(454): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
+c:\users\admin\documents\game\game_sdl2.0\game_sdl2.0\main_p2_object.cpp(458): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
   Game_SDL2.0.vcxproj -> C:\Users\admin\Documents\game\Game_SDL2.0\Debug\Game_SDL2.0.exe
