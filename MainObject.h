@@ -86,6 +86,9 @@ public:
 	}
 
 	void ktImage(SDL_Renderer* des);
+	bool get_on_ground() {
+		return on_ground;
+	}
 
 private:
 	//

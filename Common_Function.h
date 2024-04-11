@@ -19,7 +19,7 @@ static  SDL_Event g_event;
 
 static Mix_Chunk * g_sound_main_P1[10];
 static Mix_Chunk * g_sound_main_P2[10];
-static Mix_Chunk * g_nhacnen[2];
+static Mix_Chunk * g_nhacnen[5];
 
 static TTF_Font* g_font_text = NULL;
 static TTF_Font* g_font_text_1 = NULL;

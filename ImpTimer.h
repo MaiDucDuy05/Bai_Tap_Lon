@@ -11,7 +11,6 @@ public:
 
 	int get_ticks();
 	bool Is_Started();
-	bool Is_Paused();
 
 	private:
 

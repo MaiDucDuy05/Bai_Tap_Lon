@@ -51,11 +51,13 @@ bool InitData(){
 		g_sound_main_P2[0]=Mix_LoadWAV("music//Kiem(J).wav");
 		g_sound_main_P2[1]=Mix_LoadWAV("music//Kiem(U).wav");
 		g_sound_main_P2[2]=Mix_LoadWAV("music//Kiem(I).wav");
+
 		g_nhacnen[0]=Mix_LoadWAV("music//Tiengtho.wav");
 		g_nhacnen[1] = Mix_LoadWAV("music//nhacdao.wav");
-		if(g_nhacnen[0]==NULL) success = false;
+		g_nhacnen[2] = Mix_LoadWAV("music//Readygo.wav");
+		g_nhacnen[3] = Mix_LoadWAV("music//Win.mp3");
 		for(int i=0;i<3;i++){
-			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL) success=false;
+			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL||g_nhacnen[i]==NULL) success = false;
 		}
 	}
 	if (TTF_Init() == -1) success = false;
@@ -126,6 +128,9 @@ void close(){
 }
 int Play(int luachon) {
 	bool ret_b;
+	int TT_Over = 1;
+	bool GAME_OVER = false;
+	bool SanSang = true;
 	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
 	ret_b= sieunhanr.LoadImag("img//Sieunhan(r).png",g_screen);
 	if (ret_b == false) return 1;
@@ -163,21 +168,21 @@ int Play(int luachon) {
 	int ret_P1_x = 0;
 	P2_Player.ktImage(g_screen);
 								// vong lap while---------------------------------------------------------------
-	time_val_start = SDL_GetTicks() / 1000;
 	bool is_quit = false;
 	while (!is_quit) {  
 		fps_time.start();
 		//-----------------------------------------------------------------------------------
-		while ( SDL_PollEvent(&g_event)!=0 ) {
-			if (g_event.type == SDL_QUIT) {
-				is_quit = true; break;
+		if (GAME_OVER == false&&SanSang==false) {
+			while (SDL_PollEvent(&g_event) != 0) {
+				if (g_event.type == SDL_QUIT) {
+					is_quit = true; break;
+				}
+				p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
+				if (luachon == 0) P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
 			}
-			p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
-			if(luachon==0) P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
+
+			if (luachon == 2)P2_Player.Auto_(p_player.GetRect(), p_player.Get_Input_type(), g_screen, g_sound_main_P2[0]);
 		}
-
-		if(luachon==2)P2_Player.Auto_(p_player.GetRect(),p_player.Get_Input_type(), g_screen, g_sound_main_P2[0]);
-
 
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
 		SDL_RenderClear(g_screen);
@@ -185,6 +190,32 @@ int Play(int luachon) {
 		Map map_data = game_map.getMap();
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
+
+
+		// Su ly game over----------------------------------------------
+		
+		if (p_player.Get_blood_main() <= 0 || P2_Player.Get_blood_main() <= 0) {
+			GAME_OVER = true;
+			BaseObject game_over;
+			char Over[30];
+			if (TT_Over < 5) {
+				sprintf_s(Over, "Gameover/BKdie%d.png", TT_Over);
+			}
+			else if(TT_Over<15) {
+				sprintf_s(Over, "Gameover/BKdie%d.png", (TT_Over % 2) + 5);
+			}
+			if (TT_Over < 15) {
+				game_over.LoadImag(Over, g_screen);
+				game_over.Render(g_screen);
+				TT_Over++; SDL_Delay(100);
+			}
+			else {
+				TT_Over++;
+				game_over.Free();
+			}
+		}
+		//------------------------------------------------------------------
+
 		// ve nhan vat-----------------------------------------------------
 		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
 			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
@@ -258,8 +289,28 @@ int Play(int luachon) {
 		}
 
 		//--------------------------------------------------
-		
-		
+		// Su ly game over---------------------------------------------- TIEP----------------------
+		if(TT_Over >=16) {
+			BaseObject game_over;
+			Mix_PlayChannel(-1, g_nhacnen[3], 0);
+			game_over.LoadImag("Gameover/KO.png", g_screen);
+			game_over.SetRect(500, 200);
+			game_over.Render(g_screen);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(2000);
+			game_over.LoadImag("Gameover/win.png", g_screen);
+			if (P2_Player.Get_blood_main() <= 0) {
+				game_over.SetRect(50, 100);
+			}
+			else {
+				game_over.SetRect(700, 100);
+			}
+			game_over.Render(g_screen);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(2000); game_over.Free();
+			return 0;
+		}
+
 		//--------------------------------------------------------------SU LY VA CHAM-------------------------------------------
 		SDL_Rect P1_Rect = p_player.GetRect();
 		P1_Rect.w /= 8;
@@ -348,7 +399,7 @@ int Play(int luachon) {
 		if (ret_col == true) {
 			if (P2_Player.get_status() == 1) p_player.set_status(0);
 			else p_player.set_status(1);
-			p_player.Set_blood_main(p_player.Get_blood_main() - 5);
+			p_player.Set_blood_main(p_player.Get_blood_main() - 3);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 		}
@@ -360,7 +411,7 @@ int Play(int luachon) {
 		if (ret_col == true) {
 			if (p_player.GetRect().x < P2_Player.GetRect().x) p_player.set_status(0);
 			else p_player.set_status(1);
-			p_player.Set_blood_main(p_player.Get_blood_main() - 8);
+			p_player.Set_blood_main(p_player.Get_blood_main() - 6);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 
@@ -369,37 +420,7 @@ int Play(int luachon) {
 		//--------------------------------------------------------------------------------------
 		
 
-			// Su ly game over----------------------------------------------
-
-		if (p_player.Get_blood_main() <= 0) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
-			ColorData color(40, 0, 0);
-			Geometric::RenderRecttangle(rectangle, color, g_screen);
-
-			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P2 WIN", textColor);
-			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(3000);
-			return 0;
-		}
-		else if (P2_Player.Get_blood_main() <= 0) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
-			ColorData color(40, 0, 0);
-			Geometric::RenderRecttangle(rectangle, color, g_screen);
-
-			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P1 WIN", textColor);
-			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(3000);
-			return 0;
-		}
-		//------------------------------------------------------------------
+			
 // Ve mau // ki cho nhan vat P1
 		// ve mau
 		
@@ -447,32 +468,58 @@ int Play(int luachon) {
 		//------------------------------------------------------------------------------------
 	
 		//SU ly thoi gian
-		std::string str_time = "Time : ";
-		Uint32 time_val = (SDL_GetTicks() / 1000) - time_val_start;
-		if (time_val % 3 == 1) {
-			p_player.Set_ki_main(p_player.Get_ki_main() + 10);
-			P2_Player.Set_ki_main(P2_Player.Get_ki_main() + 10);
+		if (SanSang == false) {
+			std::string str_time = "Time : ";
+			Uint32 time_val = (SDL_GetTicks() / 1000) - time_val_start;
+			if (time_val % 3 == 1) {
+				p_player.Set_ki_main(p_player.Get_ki_main() + 10);
+				P2_Player.Set_ki_main(P2_Player.Get_ki_main() + 10);
+			}
+			std::string str_val = std::to_string(time_val);
+			str_time += str_val;
+
+			SDL_Color textColor = { 217, 65, 38 };
+
+			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, str_time.c_str(), textColor);
+			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 70, 20, textSurface->w, textSurface->h };
+			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
+			SDL_FreeSurface(textSurface);
+			SDL_DestroyTexture(textTexture);
 		}
-		std::string str_val = std::to_string(time_val);
-		str_time += str_val;
-
-		SDL_Color textColor = { 217, 65, 38 };
-
-		SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text, str_time.c_str(), textColor);
-		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-		SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 70, 20, textSurface->w, textSurface->h };
-		SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-		
 		//-------------------------------------------------------------------------------------
-
+		if (SanSang&&p_player.get_on_ground()) {
+			BaseObject game_start;
+			Mix_PlayChannel(-1,g_nhacnen[2], 0);
+			game_start.LoadImag("Gameover/Ready.png", g_screen);
+			game_start.SetRect(500, 100);
+			game_start.Render(g_screen);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(2000);
+			game_start.LoadImag("Gameover/Go.png", g_screen);
+			////-------------------------------
+			g_background.Render(g_screen);
+			game_map.DrawMap(g_screen);
+			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			suppermenl.Render(g_screen);
+			sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			sieunhanr.Render(g_screen);
+			////-------------------------------
+			game_start.SetRect(550, 100);
+			game_start.Render(g_screen);
+			SDL_RenderPresent(g_screen);
+			SDL_Delay(500);
+			game_start.Free();
+			time_val_start = SDL_GetTicks() / 1000;
+			SanSang = false;
+		}
 		
 		SDL_RenderPresent(g_screen);
 		SDL_RenderClear(g_screen);
 		// huy cac con tro tranh tran bo nho --------------------------
 		p_player.Free();
 		P2_Player.Free();
-		SDL_FreeSurface(textSurface);
-		SDL_DestroyTexture(textTexture);
+		
 
 		int real_imp_time = fps_time.get_ticks();
 		int time_one_frame = 1000 / FRAME_PER_SECOND;
@@ -490,6 +537,7 @@ int Play_Threat() {
 	int dem = 1;
 	 int Mark_P1 = 0;
 	 int Mark_P2 = 0;
+	 bool start_play = false;
 	bool ret_b;
 	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
 	ret_b = sieunhanr.LoadImag("img//Sieunhan(r).png", g_screen);
@@ -624,12 +672,15 @@ int Play_Threat() {
 		//--------------------------------------------------
 		//-------------------Su ly Threat-------------------------------
 		game_map.SetMap(map_data);
-		
 		for (int i = 0; i < Num_Threat; i++) {
 			p_threat[i].HOI_SINH();
 			if (!p_threat[i].Get_is_threat()) {
+				if (start_play == true) {
+					p_vuno[i].SetRect(p_threat[i].GetRect().x, p_threat[i].GetRect().y);
+					p_vuno[i].Render(g_screen);
+				}
 				if (p_threat[i].get_hoisinh()) {
-					Begin_Threat(i);
+					Begin_Threat(i); start_play = true;
 				}
 			}
 			if (p_threat[i].Get_is_threat()) {
@@ -664,8 +715,6 @@ int Play_Threat() {
 					bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p_threat[k].GetRect());
 					if (!p_threat[k].Get_is_threat()) {
 						ret_col = false; 
-						p_vuno[k].SetRect(p_threat[k].GetRect().x, p_threat[k].GetRect().y);
-						p_vuno[k].Render(g_screen);
 					} 
 					if (ret_col) {
 						p_threat[k].Set_blood(p_threat[k].Get_blood() - 10);
@@ -1046,7 +1095,7 @@ int main(int argc,char *argv[]){
 		//menu_screen.Free();
 		// Show Lua Chon Phan choi ------------------------------------------
 		kt = -1;
-		std::string p_luachon[] = { "P1 vs P2","Play Monster","AuTo Play"};
+		std::string p_luachon[] = { "VS Human","VS Monster","VS Com"};
 		int  x_ch[] = { 550,510,490};
 		int y_ch[] = {200,300,400};
 		do {

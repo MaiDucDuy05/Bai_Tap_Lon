@@ -389,6 +389,7 @@ void MainObject::Show_Bullet_Size(SDL_Renderer * screen){
 	Bullet_BigSize.Render(screen);
 	Bullet_BigSize.Free();
 }
+
 void MainObject::Show_Defend(SDL_Renderer* screen) {
 	if (status == WALK_LEFT) {
 		P_Image[10].SetRect(this->rect.x, this->rect.y);
@@ -400,6 +401,7 @@ void MainObject::Show_Defend(SDL_Renderer* screen) {
 	}
 	//p_object_defend.Render(screen);
 }
+
 void MainObject::Show_Bullet_Skill_U(SDL_Renderer* screen){
 	if(input_type.bullet_Skill_U==1) Bullet_Skill_U[0].Render(screen);
 	Bullet_Skill_U[1].Render(screen);

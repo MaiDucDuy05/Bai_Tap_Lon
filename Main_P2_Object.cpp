@@ -118,7 +118,7 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 		input_type.bullet_Skill_J==1||input_type.bullet_Skill_I==1||input_type.hurt==1){
 		frame++;
 		if(frame==8&&input_type.hurt==1){
-			if (Time_Delay[6].get_ticks() > 1000) {
+			if (Time_Delay[6].get_ticks() > 500) {
 				input_type.hurt = 0; Time_Delay[6].start();
 			}
 		}
