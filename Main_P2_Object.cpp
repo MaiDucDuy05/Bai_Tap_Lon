@@ -414,7 +414,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 
 	if (input_type.defend == 0) {
 
-		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x
+		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x&& input_type.bullet_Skill_U==0
 			&& Vitri.y + 100 > rect.y && Vitri.y - 100 < rect.y&&input_type.bullet_Skill_J==0) {
 			if (Vitri.x > rect.x) {
 				status = 0;

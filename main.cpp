@@ -56,6 +56,7 @@ bool InitData(){
 		g_nhacnen[1] = Mix_LoadWAV("music//nhacdao.wav");
 		g_nhacnen[2] = Mix_LoadWAV("music//Readygo.wav");
 		g_nhacnen[3] = Mix_LoadWAV("music//Win.mp3");
+		g_nhacnen[4] = Mix_LoadWAV("music//KO.wav");
 		for(int i=0;i<3;i++){
 			if(g_sound_main_P1[i]==NULL||g_sound_main_P2[i]==NULL||g_nhacnen[i]==NULL) success = false;
 		}
@@ -185,8 +186,10 @@ int Play(int luachon) {
 		}
 
 		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
-		SDL_RenderClear(g_screen);
-		g_background.Render(g_screen, NULL);
+		if (TT_Over < 16) {
+			SDL_RenderClear(g_screen);
+			g_background.Render(g_screen, NULL);
+		}
 		Map map_data = game_map.getMap();
 		game_map.SetMap(map_data);
 		game_map.DrawMap(g_screen);
@@ -195,7 +198,13 @@ int Play(int luachon) {
 		// Su ly game over----------------------------------------------
 		
 		if (p_player.Get_blood_main() <= 0 || P2_Player.Get_blood_main() <= 0) {
-			GAME_OVER = true;
+			GAME_OVER = true; 
+			if (P2_Player.Get_blood_main() <= 0) {
+				P2_Player.Setinput_hurt(1);
+			}
+			else {
+				p_player.Setinput_hurt(1);
+			}
 			BaseObject game_over;
 			char Over[30];
 			if (TT_Over < 5) {
@@ -207,16 +216,34 @@ int Play(int luachon) {
 			if (TT_Over < 15) {
 				game_over.LoadImag(Over, g_screen);
 				game_over.Render(g_screen);
-				TT_Over++; SDL_Delay(100);
+				TT_Over++; SDL_Delay(30);
 			}
-			else {
-				TT_Over++;
-				game_over.Free();
+			else if (TT_Over >= 16) {
+				Mix_PlayChannel(-1, g_nhacnen[3], 0);
+				Mix_PlayChannel(-1, g_nhacnen[4], 0);
+				game_over.LoadImag("Gameover/KO.png", g_screen);
+				game_over.SetRect(500, 200);
+				game_over.Render(g_screen);
+				SDL_RenderPresent(g_screen);
+				SDL_Delay(2000);
+				game_over.LoadImag("Gameover/win.png", g_screen);
+				if (P2_Player.Get_blood_main() <= 0) {
+					game_over.SetRect(50, 100);
+				}
+				else {
+					game_over.SetRect(700, 100);
+				}
+				game_over.Render(g_screen);
+				SDL_RenderPresent(g_screen);
+				SDL_Delay(2000); game_over.Free();
+				return 0;
 			}
+			else TT_Over++;
 		}
-		//------------------------------------------------------------------
+	
 
 		// ve nhan vat-----------------------------------------------------
+		
 		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
 			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
 			suppermenl.Render(g_screen);
@@ -289,28 +316,6 @@ int Play(int luachon) {
 		}
 
 		//--------------------------------------------------
-		// Su ly game over---------------------------------------------- TIEP----------------------
-		if(TT_Over >=16) {
-			BaseObject game_over;
-			Mix_PlayChannel(-1, g_nhacnen[3], 0);
-			game_over.LoadImag("Gameover/KO.png", g_screen);
-			game_over.SetRect(500, 200);
-			game_over.Render(g_screen);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(2000);
-			game_over.LoadImag("Gameover/win.png", g_screen);
-			if (P2_Player.Get_blood_main() <= 0) {
-				game_over.SetRect(50, 100);
-			}
-			else {
-				game_over.SetRect(700, 100);
-			}
-			game_over.Render(g_screen);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(2000); game_over.Free();
-			return 0;
-		}
-
 		//--------------------------------------------------------------SU LY VA CHAM-------------------------------------------
 		SDL_Rect P1_Rect = p_player.GetRect();
 		P1_Rect.w /= 8;
@@ -363,7 +368,7 @@ int Play(int luachon) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
 
-			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
+			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 100);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Set_Move_U(false);
 			P2_Player.Setinput_hurt(1);
@@ -387,7 +392,7 @@ int Play(int luachon) {
 		if (ret_col == true){
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
-			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 10);
+			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			P2_Player.Setinput_hurt(1);
 		}
@@ -405,13 +410,16 @@ int Play(int luachon) {
 		}
 
 		// Su ly va cham Giua SKill I p2 vs Main 1
+		if (P2_Rect.x <= 1) P2_Rect.x = 5;
+		else if (P2_Rect.x >= SCREEN_WIDTH  - 65) {
+			P2_Rect.x = SCREEN_WIDTH - 66; }
 		ret_col = SDLCommonFunc::CheckCollision(P2_Rect, P1_Rect);
 		if (P2_Player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
 		if (p_player.Get_Input_type().defend == 1) ret_col = false;
 		if (ret_col == true) {
 			if (p_player.GetRect().x < P2_Player.GetRect().x) p_player.set_status(0);
 			else p_player.set_status(1);
-			p_player.Set_blood_main(p_player.Get_blood_main() - 6);
+			p_player.Set_blood_main(p_player.Get_blood_main() - 15);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 
@@ -423,7 +431,8 @@ int Play(int luachon) {
 			
 // Ve mau // ki cho nhan vat P1
 		// ve mau
-		
+		if (p_player.Get_blood_main() <= 0) p_player.Set_blood_main(0);
+		if (P2_Player.Get_blood_main() <= 0) P2_Player.Set_blood_main(0);
 		GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main()/3, 20);
 		ColorData color_data1(37, 121, 28);
 		Geometric::RenderRecttangle(rectangle_size1, color_data1, g_screen);
@@ -515,7 +524,6 @@ int Play(int luachon) {
 		}
 		
 		SDL_RenderPresent(g_screen);
-		SDL_RenderClear(g_screen);
 		// huy cac con tro tranh tran bo nho --------------------------
 		p_player.Free();
 		P2_Player.Free();
