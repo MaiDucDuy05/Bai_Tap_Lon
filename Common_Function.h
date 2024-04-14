@@ -20,6 +20,7 @@ static  SDL_Event g_event;
 static Mix_Chunk * g_sound_main_P1[10];
 static Mix_Chunk * g_sound_main_P2[10];
 static Mix_Chunk * g_nhacnen[5];
+static Mix_Chunk* g_sound_rong[3];
 
 static TTF_Font* g_font_text = NULL;
 static TTF_Font* g_font_text_1 = NULL;
@@ -40,7 +41,7 @@ const int COLOR_KEY_B= 180;
 #define MAX_MAP_Y 10
 #define BLANK_TILE 0
 
-#define Num_Threat 1
+#define Num_Threat 4
 typedef struct Input{
 	int left;
 	int right;
