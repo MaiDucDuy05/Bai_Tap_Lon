@@ -10,16 +10,20 @@
 #include"Geometric.h"
 #include"MENU.h"
 #include"ThreatObject.h"
+#include<iostream>
+#include<fstream>
 BaseObject g_background;
 BaseObject menu_BK;
 BaseObject menu_screen;
 MenuObject p_menu;
 ImpTimer fps_time;
 GameMap game_map;
+std::ifstream in;
+std::ofstream out;
 Uint32 time_val_start;
-Threat_Object p_threat[Num_Threat];
 
-BaseObject p_vuno[Num_Threat];
+Threat_Object p_threat[10];
+BaseObject p_vuno[10];
 bool InitData() {
 	bool success = true;
 	int ret = SDL_Init(SDL_INIT_VIDEO);
@@ -83,7 +87,7 @@ int chosen_map() {
 		while (SDL_PollEvent(&m_even)) {
 			switch (m_even.type) {
 			case SDL_QUIT:
-				return 0;
+				return -1;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				x_m = m_even.motion.x;
@@ -101,6 +105,77 @@ int chosen_map() {
 			SDL_RenderPresent(g_screen);
 		}
 	}
+}
+int chosen_threat(int &NUM_Threat,int HIGH_SCORE[]) {
+	MenuObject p_menu_threat;
+	bool ret = menu_BK.LoadImag("img//BK_Threat.png", g_screen);
+	if (ret == false) return 0;
+	std::string Menu_threat[6] = { "+","-","Player_P1","Player_P2","Two Player","High Score"};
+	int dx_threat[6] = { 700,750,500,500,500,500 };
+	int dy_threat[6] = { 120,120,200,300,400,500 };
+	int kt_threat = 0;
+	do {
+		std::string num_threat = std::to_string(NUM_Threat);
+		SDL_Color textColor1 = { 255,255,255 };
+		SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_1, num_threat.c_str(), textColor1);
+		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
+		SDL_Rect dstRect1 = { 600, 120, textSurface->w, textSurface->h };
+		menu_BK.Render(g_screen);
+		SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect1);
+		kt_threat = p_menu_threat.ShowMenu(g_screen, g_font_text_1, Menu_threat, 6, dx_threat, dy_threat, g_nhacnen[1]);
+		if (kt_threat == 0) NUM_Threat++;
+		else if (kt_threat == 1) NUM_Threat--;
+		if (NUM_Threat <= 1) NUM_Threat = 1;
+		else if (NUM_Threat >= 5) NUM_Threat = 5;
+
+		if (kt_threat == 5) {
+			int k = 1;MenuObject p_high_score;
+			in.open("HighScore.txt"); int n; int i = 0;
+			while (in >> n) {
+				HIGH_SCORE[i] = n;
+				i++;
+			}
+			in.close();
+			do {
+				std::string h_score_1 = "Player_1 : " + std::to_string(HIGH_SCORE[0]);
+				std::string h_score_2 = "Player_2 : " + std::to_string(HIGH_SCORE[1]);
+				std::string h_score_3 = "Two Player: " + std::to_string(HIGH_SCORE[2]);
+				SDL_Rect dstRect1, dstRect3, dstRect2;
+
+				SDL_Color textColor1 = { 255,255,255 };
+				SDL_Surface* textSur1 = TTF_RenderText_Solid(g_font_text_1, h_score_1.c_str(), textColor1);
+				SDL_Surface* textSur2 = TTF_RenderText_Solid(g_font_text_1, h_score_2.c_str(), textColor1);
+				SDL_Surface* textSur3 = TTF_RenderText_Solid(g_font_text_1, h_score_3.c_str(), textColor1);
+
+				SDL_Texture* textTex1 = SDL_CreateTextureFromSurface(g_screen, textSur1);
+				SDL_Texture* textTex2 = SDL_CreateTextureFromSurface(g_screen, textSur2);
+				SDL_Texture* textTex3 = SDL_CreateTextureFromSurface(g_screen, textSur3);
+				 
+				 dstRect1.x = 450, dstRect1.y = 150, dstRect1.w = textSur1->w, dstRect1.h = textSur1->h;
+				 dstRect2.x = 450, dstRect2.y = 300, dstRect2.w = textSur2->w, dstRect2.h = textSur2->h;
+				 dstRect3.x = 450, dstRect3.y = 450, dstRect3.w = textSur3->w, dstRect3.h = textSur3->h;
+				menu_BK.Render(g_screen);
+				
+				SDL_RenderCopy(g_screen, textTex1, NULL, &dstRect1);
+				SDL_RenderCopy(g_screen, textTex2, NULL, &dstRect2);
+				SDL_RenderCopy(g_screen, textTex3, NULL, &dstRect3);
+				
+				std::string p_Chu[] = { "EXIT" };
+				int x_m[] = { 1000 };
+				int y_m[] = { 30 };
+				k=p_high_score.ShowMenu(g_screen, g_font_text_1, p_Chu, 1, x_m, y_m, g_nhacnen[1]);
+				
+					SDL_DestroyTexture(textTex1);SDL_FreeSurface(textSur1);
+					SDL_DestroyTexture(textTex2); SDL_FreeSurface(textSur2);
+					SDL_DestroyTexture(textTex3); SDL_FreeSurface(textSur3);
+					if (k == -1) return -1;
+			} while (k > 0);
+			kt_threat = 0; p_high_score.Free();
+		}
+		if (kt_threat == -1) return -1;
+	} while (kt_threat < 2);
+	p_menu_threat.Free();
+	return kt_threat;
 }
 bool LoadBackground(int i) {
 	char c[30];
@@ -159,6 +234,7 @@ int Play(int luachon) {
 
 	int kt;// chon map---------------------------------
 	kt = chosen_map();
+	if (kt == -1) return 1;
 	//---------------------------------------------
 						// Load Map----------------------------------------------
 	if (LoadBackground(kt) == false) return -1;
@@ -403,7 +479,7 @@ int Play(int luachon) {
 		if (ret_col == true) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
-			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
+			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 15);
 			Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			P2_Player.Setinput_hurt(1);
 		}
@@ -561,21 +637,33 @@ int Play_Threat() {
 	bool start_play = false;
 	bool SanSang = true;
 	bool ret_b;
-	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
-	ret_b = sieunhanr.LoadImag("img//Sieunhan(r).png", g_screen);
-	if (ret_b == false) return 1;
-	ret_b = sieunhanl.LoadImag("img//Sieunhan(l).png", g_screen);
-	if (ret_b == false) return 1;
-	ret_b = suppermenr.LoadImag("img//Suppermen(r).png", g_screen);
-	if (ret_b == false) return 1;
-	ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
-	if (ret_b == false) return 1;
-
+	int Num_Threat = 2;
 	int kt;
+	int HIGH_SCORE[3] = { 0,0,0 };
 	//-----------------------------------------------------------------
+	
+	int CHON_TILE_PLAY = chosen_threat(Num_Threat, HIGH_SCORE);
+
+	if (CHON_TILE_PLAY == 4) Num_Threat*=2;
+	if (CHON_TILE_PLAY == -1) return 1;
+	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
+	if (CHON_TILE_PLAY!=2 ) {
+		ret_b = sieunhanr.LoadImag("img//Sieunhan(r).png", g_screen);
+		if (ret_b == false) return 1;
+		ret_b = sieunhanl.LoadImag("img//Sieunhan(l).png", g_screen);
+		if (ret_b == false) return 1;
+	}
+	if (CHON_TILE_PLAY!=3) {
+		ret_b = suppermenr.LoadImag("img//Suppermen(r).png", g_screen);
+		if (ret_b == false) return 1;
+		ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
+		if (ret_b == false) return 1;
+	}
 						// chon map---------------------------------
 	kt = chosen_map();
+	if (kt == -1) return 1;
 	//---------------------------------------------
+	
 						// Load Map----------------------------------------------
 	if (LoadBackground(kt) == false) return -1;
 	char c[30];
@@ -584,26 +672,29 @@ int Play_Threat() {
 
 	game_map.LoadTiles(g_screen);
 	//-----------------------------------------------------------------------------------
+	
 						// Khoi tao nhan vat 1
 	MainObject p_player;
-	p_player.LoadImag("img//Suppermenright.png", g_screen);
-	p_player.Set_clip();
-	p_player.ktImage(g_screen);
-
+	if (CHON_TILE_PLAY != 3) {
+		p_player.LoadImag("img//Suppermenright.png", g_screen);
+		p_player.Set_clip();
+		p_player.ktImage(g_screen);
+	}
 	//Khoi tao nhan vat 2
 	Main_P2_Object P2_Player;
-	P2_Player.LoadImag("img//SieunhanLeft.png", g_screen);
-	P2_Player.Set_clip();
-	int ret_P1_x = 0;
-	P2_Player.ktImage(g_screen);
+		int ret_P1_x = 0;
+	if (CHON_TILE_PLAY != 2) {
+		P2_Player.LoadImag("img//SieunhanLeft.png", g_screen);
+		P2_Player.Set_clip();
+		P2_Player.ktImage(g_screen);
+	}
 	// khot tao vuno
 	for (int i = 0; i < Num_Threat; i++) {
 		p_threat[i].Load_Threat(g_screen);
 		p_threat[i].set_hoisinh(false);
 		p_vuno[i].LoadImag("img//vuno.png", g_screen);
 	}
-
-	// ---------------------------------------------------------------vong lap while
+	// ---------------------------------------------------------------VONG LAP WHILE--------------------------------------------------------
 	time_val_start = SDL_GetTicks() / 1000;
 	bool is_quit = false;
 	while (!is_quit) {
@@ -614,8 +705,8 @@ int Play_Threat() {
 				if (g_event.type == SDL_QUIT) {
 					is_quit = true; break;
 				}
-				p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
-				P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
+				if(CHON_TILE_PLAY !=3) p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
+				if(CHON_TILE_PLAY !=2) P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
 			}
 		}
 
@@ -625,25 +716,28 @@ int Play_Threat() {
 		Map map_data = game_map.getMap();
 		game_map.DrawMap(g_screen);
 		// ve nhan vat-----------------------------------------------------
-		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
-			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
-			suppermenl.Render(g_screen);
+		if (CHON_TILE_PLAY != 3) {
+			if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
+				suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+				suppermenl.Render(g_screen);
+			}
+			else if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 1) {
+				suppermenr.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+				suppermenr.Render(g_screen);
+			}
 		}
-		else if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 1) {
-			suppermenr.SetRect(p_player.GetRect().x, p_player.GetRect().y);
-			suppermenr.Render(g_screen);
+		if (CHON_TILE_PLAY != 2) {
+			if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
+				sieunhanl.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+				if (P2_Player.Get_Input_type().defend == 0)
+					sieunhanl.Render(g_screen);
+			}
+			else if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 1) {
+				sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+				if (P2_Player.Get_Input_type().defend == 0)
+					sieunhanr.Render(g_screen);
+			}
 		}
-		if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
-			sieunhanl.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
-			if (P2_Player.Get_Input_type().defend == 0)
-				sieunhanl.Render(g_screen);
-		}
-		else if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 1) {
-			sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
-			if (P2_Player.Get_Input_type().defend == 0)
-				sieunhanr.Render(g_screen);
-		}
-
 		//--------------------------------------------------
 
 		// nhan vat 1
@@ -655,7 +749,7 @@ int Play_Threat() {
 			p_player.Set_ki_main(p_player.Get_ki_main() - 5);
 		}
 		else {
-			p_player.Show(g_screen);
+			if(CHON_TILE_PLAY!=3) p_player.Show(g_screen);
 			if (!p_player.Get_Move_u()) {
 				ret_P1_x = P2_Player.GetRect().x - 20;
 			}
@@ -683,7 +777,7 @@ int Play_Threat() {
 			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 5);
 		}
 		else {
-			P2_Player.Show(g_screen);
+			if (CHON_TILE_PLAY != 2) P2_Player.Show(g_screen);
 			if (P2_Player.Get_Input_type().bullet_Skill_I == 1) {
 				// Am thanh I
 				P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 20);
@@ -709,13 +803,23 @@ int Play_Threat() {
 				}
 			}
 			if (p_threat[i].Get_is_threat()) {
-				if (i < Num_Threat / 2) {
+				if (CHON_TILE_PLAY == 2) {
 					p_threat[i].Set_goal_x(p_player.GetRect().x / TILE_SIZE);
 					p_threat[i].Set_goal_y((p_player.GetRect().y) / TILE_SIZE);
 				}
-				else {
+				else if (CHON_TILE_PLAY == 3) {
 					p_threat[i].Set_goal_x(P2_Player.GetRect().x / TILE_SIZE);
 					p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE + 1);
+				}
+				else {
+					if (i < Num_Threat / 2) {
+						p_threat[i].Set_goal_x(p_player.GetRect().x / TILE_SIZE);
+						p_threat[i].Set_goal_y((p_player.GetRect().y) / TILE_SIZE);
+					}
+					else {
+						p_threat[i].Set_goal_x(P2_Player.GetRect().x / TILE_SIZE);
+						p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE + 1);
+					}
 				}
 				p_threat[i].Search(p_threat[i].GetRect().x / TILE_SIZE, p_threat[i].GetRect().y / TILE_SIZE, game_map.getMap());
 				p_threat[i].HandleBuller(g_screen);
@@ -803,6 +907,7 @@ int Play_Threat() {
 				//---------------------------------------------------
 
 				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p2_rect);
+				if(CHON_TILE_PLAY==2) ret_col = false;
 				if (P2_Player.Get_Input_type().defend == 1 || P2_Player.Get_Input_type().bullet_Skill_I == 1) ret_col = false;
 				if (ret_col) {
 					if (p_amo->GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
@@ -817,6 +922,7 @@ int Play_Threat() {
 
 				//----------------------------------------------------	
 				ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p1_rect);
+				if (CHON_TILE_PLAY == 3) ret_col = false;
 				if (p_player.Get_Input_type().defend == 1 && ret_col) {
 					ret_col = false;
 					p_threat[im].Remove_Bullet(k);
@@ -923,48 +1029,48 @@ int Play_Threat() {
 
 // Ve mau // ki cho nhan vat P1
 		// ve mau
+		if (CHON_TILE_PLAY != 3) {
+			GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main() / 3, 20);
+			ColorData color_data1(37, 121, 28);
+			Geometric::RenderRecttangle(rectangle_size1, color_data1, g_screen);
 
-		GeometricFormat rectangle_size1(50, 20, p_player.Get_blood_main() / 3, 20);
-		ColorData color_data1(37, 121, 28);
-		Geometric::RenderRecttangle(rectangle_size1, color_data1, g_screen);
+			GeometricFormat outline_size1(50, 20, 501, 22);
+			ColorData color1(37, 121, 28);
+			Geometric::RenderOutline(outline_size1, color1, g_screen);
+			// ve ki
+			if (p_player.Get_ki_main() <= 0) p_player.Set_ki_main(0);
+			if (p_player.Get_ki_main() >= 1500)  p_player.Set_ki_main(1499);
+			GeometricFormat rectangle_size_ki1(50, SCREEN_HEIGHT - 50, p_player.Get_ki_main()/3, 20);
+			ColorData color_data_ki1(0, 162, 232);
+			Geometric::RenderRecttangle(rectangle_size_ki1, color_data_ki1, g_screen);
 
-		GeometricFormat outline_size1(50, 20, 501, 22);
-		ColorData color1(37, 121, 28);
-		Geometric::RenderOutline(outline_size1, color1, g_screen);
-		// ve ki
-		if (p_player.Get_ki_main() <= 0) p_player.Set_ki_main(0);
-		if (p_player.Get_ki_main() >= 1500)  p_player.Set_ki_main(1499);
-		int ki1 = p_player.Get_ki_main() % 500;
-		GeometricFormat rectangle_size_ki1(50, SCREEN_HEIGHT - 50, ki1, 20);
-		ColorData color_data_ki1(0, 162, 232);
-		Geometric::RenderRecttangle(rectangle_size_ki1, color_data_ki1, g_screen);
-
-		GeometricFormat outline_size_ki1(50, SCREEN_HEIGHT - 50, 501, 22);
-		ColorData color_ki1(0, 162, 232);
-		Geometric::RenderOutline(outline_size_ki1, color_ki1, g_screen);
-
+			GeometricFormat outline_size_ki1(50, SCREEN_HEIGHT - 50, 501, 22);
+			ColorData color_ki1(0, 162, 232);
+			Geometric::RenderOutline(outline_size_ki1, color_ki1, g_screen);
+		}
 
 		//Ve mau // ki cho nhan vat P2
 				// ve mau 
+		if (CHON_TILE_PLAY != 2) {
+			GeometricFormat rectangle_size2(SCREEN_WIDTH / 2 + 100, 20, P2_Player.Get_blood_main() / 3, 20);
+			ColorData color_data2(37, 121, 28);
+			Geometric::RenderRecttangle(rectangle_size2, color_data2, g_screen);
 
-		GeometricFormat rectangle_size2(SCREEN_WIDTH / 2 + 100, 20, P2_Player.Get_blood_main() / 3, 20);
-		ColorData color_data2(37, 121, 28);
-		Geometric::RenderRecttangle(rectangle_size2, color_data2, g_screen);
+			GeometricFormat outline_size2(SCREEN_WIDTH / 2 + 100, 20, 501, 22);
+			ColorData color2(37, 121, 28);
+			Geometric::RenderOutline(outline_size2, color2, g_screen);
+			// ve ki
+			if (P2_Player.Get_ki_main() <= 0) P2_Player.Set_ki_main(0);
+			if (P2_Player.Get_ki_main() >= 1500)  P2_Player.Set_ki_main(1499);
+			
+			GeometricFormat rectangle_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, P2_Player.Get_ki_main() /3 , 20);
+			ColorData color_data_ki2(0, 162, 232);
+			Geometric::RenderRecttangle(rectangle_size_ki2, color_data_ki2, g_screen);
 
-		GeometricFormat outline_size2(SCREEN_WIDTH / 2 + 100, 20, 501, 22);
-		ColorData color2(37, 121, 28);
-		Geometric::RenderOutline(outline_size2, color2, g_screen);
-		// ve ki
-		if (P2_Player.Get_ki_main() <= 0) P2_Player.Set_ki_main(0);
-		if (P2_Player.Get_ki_main() >= 1500)  P2_Player.Set_ki_main(1499);
-		int ki2 = P2_Player.Get_ki_main() % 500;
-		GeometricFormat rectangle_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, ki2, 20);
-		ColorData color_data_ki2(0, 162, 232);
-		Geometric::RenderRecttangle(rectangle_size_ki2, color_data_ki2, g_screen);
-
-		GeometricFormat outline_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, 501, 22);
-		ColorData color_ki2(0, 162, 232);
-		Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
+			GeometricFormat outline_size_ki2(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50, 501, 22);
+			ColorData color_ki2(0, 162, 232);
+			Geometric::RenderOutline(outline_size_ki2, color_ki2, g_screen);
+		}
 		//------------------------------------------------------------------------------------
 		//SU ly thoi gian
 
@@ -1015,15 +1121,16 @@ int Play_Threat() {
 
 		// Su ly game over----------------------------------------------
 
-		if (p_player.Get_blood_main() <= 0 || (Mark_P1 < Mark_P2 && time_val >= 200)) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
+		if ((p_player.Get_blood_main() <= 0 || P2_Player.Get_blood_main() <= 0)||( time_val >= 200)) {
+			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 400, 100, 800, 150);
 			ColorData color(40, 0, 0);
 			Geometric::RenderRecttangle(rectangle, color, g_screen);
 
 			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P2 WIN", textColor);
+			std::string Score = "SCORE: " + std::to_string(Mark_P1 + Mark_P2);
+			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2,Score.c_str(), textColor);
 			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
+			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 300, 100, textSurface->w, textSurface->h };
 			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
 			SDL_RenderPresent(g_screen);
 			SDL_Delay(3000);
@@ -1034,51 +1141,56 @@ int Play_Threat() {
 					p_threat[k].Free();
 				}
 			}
-			return 0;
-		}
-		else if (P2_Player.Get_blood_main() <= 0 || (Mark_P1 > Mark_P2 && time_val >= 200)) {
-			GeometricFormat rectangle(SCREEN_WIDTH / 2 - 180, 100, 500, 150);
-			ColorData color(40, 0, 0);
-			Geometric::RenderRecttangle(rectangle, color, g_screen);
-
-			SDL_Color textColor = { 255, 128, 0 };
-			SDL_Surface* textSurface = TTF_RenderText_Solid(g_font_text_2, "P1 WIN", textColor);
-			SDL_Texture* textTexture = SDL_CreateTextureFromSurface(g_screen, textSurface);
-			SDL_Rect dstRect = { SCREEN_WIDTH / 2 - 150, 100, textSurface->w, textSurface->h };
-			SDL_RenderCopy(g_screen, textTexture, NULL, &dstRect);
-			SDL_RenderPresent(g_screen);
-			SDL_Delay(3000);
-			for (int im = 0; im < Num_Threat; im++) {
-				std::vector<BulletObject*> bullet_list = p_threat[im].get_bullet_list();
-				for (int k = 0; k < bullet_list.size(); k++) {
-					p_threat[k].Remove_Bullet(im);
-					p_threat[k].Free();
-				}
+			out.open("HighScore.txt");
+			if (CHON_TILE_PLAY == 2) {
+				if (Mark_P1 > HIGH_SCORE[0]) out << Mark_P1 << std::endl;
+				else out << HIGH_SCORE[0]<<std::endl;
+				out << HIGH_SCORE[1] << std::endl;
+				out << HIGH_SCORE[2] << std::endl;
 			}
+			else if (CHON_TILE_PLAY == 3) {
+				out << HIGH_SCORE[0] << std::endl;
+				if (Mark_P2 > HIGH_SCORE[1]) out << Mark_P2 << std::endl;
+				else out << HIGH_SCORE[1] << std::endl;
+				out << HIGH_SCORE[2] << std::endl;
+			}
+			else {
+				out << HIGH_SCORE[0] << std::endl;
+				out << HIGH_SCORE[1] << std::endl;
+				if (Mark_P1+Mark_P2 > HIGH_SCORE[0]) out << Mark_P1+Mark_P1 << std::endl;
+				else out << HIGH_SCORE[2] << std::endl;
+			}
+			out.close();
 			return 0;
 		}
 		//------------------------------------------------------------------
 
 
 		//------------------Su ly diem----------------
-		std::string str_mark_p1 = "Mark 1 : ";
-		std::string mark1_val = std::to_string(Mark_P1);
-		str_mark_p1 += mark1_val;
-		SDL_Color textColor1 = { 255,255,255 };
-		SDL_Surface* textSurface_mark1 = TTF_RenderText_Solid(g_font_text, str_mark_p1.c_str(), textColor1);
-		SDL_Texture* textTexture_mark1 = SDL_CreateTextureFromSurface(g_screen, textSurface_mark1);
-		SDL_Rect dstRect1 = { 170, 60, textSurface_mark1->w, textSurface_mark1->h };
-		SDL_RenderCopy(g_screen, textTexture_mark1, NULL, &dstRect1);
-
-		std::string str_mark_p2 = "Mark 2 : ";
-		std::string mark2_val = std::to_string(Mark_P2);
-		str_mark_p2 += mark2_val;
-		SDL_Color textColor2 = { 255,255, 255 };
-		SDL_Surface* textSurface_mark2 = TTF_RenderText_Solid(g_font_text, str_mark_p2.c_str(), textColor2);
-		SDL_Texture* textTexture_mark2 = SDL_CreateTextureFromSurface(g_screen, textSurface_mark2);
-		SDL_Rect dstRect2 = { SCREEN_WIDTH / 2 + 170, 60, textSurface_mark2->w, textSurface_mark2->h };
-		SDL_RenderCopy(g_screen, textTexture_mark2, NULL, &dstRect2);
-
+		if (CHON_TILE_PLAY != 3) {
+			std::string str_mark_p1 = "Mark 1 : ";
+			std::string mark1_val = std::to_string(Mark_P1);
+			str_mark_p1 += mark1_val;
+			SDL_Color textColor1 = { 255,255,255 };
+			SDL_Surface* textSurface_mark1 = TTF_RenderText_Solid(g_font_text, str_mark_p1.c_str(), textColor1);
+			SDL_Texture* textTexture_mark1 = SDL_CreateTextureFromSurface(g_screen, textSurface_mark1);
+			SDL_Rect dstRect1 = { 170, 60, textSurface_mark1->w, textSurface_mark1->h };
+			SDL_RenderCopy(g_screen, textTexture_mark1, NULL, &dstRect1);
+			SDL_FreeSurface(textSurface_mark1);
+			SDL_DestroyTexture(textTexture_mark1);
+		}
+		if (CHON_TILE_PLAY != 2) {
+			std::string str_mark_p2 = "Mark 2 : ";
+			std::string mark2_val = std::to_string(Mark_P2);
+			str_mark_p2 += mark2_val;
+			SDL_Color textColor2 = { 255,255, 255 };
+			SDL_Surface* textSurface_mark2 = TTF_RenderText_Solid(g_font_text, str_mark_p2.c_str(), textColor2);
+			SDL_Texture* textTexture_mark2 = SDL_CreateTextureFromSurface(g_screen, textSurface_mark2);
+			SDL_Rect dstRect2 = { SCREEN_WIDTH / 2 + 170, 60, textSurface_mark2->w, textSurface_mark2->h };
+			SDL_RenderCopy(g_screen, textTexture_mark2, NULL, &dstRect2);
+			SDL_FreeSurface(textSurface_mark2);
+			SDL_DestroyTexture(textTexture_mark2);
+		}
 		//----------------------------------------------------------------------------------------
 
 		SDL_RenderPresent(g_screen);
@@ -1088,10 +1200,6 @@ int Play_Threat() {
 		P2_Player.Free();
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(textTexture);
-		SDL_FreeSurface(textSurface_mark1);
-		SDL_DestroyTexture(textTexture_mark1);
-		SDL_FreeSurface(textSurface_mark2);
-		SDL_DestroyTexture(textTexture_mark2);
 
 		// su ly toc do game 
 		int real_imp_time = fps_time.get_ticks();
@@ -1121,7 +1229,7 @@ int main(int argc, char* argv[]) {
 		std::string p_chu[] = { "Play Game","Exit","Help" };
 		int x_menu[] = { 550,510,470 };
 		int y_menu[] = { 200,300,400 };
-		int kt = -1;
+		int kt = -2;
 		do {
 			if (kt == 2) {
 				int k = -1;
@@ -1141,21 +1249,22 @@ int main(int argc, char* argv[]) {
 			}
 			menu_screen.Render(g_screen);
 			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu, g_nhacnen[1]);
-		} while (kt == -1 || kt == 2);
-		if (kt == 1) {
+		} while (kt == -2 || kt == 2);
+		if (kt == -1||kt==1) {
 			return 0;
 		}
 		//menu_screen.Free();
 		// Show Lua Chon Phan choi ------------------------------------------
-		kt = -1;
+		kt = -2;
 		std::string p_luachon[] = { "VS Human","VS Monster","VS Com" };
 		int  x_ch[] = { 550,510,490 };
 		int y_ch[] = { 200,300,400 };
 		do {
 			menu_screen.Render(g_screen);
 			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_luachon, 3, x_ch, y_ch, g_nhacnen[1]);
-		} while (kt < 0);
+		} while (kt < -1);
 		p_menu.Free();
+		if (kt == -1) break;
 		if (kt == 0 || kt == 2) {
 			if (Play(kt) == 1) break;
 		}

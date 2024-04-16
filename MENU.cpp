@@ -29,7 +29,7 @@ int MenuObject::ShowMenu(SDL_Renderer* des, TTF_Font* font,const std::string DAN
 		while (SDL_PollEvent(&m_even)) {
 			switch (m_even.type) {
 			case SDL_QUIT:
-				return 1;
+				return -1;
 				break;
 			case SDL_MOUSEMOTION:
 				x_m = m_even.motion.x;

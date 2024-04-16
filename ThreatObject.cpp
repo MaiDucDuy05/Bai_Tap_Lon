@@ -147,14 +147,14 @@ void Threat_Object::Load_Threat(SDL_Renderer *screen) {
 }
 void Threat_Object::Render_Threat(SDL_Renderer* screen, int STT) {
     if (status == 0) {
-        Iamge_Threatl[STT].Render(screen);
         for(int i=0;i<4;i++)
-        Iamge_Threatl[i].SetRect(rect.x, rect.y);
+        Iamge_Threatl[i].SetRect(rect.x, rect.y); 
+        Iamge_Threatl[STT].Render(screen);
     }
     else {
-        Iamge_Threatr[STT].Render(screen);
         for(int i=0;i<4;i++)
         Iamge_Threatr[i].SetRect(rect.x, rect.y);
+        Iamge_Threatr[STT].Render(screen);
     }
 
 }
