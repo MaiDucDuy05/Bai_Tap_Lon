@@ -305,6 +305,7 @@ int Play(int luachon) {
 				p_game_over[(TT_Over)%2 + 4].Render(g_screen); SDL_Delay(30); TT_Over++;
 			}
 			else if (TT_Over >= 16) {
+				Mix_HaltChannel(Mix_PlayChannel(-1, g_nhacnen[0], 0));
 				Mix_PlayChannel(-1, g_nhacnen[3], 0);
 				Mix_PlayChannel(-1, g_nhacnen[4], 0);
 				game_over.LoadImag("Gameover/KO.png", g_screen);
@@ -391,7 +392,7 @@ int Play(int luachon) {
 			if (P2_Player.Get_Input_type().bullet_Skill_U == 1) {
 				// Am thanh  U
 				P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 10);
-				Mix_PlayChannel(-1, g_sound_main_P2[1], 0);
+				 Mix_PlayChannel(-1, g_sound_main_P2[1], 0);
 				P2_Player.SetRect(p_player.GetRect().x, p_player.GetRect().y - 50);
 			}
 			else if (P2_Player.Get_Input_type().bullet_Skill_I == 1) {
@@ -419,7 +420,7 @@ int Play(int luachon) {
 					if (p_amo->GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 					else P2_Player.set_status(1);
 					P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 10);
-					Mix_PlayChannel(-1, g_nhacnen[0], 0);
+					if (TT_Over < 10)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 					P2_Player.Setinput_hurt(1);
 					SDL_RenderPresent(g_screen);
 					p_player.Remove_Bullet(im);
@@ -440,7 +441,7 @@ int Play(int luachon) {
 					if (p_amo->GetRect().x > p_player.GetRect().x) p_player.set_status(0);
 					else p_player.set_status(1);
 					p_player.Set_blood_main(p_player.Get_blood_main() - 10);
-					Mix_PlayChannel(-1, g_nhacnen[0], 0);
+					if(TT_Over<10) Mix_PlayChannel(-1, g_nhacnen[0], 0);
 					p_player.Setinput_hurt(1);
 					SDL_RenderPresent(g_screen);
 					P2_Player.Remove_Bullet(im);
@@ -456,7 +457,7 @@ int Play(int luachon) {
 			else P2_Player.set_status(1);
 
 			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 100);
-			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			if (TT_Over < 10)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Set_Move_U(false);
 			P2_Player.Setinput_hurt(1);
 
@@ -467,7 +468,7 @@ int Play(int luachon) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
 			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 20);
-			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			if (TT_Over < 10)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Set_Move_U(false);
 			P2_Player.Setinput_hurt(1);
 
@@ -480,7 +481,7 @@ int Play(int luachon) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
 			else P2_Player.set_status(1);
 			P2_Player.Set_blood_main(P2_Player.Get_blood_main() - 15);
-			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			if (TT_Over < 10)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			P2_Player.Setinput_hurt(1);
 		}
 
@@ -492,7 +493,7 @@ int Play(int luachon) {
 			if (P2_Player.get_status() == 1) p_player.set_status(0);
 			else p_player.set_status(1);
 			p_player.Set_blood_main(p_player.Get_blood_main() - 3);
-			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			if (TT_Over < 10)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 		}
 
@@ -508,7 +509,7 @@ int Play(int luachon) {
 			if (p_player.GetRect().x < P2_Player.GetRect().x) p_player.set_status(0);
 			else p_player.set_status(1);
 			p_player.Set_blood_main(p_player.Get_blood_main() - 15);
-			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			if (TT_Over < 1)  Mix_PlayChannel(-1, g_nhacnen[0], 0);
 			p_player.Setinput_hurt(1);
 
 		}
