@@ -69,6 +69,7 @@ bool InitData() {
 		}
 		Mix_VolumeChunk(g_sound_main_P2[2], MIX_MAX_VOLUME / 4);
 		Mix_VolumeChunk(g_nhacnen[1], MIX_MAX_VOLUME / 2);
+		
 	}
 	if (TTF_Init() == -1) success = false;
 	g_font_text = TTF_OpenFont("fornchu.ttf", 30);
@@ -334,10 +335,12 @@ int Play(int luachon) {
 
 		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
 			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			if (p_player.Get_Input_type().defend == 0)
 			suppermenl.Render(g_screen);
 		}
 		else if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 1) {
 			suppermenr.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			if (p_player.Get_Input_type().defend == 0)
 			suppermenr.Render(g_screen);
 		}
 		if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
@@ -359,7 +362,7 @@ int Play(int luachon) {
 			p_player.Show_Defend(g_screen);
 			p_player.Set_ki_main(p_player.Get_ki_main() - 5);
 		}
-		p_player.Show(g_screen);
+		else p_player.Show(g_screen);
 		if (!p_player.Get_Move_u()) {
 			ret_P1_x = P2_Player.GetRect().x - 20;
 		}
@@ -1147,19 +1150,19 @@ int Play_Threat() {
 				if (Mark_P1 > HIGH_SCORE[0]) out << Mark_P1 << std::endl;
 				else out << HIGH_SCORE[0]<<std::endl;
 				out << HIGH_SCORE[1] << std::endl;
-				out << HIGH_SCORE[2] << std::endl;
+				out << HIGH_SCORE[2];
 			}
 			else if (CHON_TILE_PLAY == 3) {
 				out << HIGH_SCORE[0] << std::endl;
 				if (Mark_P2 > HIGH_SCORE[1]) out << Mark_P2 << std::endl;
 				else out << HIGH_SCORE[1] << std::endl;
-				out << HIGH_SCORE[2] << std::endl;
+				out << HIGH_SCORE[2];
 			}
 			else {
 				out << HIGH_SCORE[0] << std::endl;
 				out << HIGH_SCORE[1] << std::endl;
-				if (Mark_P1+Mark_P2 > HIGH_SCORE[0]) out << Mark_P1+Mark_P1 << std::endl;
-				else out << HIGH_SCORE[2] << std::endl;
+				if (Mark_P1 + Mark_P2 > HIGH_SCORE[2]) out << Mark_P1 + Mark_P1;
+				else out << HIGH_SCORE[2];
 			}
 			out.close();
 			return 0;

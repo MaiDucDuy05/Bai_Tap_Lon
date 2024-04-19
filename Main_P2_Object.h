@@ -101,6 +101,7 @@ private:
 	ImpTimer Time_Delay[10];
 	bool SKILL_U;
 
+	bool is_wall;
 };
 
 #endif

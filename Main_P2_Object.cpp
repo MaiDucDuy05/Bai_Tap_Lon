@@ -20,6 +20,7 @@ Main_P2_Object::Main_P2_Object(){
 	input_type.empty = 1;
 	map_x = 0; map_y = 0; SKILL_U = false;
 	for (int i = 0; i <= 6; i++) Time_Delay[i].start();
+	is_wall = false;
 	
 }
 Main_P2_Object::~Main_P2_Object(){
@@ -186,13 +187,13 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 				break;
 			}
 		case SDLK_KP_4:
-			if (ki_main >= 200  && input_type.hurt == 0 ) {
+			if (ki_main >= 200  && input_type.hurt == 0 && input_type.defend==0 ) {
 				input_type.bullet_Skill_U = 1;
 		
 			}
 			break;
 		case SDLK_KP_6:
-			if(ki_main>=300&& input_type.bullet_Skill_I == 0)
+			if(ki_main>=300&& input_type.bullet_Skill_I == 0 && input_type.defend == 0)
 				input_type.bullet_Skill_I=1;
 			break;
 		case SDLK_KP_1:
@@ -324,6 +325,7 @@ void Main_P2_Object:: Check_map(Map &map_data){
 	int y2=0;
 
 	int height_min = height_frame < TILE_SIZE ? height_frame: TILE_SIZE;
+	is_wall = false;
 
 	x1=(x_pos + x_val)/TILE_SIZE;
 	x2=(x_pos + x_val+width_frame_-1)/TILE_SIZE;
@@ -336,13 +338,13 @@ void Main_P2_Object:: Check_map(Map &map_data){
 			if(map_data.tile[y1][x2]!=BLANK_TILE||map_data.tile[y2][x2]!=BLANK_TILE){
 				x_pos = x2*TILE_SIZE;
 				x_pos -= width_frame_+1;
-				x_val=0;
+				x_val = 0; is_wall = true;
 			}
 		}
 		else if(x_val<0){
 			if(map_data.tile[y1][x1]!=BLANK_TILE||map_data.tile[y2][x1]!=BLANK_TILE){
 				x_pos = (x1+1)*TILE_SIZE;
-				x_val=0;
+				x_val=0; is_wall = true;
 			}
 		}
 	}
@@ -486,7 +488,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 			input_type.speed_up = 0;
 			if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
 				&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
-				if (Vitri.y < rect.y - 50) {
+				if (Vitri.y < rect.y - 50||is_wall) {
 					if (Vitri.x > rect.x) {
 						status = 0;
 					}

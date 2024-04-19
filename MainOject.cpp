@@ -79,7 +79,7 @@ void MainObject::Show(SDL_Renderer *des){
 		else if(input_type.left == 1) {
 			i = 4;
 		}
-		else {
+		else if(input_type.defend==0) {
 			input_type.empty = 1;
 		}
 	}
@@ -101,7 +101,7 @@ void MainObject::Show(SDL_Renderer *des){
 		else if(input_type.right == 1){
 			i = 9;
 		}
-		else {
+		else if (input_type.defend == 0) {
 			input_type.empty = 1;
 		}
 	}
@@ -164,12 +164,7 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 			case SDLK_i:
 				if (ki_main >= 500&&input_type.bullet_Skill_I==0&&input_type.defend == 0) {
 					input_type.bullet_Skill_I = 1;
-					if (status == WALK_LEFT) {
-						Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
-					}
-					else {
-						Bullet_BigSize.SetRect(this->rect.x + width_frame_, this->rect.y - 50);
-					}
+					
 				}
 			break;
 		case SDLK_u:
@@ -267,27 +262,28 @@ void MainObject::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chu
 void MainObject:: Doplayer(Map &map_data){
 	x_val=0;
 	y_val+= GRAVITY_SPEED;
-
-	if(y_val>= MAX_FALL_SPEED ){
-		y_val=MAX_FALL_SPEED;
-	}
-	if(input_type.left==1){
-		x_val-=PLAYER_SPEED;
-	}
-	else if(input_type.right==1){
-		x_val+=PLAYER_SPEED;
-	}
-	else if(input_type.speed_up==1){
-			if(status==WALK_LEFT) x_val-=PLAYER_SPEED_UP;
-			else x_val+=PLAYER_SPEED_UP;
+	if (input_type.defend == 0) {
+		if (y_val >= MAX_FALL_SPEED) {
+			y_val = MAX_FALL_SPEED;
 		}
-	else if(input_type.hurt==1){
-		if(status==WALK_LEFT) x_val+=30;
-		else x_val-=30;
-	}
-	if(input_type.jump==1){
-		if(on_ground) y_val-= PLAYER_JUMP;
-		input_type.jump=0;
+		if (input_type.left == 1) {
+			x_val -= PLAYER_SPEED;
+		}
+		else if (input_type.right == 1) {
+			x_val += PLAYER_SPEED;
+		}
+		else if (input_type.speed_up == 1) {
+			if (status == WALK_LEFT) x_val -= PLAYER_SPEED_UP;
+			else x_val += PLAYER_SPEED_UP;
+		}
+		else if (input_type.hurt == 1) {
+			if (status == WALK_LEFT) x_val += 30;
+			else x_val -= 30;
+		}
+		if (input_type.jump == 1) {
+			if (on_ground) y_val -= PLAYER_JUMP;
+			input_type.jump = 0;
+		}
 	}
 	Check_map(map_data);
 	//if (y_pos > 300) y_pos = 300;
@@ -386,6 +382,12 @@ void MainObject:: HandleBuller(SDL_Renderer * des){
 void MainObject::Show_Bullet_Size(SDL_Renderer * screen){
 	if(status==1) Bullet_BigSize.LoadImag("img//DanbanLeft.png", screen);
 	else Bullet_BigSize.LoadImag("img//DanbanRight.png", screen);
+	if (status == WALK_LEFT) {
+		Bullet_BigSize.SetRect(this->rect.x - Bullet_BigSize.GetRect().w, this->rect.y - 50);
+	}
+	else {
+		Bullet_BigSize.SetRect(this->rect.x + width_frame_, this->rect.y - 50);
+	}
 	Bullet_BigSize.Render(screen);
 	Bullet_BigSize.Free();
 }
