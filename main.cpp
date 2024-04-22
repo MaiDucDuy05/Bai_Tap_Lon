@@ -388,6 +388,7 @@ int Play(int luachon) {
 		P2_Player.HandleBuller(g_screen);
 		if (P2_Player.Get_Input_type().defend == 1) {
 			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 5);
+			P2_Player.Show_Defend(g_screen);
 		}
 		else {
 			P2_Player.Show(g_screen);
@@ -630,7 +631,6 @@ int Play(int luachon) {
 		}
 
 	}
-
 	return 1;
 
 }
@@ -779,6 +779,7 @@ int Play_Threat() {
 		P2_Player.HandleBuller(g_screen);
 		if (P2_Player.Get_Input_type().defend == 1) {
 			P2_Player.Set_ki_main(P2_Player.Get_ki_main() - 5);
+			P2_Player.Show_Defend(g_screen);
 		}
 		else {
 			if (CHON_TILE_PLAY != 2) P2_Player.Show(g_screen);
@@ -813,7 +814,7 @@ int Play_Threat() {
 				}
 				else if (CHON_TILE_PLAY == 3) {
 					p_threat[i].Set_goal_x(P2_Player.GetRect().x / TILE_SIZE);
-					p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE + 1);
+					p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE );
 				}
 				else {
 					if (i < Num_Threat / 2) {
@@ -822,7 +823,7 @@ int Play_Threat() {
 					}
 					else {
 						p_threat[i].Set_goal_x(P2_Player.GetRect().x / TILE_SIZE);
-						p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE + 1);
+						p_threat[i].Set_goal_y((P2_Player.GetRect().y) / TILE_SIZE );
 					}
 				}
 				p_threat[i].Search(p_threat[i].GetRect().x / TILE_SIZE, p_threat[i].GetRect().y / TILE_SIZE, game_map.getMap());
@@ -1217,6 +1218,325 @@ int Play_Threat() {
 	}
 	return 1;
 }
+int Play_Huongdan() {
+	bool ret_b;
+	BaseObject sieunhanr, sieunhanl, suppermenr, suppermenl;
+	BaseObject p_exit;
+	p_exit.LoadImag("img/huong_dan/Exit.png", g_screen);
+	p_exit.SetRect(1100, 20);
+	ret_b = sieunhanr.LoadImag("img//Sieunhan(r).png", g_screen);
+	if (ret_b == false) return 1;
+	ret_b = sieunhanl.LoadImag("img//Sieunhan(l).png", g_screen);
+	if (ret_b == false) return 1;
+	ret_b = suppermenr.LoadImag("img//Suppermen(r).png", g_screen);
+	if (ret_b == false) return 1;
+	ret_b = suppermenl.LoadImag("img//Suppermen(l).png", g_screen);
+	if (ret_b == false) return 1;
+	BaseObject p_nv_huongdan;
+	p_nv_huongdan.LoadImag("img/huong_dan/nv_huongdan.png", g_screen);
+
+	//-----------------------------------------------------------------
+
+	ImpTimer Time_Delay;
+
+	//---------------------------------------------
+						// Load Map----------------------------------------------
+	if (LoadBackground(1) == false) return -1;
+	game_map.LoadMap("map/map5.txt");
+	game_map.LoadTiles(g_screen);
+	//-----------------------------------------------------------------------------------
+						// Khoi tao nhan vat 1
+	MainObject p_player;
+	p_player.LoadImag("img//Suppermenright.png", g_screen);
+	p_player.Set_clip();
+	p_player.ktImage(g_screen);
+
+	//Khoi tao nhan vat 2
+	Main_P2_Object P2_Player;
+	P2_Player.LoadImag("img//SieunhanLeft.png", g_screen);
+	P2_Player.Set_clip();
+	int ret_P1_x = 0;
+	P2_Player.ktImage(g_screen);
+	BaseObject p_huongdan[4];
+	BaseObject p_goi_y[4];
+	p_huongdan[0].LoadImag("img/huong_dan/hd1.png", g_screen);
+	p_goi_y[0].LoadImag("img/huong_dan/goiy1.png", g_screen);
+	p_huongdan[1].LoadImag("img/huong_dan/hd2.png", g_screen);
+	p_goi_y[1].LoadImag("img/huong_dan/goiy2.png", g_screen);
+
+	BaseObject p_muiten;
+	p_muiten.LoadImag("img/huong_dan/Muiten.png", g_screen);
+	int dx_muiten[10] = { 750,670,558,650,595,590,750,760};
+	int dy_muiten[10] = { 400,340,400,400,340,430,340,430};
+	// vong lap while---------------------------------------------------------------
+	bool is_quit = false;
+	int d[11] = { 250,225,200,175,150,125,100,75,50,25,0};
+	int dy = 0; bool start_game = false;
+	int Status_huongdan = 0;
+	while (!is_quit) {
+		fps_time.start();
+		//-----------------------------------------------------------------------------------
+		while (SDL_PollEvent(&g_event) != 0) {
+			if (g_event.type == SDL_QUIT) {
+				is_quit = true; break;
+			}
+			if (g_event.type == SDL_MOUSEBUTTONDOWN) {
+				int mouseX, mouseY;
+				Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+				for (int i = 0; i < 4; i++) {
+					if (SDLCommonFunc::Checkvitri(mouseX, mouseY, p_exit.GetRect())) return 0;
+				}
+			}p_player.HandeInputAction(g_event, g_screen, g_sound_main_P1[0]);
+			//P2_Player.HandeInputAction(g_event, g_screen, g_sound_main_P2[0]);
+		}
+
+		SDL_SetRenderDrawColor(g_screen, 255, 255, 255, 255);
+
+		SDL_RenderClear(g_screen);
+		g_background.Render(g_screen, NULL);
+
+		Map map_data = game_map.getMap();
+		game_map.SetMap(map_data);
+		game_map.DrawMap(g_screen);
+		p_exit.Render(g_screen);
+		if (p_player.get_on_ground() && start_game == false) {
+			Time_Delay.start();
+			start_game = true;
+		}
+		if (start_game) {
+			if (Status_huongdan == 10) {
+				Status_huongdan = 4;
+				dy = 0;
+			}
+			p_nv_huongdan.SetRect(650, 250 - d[dy]);
+			p_nv_huongdan.Render(g_screen);
+			dy++;
+			if (dy >= 10) dy = 10;
+			if (Status_huongdan < 4) {
+				p_huongdan[0].SetRect(500, 400);
+				if (dy == 10) p_huongdan[0].Render(g_screen);
+
+				p_goi_y[0].SetRect(700, 20);
+				if (dy == 10) p_goi_y[0].Render(g_screen);
+			}
+			else {
+				p_huongdan[1].SetRect(500, 400);
+				if (dy == 10) p_huongdan[1].Render(g_screen);
+
+				p_goi_y[1].SetRect(700, 20);
+				if (dy == 10) p_goi_y[1].Render(g_screen);
+			}
+
+			p_muiten.SetRect(dx_muiten[Status_huongdan], dy_muiten[Status_huongdan]);
+			if (dy == 10)p_muiten.Render(g_screen);
+		}
+		if (p_player.Get_Input_type().right == 1 && Status_huongdan == 0) {
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+		if (p_player.get_on_ground() == false && Status_huongdan == 1) {
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+		if (p_player.Get_Input_type().left == 1 && Status_huongdan == 2) {
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+		if (p_player.Get_Input_type().bullet_Skill_U == 1 && Status_huongdan == 4) {
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+		if (p_player.Get_Input_type().bullet_Skill_J == 1 && Status_huongdan == 5)
+		{
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+		if (p_player.Get_Input_type().bullet_Skill_I == 1 && Status_huongdan == 6) {
+			if (Time_Delay.get_ticks() >= 2000) { Status_huongdan++; Time_Delay.start(); }
+		}
+
+		P2_Player.exchange_input(Status_huongdan, g_screen);
+
+		// ve nhan vat-----------------------------------------------------
+
+		if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 0) {
+			suppermenl.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			if (p_player.Get_Input_type().defend == 0)
+				suppermenl.Render(g_screen);
+		}
+		else if (p_player.Get_Input_type().empty == 1 && p_player.get_status() == 1) {
+			suppermenr.SetRect(p_player.GetRect().x, p_player.GetRect().y);
+			if (p_player.Get_Input_type().defend == 0)
+				suppermenr.Render(g_screen);
+		}
+		if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 0) {
+			sieunhanl.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			if (P2_Player.Get_Input_type().defend == 0)
+				sieunhanl.Render(g_screen);
+		}
+		else if (P2_Player.Get_Input_type().empty == 1 && P2_Player.get_status() == 1) {
+			sieunhanr.SetRect(P2_Player.GetRect().x, P2_Player.GetRect().y);
+			if (P2_Player.Get_Input_type().defend == 0)
+				sieunhanr.Render(g_screen);
+		}
+		p_player.Set_ki_main(1499);
+		//--------------------------------------------------
+		// nhan vat 1
+		p_player.Doplayer(map_data);
+		p_player.HandleBuller(g_screen);
+		if (p_player.Get_Input_type().defend == 1) {
+			p_player.Show_Defend(g_screen);
+		}
+		else p_player.Show(g_screen);
+		if (!p_player.Get_Move_u()) {
+			ret_P1_x = P2_Player.GetRect().x - 20;
+		}
+		if (p_player.Get_Input_type().bullet_Skill_I == 1) {
+			//Am thanh Sung I
+			Mix_PlayChannel(-1, g_sound_main_P1[2], 0);
+			p_player.Show_Bullet_Size(g_screen);
+		}
+		if (p_player.Get_Move_u()) {
+			//Am thanh Sung U
+			Mix_PlayChannel(-1, g_sound_main_P1[1], 0);
+			p_player.Show_Bullet_Skill_U(g_screen);
+			p_player.Buller_move_U(map_data, ret_P1_x);
+		}
+
+		//--------------------------------------------------
+		// nhan vat 2
+		P2_Player.Doplayer(map_data);
+		P2_Player.HandleBuller(g_screen);
+		if (P2_Player.Get_Input_type().defend == 1) {
+			P2_Player.Show_Defend(g_screen);
+		}
+		else {
+			P2_Player.Show(g_screen);
+
+			if (P2_Player.Get_Input_type().bullet_Skill_U == 1) {
+				// Am thanh  U
+				Mix_PlayChannel(-1, g_sound_main_P2[1], 0);
+				P2_Player.SetRect(p_player.GetRect().x, p_player.GetRect().y - 50);
+			}
+			else if (P2_Player.Get_Input_type().bullet_Skill_I == 1) {
+				// Am thanh I
+				Mix_PlayChannel(-1, g_sound_main_P2[2], 0);
+			}
+
+		}
+		//--------------------------------------------------------------SU LY VA CHAM-------------------------------------------
+		SDL_Rect P1_Rect = p_player.GetRect();
+		P1_Rect.w /= 8;
+		SDL_Rect P2_Rect = P2_Player.GetRect();
+		P2_Rect.w /= 8;
+		// su ly va cham giua DAN Main 1 voi Main 2 
+		std::vector<BulletObject*> bullet_list = p_player.get_bullet_list();
+		for (int im = 0; im < bullet_list.size(); im++) {
+			BulletObject* p_amo = bullet_list.at(im);
+			if (p_amo != NULL) {
+				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), P2_Rect);
+				if (P2_Player.Get_Input_type().defend == 1 || P2_Player.Get_Input_type().bullet_Skill_I == 1) ret_col = false;
+				if (ret_col) {
+					if (p_amo->GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
+					else P2_Player.set_status(1);
+					Mix_PlayChannel(-1, g_nhacnen[0], 0);
+					P2_Player.Setinput_hurt(1);
+					SDL_RenderPresent(g_screen);
+					p_player.Remove_Bullet(im);
+				}
+			}
+		}
+
+		// su ly va cham giua Dan Main 2 va Main 1
+		std::vector<BulletObject*> bullet_list2 = P2_Player.get_bullet_list();
+		for (int im = 0; im < bullet_list2.size(); im++) {
+			BulletObject* p_amo = bullet_list2.at(im);
+			if (p_amo != NULL) {
+				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), P1_Rect);
+				if (p_player.Get_Input_type().defend == 1 && ret_col) {
+					ret_col = false; P2_Player.Remove_Bullet(im); if (Status_huongdan == 3) Status_huongdan = 10;
+				}
+				if (ret_col) {
+					if (p_amo->GetRect().x > p_player.GetRect().x) p_player.set_status(0);
+					else p_player.set_status(1);
+					Mix_PlayChannel(-1, g_nhacnen[0], 0);
+					p_player.Setinput_hurt(1);
+					SDL_RenderPresent(g_screen);
+					P2_Player.Remove_Bullet(im);
+				}
+			}
+		}
+		//Su ly va cham giua Skill U p1 vs Main 2
+		bool ret_col;
+		ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(1).GetRect(), P2_Rect);
+		if (P2_Player.Get_Input_type().defend == 1 || p_player.Get_Move_u() == false) ret_col = false;
+		if (ret_col == true) {
+			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
+			else P2_Player.set_status(1);
+			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			p_player.Set_Move_U(false);
+			P2_Player.Setinput_hurt(1);
+
+		}
+		ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(0).GetRect(), P2_Rect);
+		if (p_player.Get_Input_type().bullet_Skill_U == 0) ret_col = false;
+		if (ret_col == true) {
+			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
+			else P2_Player.set_status(1);
+			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			p_player.Set_Move_U(false);
+			P2_Player.Setinput_hurt(1);
+
+		}
+		// Su ly va cham giua Skill I p1 vs Main P2
+		ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_BigSize().GetRect(), P2_Rect);
+		if (P2_Player.Get_Input_type().defend == 1) ret_col = false;
+		if (p_player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
+		if (ret_col == true) {
+			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);
+			else P2_Player.set_status(1);
+			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			P2_Player.Setinput_hurt(1);
+		}
+
+		// Su ly va cham giua SKill U p2 vs Main 1
+		ret_col = false;
+		if (P2_Player.Get_Input_type().bullet_Skill_U == 1) ret_col = true;
+		if (p_player.Get_Input_type().defend == 1) ret_col = false;
+		if (ret_col == true) {
+			if (P2_Player.get_status() == 1) p_player.set_status(0);
+			else p_player.set_status(1);
+			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			p_player.Setinput_hurt(1);
+		}
+
+		// Su ly va cham Giua SKill I p2 vs Main 1
+		if (P2_Rect.x <= 1) P2_Rect.x = 5;
+		else if (P2_Rect.x >= SCREEN_WIDTH - 65) {
+			P2_Rect.x = SCREEN_WIDTH - 66;
+		}
+		ret_col = SDLCommonFunc::CheckCollision(P2_Rect, P1_Rect);
+		if (P2_Player.Get_Input_type().bullet_Skill_I == 0) ret_col = false;
+		if (p_player.Get_Input_type().defend == 1) ret_col = false;
+		if (ret_col == true) {
+			if (p_player.GetRect().x < P2_Player.GetRect().x) p_player.set_status(0);
+			else p_player.set_status(1);
+			Mix_PlayChannel(-1, g_nhacnen[0], 0);
+			p_player.Setinput_hurt(1);
+
+		}
+
+		//--------------------------------------------------------------------------------------
+		SDL_RenderPresent(g_screen);
+		// huy cac con tro tranh tran bo nho --------------------------
+		p_player.Free();
+		P2_Player.Free();
+
+
+		int real_imp_time = fps_time.get_ticks();
+		int time_one_frame = 1000 / FRAME_PER_SECOND;
+		if (real_imp_time < time_one_frame) {
+			int delay_time = time_one_frame - real_imp_time;
+			if (delay_time >= 0) SDL_Delay(delay_time);
+		}
+	}
+	return 1;
+}
 int main(int argc, char* argv[]) {
 	if (InitData() == false) return -1;
 	MenuObject gover_menu;
@@ -1241,15 +1561,22 @@ int main(int argc, char* argv[]) {
 				huong_dan[0].LoadImag("img/Bk_huongdan.png", g_screen);
 				huong_dan[1].LoadImag("img/huongdan.png", g_screen);
 				MenuObject p_huongdan;
-				std::string p_Chu[] = { "EXIT" };
-				int x_m[] = { 1000 };
-				int y_m[] = { 30 };
+				std::string p_Chu[2] = { "EXIT","Guide Play"};
+				int x_m[2] = { 1000,450 };
+				int y_m[2] = { 30 ,450 };
 				huong_dan[0].Render(g_screen);
 				huong_dan[1].Render(g_screen);
 				SDL_RenderPresent(g_screen);
-				p_huongdan.ShowMenu(g_screen, g_font_text_1, p_Chu, 1, x_m, y_m, g_nhacnen[1]);
+				k = p_huongdan.ShowMenu(g_screen, g_font_text_1, p_Chu, 2, x_m, y_m, g_nhacnen[1]);
+				if (k == 1) {
+					k = Play_Huongdan();
+				}
 				huong_dan[0].Free();
 				huong_dan[1].Free();
+				if (k == 1 ) {
+					close();
+					return 0;
+				}
 			}
 			menu_screen.Render(g_screen);
 			kt = p_menu.ShowMenu(g_screen, g_font_text_1, p_chu, 3, x_menu, y_menu, g_nhacnen[1]);
@@ -1277,6 +1604,7 @@ int main(int argc, char* argv[]) {
 		is_continue = gover_menu.ShowMenu(g_screen, g_font_text_1, DS, 2, x_over, y_over, g_nhacnen[1]);
 		SDL_RenderPresent(g_screen);
 	} while (is_continue == 0);
+
 	close();
 	return 0;
 }

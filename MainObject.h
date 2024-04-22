@@ -89,7 +89,6 @@ public:
 	bool get_on_ground() {
 		return on_ground;
 	}
-
 private:
 	//
 	float x_val;

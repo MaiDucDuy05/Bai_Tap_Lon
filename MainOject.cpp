@@ -332,9 +332,10 @@ void MainObject:: Check_map(Map &map_data){
 			if (map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE) {
 				y_pos = y2 * TILE_SIZE;
 				y_pos -= (height_frame);
-				y_val=0;
-				on_ground=true;
+				y_val = 0;
+				on_ground = true;
 			}
+			else on_ground = false;
 		}
 		else if(y_val<0){
 			on_ground=false;

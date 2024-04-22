@@ -22,6 +22,7 @@ public:
 
 	bool LoadImag(std::string path,SDL_Renderer* screen);
 	void Show(SDL_Renderer* des);
+	void Show_Defend(SDL_Renderer* des);
 	void HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix_Chunk*g_sound);
 	void Set_clip();
 	void Doplayer(Map &map_data);
@@ -68,6 +69,7 @@ public:
 	}
 	void ktImage(SDL_Renderer* des);
 	void Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mix_Chunk* g_sound);
+	void exchange_input(const int x, SDL_Renderer* screen);
 private:
 	//
 	float x_val;
@@ -95,7 +97,7 @@ private:
 	
 	int blood_main;
 	int ki_main;
-	BaseObject P_Image[12];
+	BaseObject P_Image[13];
 	
 
 	ImpTimer Time_Delay[10];

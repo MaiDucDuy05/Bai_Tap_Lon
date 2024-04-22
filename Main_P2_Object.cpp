@@ -1,5 +1,6 @@
 #include"Main_P2_Object.h"
 
+
 #define PLAYER_JUMP 30
 
 Main_P2_Object::Main_P2_Object(){
@@ -63,7 +64,7 @@ void Main_P2_Object::ktImage(SDL_Renderer* des) {
 	P_Image[9].LoadImag("img//Sieunhan(J)Right.png", des);
 	P_Image[10].LoadImag("img//Sieunhan(I)Right.png", des);
 	P_Image[11].LoadImag("img//SieunhanRight.png", des);
-
+	P_Image[12].LoadImag("img//P2.png", des);
 }
 
 void Main_P2_Object::Show(SDL_Renderer *des){
@@ -83,8 +84,8 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 			i = 3;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			i = 4;
-		}
+			i = 4; if (is_wall) x_pos -= 1;
+ 		}
 		else if(input_type.left == 1 ) {
 			i = 5;
 		}
@@ -106,7 +107,7 @@ void Main_P2_Object::Show(SDL_Renderer *des){
 			i = 9;
 		}
 		else if(input_type.bullet_Skill_I==1){
-			i = 10;
+			i = 10; if(is_wall) x_pos += 1;
 		}
 		else if(input_type.right==1 ){
 			i = 11;
@@ -364,6 +365,7 @@ void Main_P2_Object:: Check_map(Map &map_data){
 				y_val=0;
 				on_ground=true;
 			}
+			else on_ground = false;
 		}
 		else if (y_val<0) {
 			on_ground=false;
@@ -389,6 +391,7 @@ void Main_P2_Object:: Check_map(Map &map_data){
 		y_pos = map_data.max_y;
 		on_ground = true;
 	}
+	
 }
 void Main_P2_Object::Remove_Bullet(const int& idx) {
 	int size_amo = p_bullet_list.size();
@@ -419,14 +422,16 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 		if (Vitri.x + 400 > rect.x && Vitri.x - 400 < rect.x&& input_type.bullet_Skill_U==0
 			&& Vitri.y + 100 > rect.y && Vitri.y - 100 < rect.y&&input_type.bullet_Skill_J==0) {
 			if (Vitri.x > rect.x) {
-				status = 0;
+				status = 0;  if (is_wall) x_pos -= 1;
 			}
 			else {
-				status = 1;
+				status = 1; if (is_wall) x_pos += 1;
 			}
 			if (Vitri.y < rect.y) input_type.jump = 1;
 			else input_type.jump = 0;
-			input_type.bullet_Skill_I = 1;
+			if (ki_main > 500) {
+				input_type.bullet_Skill_I = 1;
+			}
 		}
 		else {
 			input_type.bullet_Skill_I = 0;
@@ -473,7 +478,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 		if (input.defend == 0) {
 			if (Time_Delay[1].get_ticks() > 20000) {
 				if (ki_main >= 200 && input_type.bullet_Skill_U == 0) {
-					input_type.bullet_Skill_U = 1;
+					input_type.bullet_Skill_U = 1; x_pos = Vitri.x; y_pos = Vitri.y;
 					Time_Delay[1].start();
 				}
 			}
@@ -488,7 +493,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 			input_type.speed_up = 0;
 			if (input_type.bullet_Skill_I == 0 && input_type.bullet_Skill_J == 0
 				&& input_type.bullet_Skill_U == 0 && input_type.defend == 0) {
-				if (Vitri.y < rect.y - 50||is_wall) {
+				if (Vitri.y < rect.y - 50||(is_wall&&on_ground)) {
 					if (Vitri.x > rect.x) {
 						status = 0;
 					}
@@ -499,6 +504,7 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 						input_type.jump = 1;
 						Time_Delay[3].start();
 					}
+					else input_type.jump = 0;
 				}
 				else {
 					input_type.jump = 0;
@@ -517,4 +523,39 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 		input_type.bullet_Skill_U = 0;
 		input_type.bullet_Skill_I = 0;
 	}
+}
+void Main_P2_Object::Show_Defend(SDL_Renderer* des) {
+	rect.x = x_pos - map_x; rect.y = y_pos - map_y;
+	P_Image[12].SetRect(this->rect.x+width_frame_/2, this->rect.y);
+	P_Image[12].Render(des);
+}
+void Main_P2_Object::exchange_input(const int x,SDL_Renderer * screen) {
+	if (x == 3) {
+		input_type.bullet_Skill_J = 1;
+		if (p_bullet_list.size() < 1) {
+			BulletObject* p_bullet = new BulletObject;
+			if (status == WALK_LEFT) {
+				p_bullet->LoadImag("img//KiemL.png", screen);
+			}
+			else {
+				p_bullet->LoadImag("img//KiemR.png", screen);
+			}
+			if (status == WALK_LEFT) {
+				p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+				p_bullet->SetRect(this->rect.x - 20, this->rect.y + height_frame * 0.3);
+			}
+			else {
+				p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+				p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y + height_frame * 0.3);
+			}
+			p_bullet->set_x_val(20);
+			p_bullet->set_is_move(true);
+			p_bullet_list.push_back(p_bullet);
+		}	
+	}else input_type.bullet_Skill_J = 0;
+	if (x == 4) {
+		input_type.bullet_Skill_U = 1;
+	}
+	else input_type.bullet_Skill_U = 0;
+	
 }
