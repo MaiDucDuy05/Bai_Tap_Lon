@@ -1,5 +1,6 @@
 # **Đối Kháng**
-*Dự án cho bài thi giữa kì tại UET*
+*Dự án cho bài tập lớn tại UET*
+
 Xin chào mọi người, tên mình là Mai Đức Duy . Đây là dự án đầu tiên của mình. Trong dự án này, mình sẽ làm về tựa game Đối Kháng, Nhập vai với một chút sáng tạo riêng, sử dụng ngôn ngữ [C++](https://en.wikipedia.org/wiki/C++) và thư viện [SDL 2.0](https://www.libsdl.org/download-2.0.php).
 
 
@@ -11,7 +12,9 @@ Lần đầu viết một project nên code có hơi khó đọc.
 1. [Cách tải và cài đặt game](#1-cách-tải-và-cài-đặt-game)
 2. [Chi tiết về game và cách chơi](#2-chi-tiết-về-game-và-cách-chơi)
 3. [Thuật toán của game](#3-thuật-toán-của-game) 
-4. [Nguồn ảnh và âm thanh](#nguồn-ảnh-và-âm-thanh)
+4. [Trích Nguồn](#4-trích-nguồn)
+5. [Hỗ trợ](#5hỗ-trợ)
+6. [Kết Luận](#6kết-luận)
 
    ### Nội dung
    ### 1. Cách tải và cài đặt game
@@ -38,7 +41,7 @@ Lần đầu viết một project nên code có hơi khó đọc.
    
       Sử dụng phím `S` Để phòng thủ
    
-      Sử Dùng các phím `J``U` `I` Để sử dụng các chiêu đánh của nhân vật
+      Sử Dùng các phím `J` `U` `I` Để sử dụng các chiêu đánh của nhân vật
    
 
 
@@ -72,7 +75,59 @@ Lần đầu viết một project nên code có hơi khó đọc.
 
   #### PREVIEW
   ![logo](https://i.imgur.com/T3GuIon.png)
-   ### 3. Thuật toán của game 
+  ![logo](https://i.imgur.com/xETdz5Y.png)
+   ![logo](https://i.imgur.com/Yf61w9M.png)
+    ![logo](https://i.imgur.com/stkgQYr.png)
+     ![logo](https://i.imgur.com/kFYiKjZ.png)
+
+     
+### 3. Các kỹ thuật được sử dụng
+
+   Ở Game này mình sử dụng thư viện `SDL2` để hỗ trợ phần đồ họa cho game
+
+   Sử dungj được 'Image' , 'Mixer' , 'TTF' để làm cho game sống động hơn
+
+   Chương trình được viết bằng ngôn ngữ `C++`
+
+   Được phân chia thành các `file .h` và  các `file .cpp` giúp mình dễ quản lý code trong quá trình code game
+
+   Sử dụng các cấu trúc `class` giúp mình có thể quản lý đối tượng một các dễ dàng thông qua tính kế thừa, tính đóng gói
+
+            +) class BaseObject :: class này là một lớp chung cho gồm các thuộc tính cần có của một đối tượng như :hình ảnh, vị trí , và một số hàm Load ảnh, Render ảnh lên màn hình và Giải phóng ......
+            +) class BulletObject :: Kế thừa từ BaseObject đây là một class quản lý hình ảnh, vị trí của viên đạn do các đôi tượng bắn ra ...
+            +> class MainObject ::    Kế thừa từ BaseObject đây là class quản lý đối tường ngân vật 1
+            ...
+   Tuy nhiên đây là dự án đầu của mình lên code có chưa được gọn gàng, dễ dọc cho lắm .
+
+   Về thuật toán giúp cho con rồng có thể đuổi theo Nhân vật của mình
+
+   Mình dùng thuật toán `BFS` nhé
+
+   Đây là một thuật toán tìm kiếm theo chiều rộng [BFS](https://vnoi.info/wiki/algo/graph-theory/breadth-first-search.md) mình duyệt trên mảng  2 chiều để tìm kiếm đường đi ngắn nhất từ đó tìm ra các di chuyển đến nhân vật dựa trên thuật toán này.
    
+
+### 4. Trích nguồn
+
+   https://wiki.libsdl.org
+   
+   https://lazyfoo.net/tutorials/SDL
+
+   https://phattrienphanmem123az.com/lap-trinh-game-cpp
+
+   hình ảnh và âm thanh được lấy trên `Goole`
+
+
+### 5.Hỗ trợ
+
+   Thầy Lê Đức Trọng giảng viên lý thuyết môn lập trình nâng cao
+   Thầy Trần Trường Thủy giảng viên thực hành môn lập trình nâng cao
+
+### 6.Kết luận
+
+Qua dự án này mình đã học thêm được nhiều bài học quý giá
+
+Biết hoàn thiện một chương trình đầy đủ
+
+Hiểu hơn về lập trình và hoàn thiện kỹ năng lập trình của mình
    
 
