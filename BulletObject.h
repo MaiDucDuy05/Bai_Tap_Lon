@@ -3,7 +3,7 @@
 
 #include"Common_Function.h"
 #include"BaseObject.h"
-
+#include"game_map.h"
 class BulletObject : public BaseObject{
 public:
 	BulletObject();
@@ -27,7 +27,7 @@ public:
 		bullet_dir=bulletdir;
 	}
 	int get_bullet_dir() const { return bullet_dir;}
-
+	bool Check_Map(Map map_data);
 private:
 
 	int x_val;

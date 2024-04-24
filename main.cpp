@@ -417,6 +417,7 @@ int Play(int luachon) {
 		std::vector<BulletObject*> bullet_list = p_player.get_bullet_list();
 		for (int im = 0; im < bullet_list.size(); im++) {
 			BulletObject* p_amo = bullet_list.at(im);
+			if (p_amo->Check_Map(map_data) && p_amo!=NULL)  p_player.Remove_Bullet(im);
 			if (p_amo != NULL) {
 				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), P2_Rect);
 				if (P2_Player.Get_Input_type().defend == 1 || P2_Player.Get_Input_type().bullet_Skill_I == 1) ret_col = false;
@@ -436,6 +437,7 @@ int Play(int luachon) {
 		std::vector<BulletObject*> bullet_list2 = P2_Player.get_bullet_list();
 		for (int im = 0; im < bullet_list2.size(); im++) {
 			BulletObject* p_amo = bullet_list2.at(im);
+			if (p_amo->Check_Map(map_data) && p_amo!=NULL)  P2_Player.Remove_Bullet(im);
 			if (p_amo != NULL) {
 				bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), P1_Rect);
 				if (p_player.Get_Input_type().defend == 1 && ret_col) {
@@ -467,6 +469,7 @@ int Play(int luachon) {
 
 		}
 		ret_col = SDLCommonFunc::CheckCollision(p_player.Get_Bullet_Skill_U(0).GetRect(), P2_Rect);
+		if (P2_Player.Get_Input_type().defend == 1 || p_player.Get_Move_u() == false) ret_col = false;
 		if (p_player.Get_Input_type().bullet_Skill_U == 0) ret_col = false;
 		if (ret_col == true) {
 			if (p_player.GetRect().x > P2_Player.GetRect().x) P2_Player.set_status(0);

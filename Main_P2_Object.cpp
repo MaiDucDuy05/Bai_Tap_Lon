@@ -211,11 +211,11 @@ void Main_P2_Object::HandeInputAction(SDL_Event events,SDL_Renderer * screen,Mix
 					}
 					if (status == WALK_LEFT) {
 						p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-						p_bullet->SetRect(this->rect.x - 20, this->rect.y + height_frame * 0.3);
+						p_bullet->SetRect(this->rect.x - 20, this->rect.y-10);
 					}
 					else {
 						p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-						p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y + height_frame * 0.3);
+						p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y-10);
 					}
 					Mix_PlayChannel(-1, g_sound, 0);
 					p_bullet->set_x_val(20);
@@ -458,11 +458,11 @@ void Main_P2_Object::Auto_(SDL_Rect Vitri, Input input, SDL_Renderer* screen, Mi
 				}
 				if (status == WALK_LEFT) {
 					p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-					p_bullet->SetRect(this->rect.x - 20, this->rect.y + height_frame * 0.3);
+					p_bullet->SetRect(this->rect.x - 20, this->rect.y - 10);
 				}
 				else {
 					p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-					p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y + height_frame * 0.3);
+					p_bullet->SetRect(this->rect.x + width_frame_ - 20, this->rect.y -10);
 				}
 				Mix_PlayChannel(-1, g_sound, 0);
 				p_bullet->set_x_val(20);
