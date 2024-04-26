@@ -19,7 +19,7 @@ Link bài tập lớn : [Bài tập lớn](https://github.com/MaiDucDuy05/Bai_Ta
 - Lần đầu viết một project nên code có hơi khó đọc.
 
 ## Video Demo
-
+[Link Demo game](https://drive.google.com/file/d/1seqe6nhMxCcTY5Zt1RWkcisvRPjTVEBD/view?usp=drive_link)
 ## Mục lục
 1. [Cách tải và cài đặt game](#1-cách-tải-và-cài-đặt-game)
 2. [Chi tiết về game và cách chơi](#2-chi-tiết-về-game-và-cách-chơi)
