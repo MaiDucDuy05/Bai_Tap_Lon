@@ -1,5 +1,15 @@
 # **Đối Kháng**
 *Dự án cho bài tập lớn tại UET*
+## Giới thiêu
+Họ và Tên : Mai Đức Duy.
+
+Lớp : K68CC - UET.
+
+Mã SV : 23020032.
+
+Lớp học phần : LTNC_INT 2215_50.
+
+Link bài tập lớn : [Bài tập lớn](https://github.com/MaiDucDuy05/Bai_Tap_Lon)
 
 Xin chào mọi người, tên mình là Mai Đức Duy . Đây là dự án đầu tiên của mình. Trong dự án này, mình sẽ làm về tựa game Đối Kháng, Nhập vai với một chút sáng tạo riêng, sử dụng ngôn ngữ [C++](https://en.wikipedia.org/wiki/C++) và thư viện [SDL 2.0](https://www.libsdl.org/download-2.0.php).
 
@@ -8,23 +18,25 @@ Nếu bạn muốn học về SDL2.0, hãy vào [website](https://lazyfoo.net/tu
 
 Lần đầu viết một project nên code có hơi khó đọc.
 
+## Video Demo
+
 ## Mục lục
 1. [Cách tải và cài đặt game](#1-cách-tải-và-cài-đặt-game)
 2. [Chi tiết về game và cách chơi](#2-chi-tiết-về-game-và-cách-chơi)
-3. [Thuật toán của game](#3-thuật-toán-của-game) 
+3. [Các kỹ thuật được sử dụng](#3-các-kỹ-thuật-được-sử-dụng) 
 4. [Trích Nguồn](#4-trích-nguồn)
 5. [Hỗ trợ](#5hỗ-trợ)
 6. [Kết Luận](#6kết-luận)
 
    ### Nội dung
    ### 1. Cách tải và cài đặt game
-   Đầu tiên bạn sẽ cần cài đặt Visual Studio 2022 để chạy C++, làm theo các hướng dẫn để cài đặt:  
-        - [SDL 2.0](https://www.libsdl.org/download-2.0.php)  
-        - [SDL_image](https://www.libsdl.org/projects/SDL_image/)  
-        - [SDL_mixer](https://www.libsdl.org/projects/SDL_mixer/)  
-        - [SDL_ttf](https://www.libsdl.org/projects/SDL_ttf/)
-    Sau khi xong, tải file zip game của mình trên github về và giải nén chúng.
-    Sau đó Mở file Game_SDL2.0.sln để chạy chương trình.
+      Tải game nén thành file zip :[Link Down](https://github.com/MaiDucDuy05/Bai_Tap_Lon/releases/tag/V1.0)
+      Tải file `test_game.zip` sau đó giải nén tập tin
+      Mở file `Game.exe` để chơi game
+   
+      Bạn cũng có thể down Load file `Game_SDL2.0.zip` để tải mã nguồn.
+
+
     ### 2. Chi tiết về game và cách chơi
    Dự án game này là một trò chơi đối kháng dựa trên ý tưởng Game Naruto vs Bleach  là một trải nghiệm chiến đấu hành động độc đáo, nơi người chơi sẽ được đưa vào cuộc phiêu lưu đầy kịch tính giữa thế giới của các siêu anh hùng.
    người chơi sẽ được tham gia vào các trận đấu đỉnh cao, sử dụng các kỹ năng và chiêu thức đặc biệt để chiến thắng. 
@@ -112,7 +124,7 @@ Lần đầu viết một project nên code có hơi khó đọc.
    
    https://lazyfoo.net/tutorials/SDL
 
-   https://phattrienphanmem123az.com/lap-trinh-game-cpp
+   https://phattrienphanmem123az.com/lap-trinh-game-c-p2
 
    hình ảnh và âm thanh được lấy trên `Goole`
 
@@ -120,11 +132,22 @@ Lần đầu viết một project nên code có hơi khó đọc.
 ### 5.Hỗ trợ
 
    Thầy Lê Đức Trọng giảng viên lý thuyết môn lập trình nâng cao
+   
    Thầy Trần Trường Thủy giảng viên thực hành môn lập trình nâng cao
 
 ### 6.Kết luận
 
 Qua dự án này mình đã học thêm được nhiều bài học quý giá
+
+Biết cách dùng github.
+
+Biết chia nhỏ vấn đề và chia file.
+
+Biết cách sử dụng thư viện SDL2.
+
+Học thêm được các thuật toán.
+
+Biết thêm về lập trình hướng đối tượng OOP và class.
 
 Biết hoàn thiện một chương trình đầy đủ
 
